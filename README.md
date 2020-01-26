@@ -1,1 +1,1 @@
-# resturant-pos-system
+# restaurant-pos-system
