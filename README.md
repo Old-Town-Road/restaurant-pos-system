@@ -1,1 +1,1 @@
-# pizza-shop-pos
+# resturant-pos-system
