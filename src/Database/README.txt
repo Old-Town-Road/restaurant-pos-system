@@ -1,0 +1,1 @@
+This folder contains material to stand-up or alter the database for the project.
