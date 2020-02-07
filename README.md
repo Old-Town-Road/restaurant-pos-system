@@ -1,6 +1,6 @@
 # Restaurant POS System
 
-https://img.shields.io/github/license/Old-Town-Road/restaurant-pos-system?color=maroon
+![Inline docs](https://img.shields.io/github/license/Old-Town-Road/restaurant-pos-system?color=maroon)
 ![Inline docs](https://img.shields.io/github/issues/Old-Town-Road/restaurant-pos-system)
 ![Inline docs](https://img.shields.io/github/stars/Old-Town-Road/restaurant-pos-system)
 ![Inline docs](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2FOld-Town-Road%2Frestaurant-pos-system%2Fedit%2Fmaster%2FREADME.md)
