@@ -2,9 +2,11 @@
 
 ![Inline docs](https://img.shields.io/github/license/Old-Town-Road/restaurant-pos-system?color=maroon)
 ![Inline docs](https://img.shields.io/github/contributors/Old-Town-Road/restaurant-pos-system)
-![Inline docs](https://img.shields.io/github/languages/count/Old-Town-Road/restaurant-pos-system)
-![Inline docs](https://img.shields.io/github/stars/Old-Town-Road/restaurant-pos-system)
 ![Inline docs](https://img.shields.io/github/last-commit/Old-Town-Road/restaurant-pos-system)
+![Inline docs](https://img.shields.io/github/stars/Old-Town-Road/restaurant-pos-system)
+![Inline docs](https://img.shields.io/github/issues/Old-Town-Road/restaurant-pos-system)
+
+
 
 
 ## Table of contents
