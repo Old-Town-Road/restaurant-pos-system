@@ -1,11 +1,11 @@
 package Models;
 
 /**
- * This class is to build the ticket object, which is inherited by two other classes.
+ * This class is to build the ticket object, which is inherited by two other
+ * classes.
  *
  * @author Sultan Albogami Last Updated: 2/7/2020
  */
-
 import java.util.Date;
 
 public class Ticket {
@@ -14,7 +14,8 @@ public class Ticket {
     private Date dateTime;
     private int userId;
     private int tableId;
-    // As per the object file shared in G-Drive, MenueTine I am not clear on what menuTime is.
+    // I am not clear on what menuTime is.
+
     enum TICKETSTATUS {
         STATUS1, STATUS2, STATUS3, STATUS4
     }
@@ -59,18 +60,16 @@ public class Ticket {
         //Check if item present first.
         return true;
     }
-    
+
     /*
      * @Override
      * */
-    public String toString() { 
-        return "================= Ticket " + this.ticketId 
-        		+ " =================\n"+ "Date & Time:\t" + this.dateTime +
-        				"\nUser ID:\t" + this.userId + "\nTable ID:\t" + this.tableId + "\nTicket Status:\t" + this.ticketStatus + "\n\n";
+    @Override
+    public String toString() {
+        return "\n\n================= Ticket " + this.ticketId + " =================\n" + "Date & Time:\t" + this.dateTime + "\nUser ID:\t" + this.userId + "\nTable ID:\t" + this.tableId + "\nTicket Status:\t" + this.ticketStatus + "\n\n";
     }
-    
-    // ================= GETTERS ==========================
 
+    // ================= GETTERS ==========================
     public int getTicketId() {
         return this.ticketId;
     }
@@ -86,13 +85,16 @@ public class Ticket {
     public int getTableId() {
         return this.tableId;
     }
-    
-	public TICKETSTATUS getTicketStatus() {
-		return this.ticketStatus;
-	}
+
+    /**
+     *
+     * @return
+     */
+    public TICKETSTATUS getTicketStatus() {
+        return this.ticketStatus;
+    }
 
     // ================= SETTERS ==========================
-
     public void setTicketId(int _ticketId) {
         this.ticketId = _ticketId;
     }
@@ -109,7 +111,7 @@ public class Ticket {
         this.tableId = _tableId;
     }
 
-	public void setTicketStatus(TICKETSTATUS _ticketStatus) {
-		this.ticketStatus = _ticketStatus;
-	}
+    public void setTicketStatus(TICKETSTATUS _ticketStatus) {
+        this.ticketStatus = _ticketStatus;
+    }
 }
