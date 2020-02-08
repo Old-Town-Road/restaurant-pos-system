@@ -9,8 +9,8 @@ package Models;
 import java.util.Date;
 
 public class Ticket {
-   
-	private int ticketId;
+
+    private int ticketId;
     private Date dateTime;
     private int userId;
     private int tableId;
