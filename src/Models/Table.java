@@ -86,11 +86,11 @@ public class Table {
         this.name = _name;
     }
 
-    public void setTicketId(int _ticketId) {
+    public void setTicketId(_ticketId) {
         this.ticketId = _ticketId;
     }
 
-    public void setCheckId(int _checkId) {
+    public void setCheckId(_checkId) {
         this.checkId = _checkId;
     }
 }
