@@ -27,6 +27,7 @@ public class DAO {
     void connectDB() {
 	try {
 	    //set up the connection strings
+	    //these are temporary place holders
 	    String dbURL = "jdbc:sqlserver://localhost\\sqlexpress";
 	    String user = "sa";
 	    String pass = "secret";
