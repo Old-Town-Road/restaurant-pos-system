@@ -1,4 +1,9 @@
 package Models;
+/*
+ * Author- Ashim Chalise
+ * This class represents the Menu Items
+ * updated - 2/12/20
+ */
 
 public class MenuItem extends Menu{
     private String itemName;
@@ -6,13 +11,15 @@ public class MenuItem extends Menu{
     private int priorityScore;
     private int executionTime;
     
-    public MenuItem(int ID, String menuName, String item, String itemName, int price, int priorityScore, int executionTime){
-        super(ID, menuName, itemName);
-        this.itemName=itemName;
-        this.price=price;
-        this.priorityScore=priorityScore;
-        this.executionTime=executionTime;
+    public MenuItem(int _ID, String _menuName, String _item, String _itemName, int _price, int _priorityScore, int _executionTime){
+        super(_ID, _menuName, _itemName);
+        this.itemName = _itemName;
+        this.price = _price;
+        this.priorityScore = _priorityScore;
+        this.executionTime = _executionTime;
     }
+    
+  //====================GETTERS====================
     
     public String getItemName() {
     	return this.itemName;
@@ -27,16 +34,18 @@ public class MenuItem extends Menu{
     	return this.executionTime;
     }
     
-    public void setItemName(String itemName) {
-    	this.itemName=itemName;
+  //====================SETTERS====================
+    
+    public void setItemName(String _itemName) {
+    	this.itemName = _itemName;
     }
-    public void setPrice(int price) {
-    	this.price=price;
+    public void setPrice(int _price) {
+    	this.price = _price;
     }
-    public void setPrioritySCore(int priorityScore) {
-    	this.priorityScore=priorityScore;
+    public void setPrioritySCore(int _priorityScore) {
+    	this.priorityScore = _priorityScore;
     }
-    public void setExectuionTime(int executionTime) {
-    	this.executionTime=executionTime;
+    public void setExectuionTime(int _executionTime) {
+    	this.executionTime = _executionTime;
     }
 }

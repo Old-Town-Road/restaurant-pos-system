@@ -1,4 +1,9 @@
 package Models;
+/*
+ * Author - Ashim Chalise
+ * This class represents the User Object
+ * last updated - 02/12/2020
+ */
 
 public class User {
 	private int ID;
@@ -6,50 +11,53 @@ public class User {
     private String firstName;
     private String lastName;
     
-    public User(int ID, String username, String firstName, String lastName){
-        this.ID=ID;
-        this.username=username;
-        this.firstName=firstName;
-        this.lastName=lastName;
+    public User(int _ID, String _username, String _firstName, String _lastName) {
+        this.ID=_ID;
+        this.username = _username;
+        this.firstName = _firstName;
+        this.lastName = _lastName;
     }
     
-    public int getID(){
-        return this.ID;
-    }
-    
-    public String getUsername(){
-        return this.username;
-    }
-    
-    public String getFirstName(){
-        return this.firstName;
-    }
-    
-    public String getLastName(){
-        return this.lastName;
-    }
-    
-    public void setID(int ID){
-        this.ID=ID;
-    }
-    
-    public void setUsername(String username){
-        this.username=username;
-    }
-    
-    public void setFirstName(String firstName){
-        this.firstName=firstName;
-    }
-    
-    public void setLastName(String lastName){
-        this.lastName=lastName;
-    }
-    
-    public boolean loadUser(int ID){
+    public boolean loadUser(int _ID){
         boolean retVal = false;
         
         //@ todo attach controller for login.
         return retVal;
     }
-
+    
+    //====================GETTERS====================
+    
+    public int getID() {
+        return this.ID;
+    }
+    
+    public String getUsername() {
+        return this.username;
+    }
+    
+    public String getFirstName() {
+        return this.firstName;
+    }
+    
+    public String getLastName() {
+        return this.lastName;
+    }
+    
+  //====================SETTERS====================
+    
+    public void setID(int _ID) {
+        this.ID = _ID;
+    }
+    
+    public void setUsername(String _username) {
+        this.username = _username;
+    }
+    
+    public void setFirstName(String _firstName) {
+        this.firstName = _firstName;
+    }
+    
+    public void setLastName(String _lastName) {
+        this.lastName = _lastName;
+    }
 }
