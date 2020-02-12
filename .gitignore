@@ -1,1 +1,4 @@
 /bin/
+
+# ignore a directory
+.idea/
