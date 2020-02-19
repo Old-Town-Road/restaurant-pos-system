@@ -1,10 +1,19 @@
 package Models;
+
 /*
- * Author- Ashim Chalise
  * This class represents the Food Item
- * updated - 2/12/20
+ *@author Ashim Chalise, Ian Wilhelmsen Last Updated: 2/19/2020
+ * 
+ * NOTES:
+ * 2/19/2020 IMW
+ * -> Changed the type of _ticketStatus to new enum created.
+ * -> Verified the styling.updated - 2/12/20
  */
-public class FoodItem extends MenuItem{
-	
+public class FoodItem extends MenuItem {
+
+    public FoodItem(int _ID, String _menuName, String _item, String _itemName, int _price, int _priorityScore, int _executionTime) {
+	super(_ID, _menuName, _item, _itemName, _price, _priorityScore, _executionTime);
+	// TODO Auto-generated constructor stub
+    }
 
 }
