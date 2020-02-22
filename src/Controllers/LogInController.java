@@ -46,7 +46,8 @@ public class LogInController implements Initializable {
     /**
      * Called once implementing the controller.
      *
-     * @Override
+     * @param _url
+     * @param _rb
      */
     public void initialize(URL _url, ResourceBundle _rb) {
     }
@@ -63,7 +64,7 @@ public class LogInController implements Initializable {
     }
 
     /**
-     * Called when a Hyperlink is clicked.
+     * Called when Hyperlink is clicked.
      *
      * @param _event
      */
