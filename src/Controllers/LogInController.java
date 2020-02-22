@@ -25,8 +25,6 @@ import java.util.ResourceBundle;
 public class LogInController implements Initializable {
 
     @FXML
-    private AnchorPane rootPane;
-    @FXML
     private Button logIn;
     @FXML
     private Hyperlink hpl = new Hyperlink();
@@ -36,8 +34,6 @@ public class LogInController implements Initializable {
     private final WebView browser = new WebView();
     @FXML
     private final WebEngine webEngine = browser.getEngine();
-
-    private static final String FROM_FXML_FILE_PATH = "views/fxml/";
 
     public LogInController() {
     }
@@ -71,8 +67,6 @@ public class LogInController implements Initializable {
     @FXML
     private void handleHyperlinkAction(ActionEvent _event) {
         // Hyperlink was clicked, go to ...
-        Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-        stage.close();
-        webEngine.load(url);
+        // webEngine.load(url);
     }
 }
