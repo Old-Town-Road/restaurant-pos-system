@@ -59,7 +59,7 @@ public class LogInController implements Initializable {
     private void ActionLogin(ActionEvent _event) {
         Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
         stage.close();
-        new Frame(SetView.SERVICE_OPTIONS_VIEW);
+        new Frame(SetView.ORDER_TYPE_VIEW);
     }
 
     /**
