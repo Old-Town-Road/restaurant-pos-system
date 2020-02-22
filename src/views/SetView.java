@@ -1,9 +1,7 @@
 package views;
 
 /**
- * This class allows us to have constant variables of fxml file names.
- * Every time you change the view, you just need to change the fxml file
- * And set it from here.
+ * This class allows us to set the views using constant variables of fxml file names.
  *
  * @author Sultan Albogami Last Updated: 2/22/2020
  */
@@ -15,7 +13,7 @@ public class SetView {
     // This will serve as our main view for now
     public static final String LOG_IN_VIEW = "LogIn";
     // Dine In or Take Out view
-    public static final String SERVICE_OPTIONS_VIEW = "ServiceOptions";
+    public static final String ORDER_TYPE_VIEW = "OrderType";
     // TODO Ashim this is your assigned view.
 
     // Close check view
