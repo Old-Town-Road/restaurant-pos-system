@@ -11,7 +11,7 @@ public class SetView {
     // Stage Title is the same as the project name
     public static final String WINDOW_TITLE = "Restaurant POS System";
     // This will serve as our main view for now
-    public static final String LOG_IN_VIEW = "LogIn";
+    public static final String LOG_IN_VIEW = "LogInWindow";
     // Dine In or Take Out view
     public static final String ORDER_TYPE_VIEW = "OrderType";
     // TODO Ashim this is your assigned view.
