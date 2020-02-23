@@ -27,7 +27,6 @@ public class OrderTypeController implements Initializable {
      * @param _url
      * @param _rb
      */
-
     public void initialize(URL _url, ResourceBundle _rb) {
     }
 
