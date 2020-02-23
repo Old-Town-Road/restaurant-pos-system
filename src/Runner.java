@@ -6,6 +6,7 @@
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import views.Frame;
 import views.SetView;
 
 public class Runner extends Application {
@@ -18,7 +19,7 @@ public class Runner extends Application {
      */
     public void start(Stage primaryStage) throws Exception {
 
-        // Creating a Frame object with log in view as our main view
+        // Creating a views.Frame object with log in view as our main view
         Frame frame = new Frame(primaryStage, SetView.LOG_IN_VIEW);
     }
 

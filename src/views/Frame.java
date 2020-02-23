@@ -1,4 +1,4 @@
-/**
+package views; /**
  * This class initializes the frame.
  *
  * @author Sultan Albogami Last Updated: 2/22/2020
