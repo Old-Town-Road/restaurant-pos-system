@@ -1,4 +1,6 @@
-package views; /**
+package views;
+
+/**
  * This class initializes the frame.
  *
  * @author Sultan Albogami Last Updated: 2/22/2020
@@ -7,13 +9,16 @@ package views; /**
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import views.GetSource;
-import views.SetView;
 import java.io.IOException;
 
 public class Frame {
 
-    // UDC
+    /**
+     * UDC Frame
+     *
+     * @param _primaryStage
+     * @param _fileName
+     */
     public Frame(Stage _primaryStage, String _fileName) {
 
         // Set Parent to NULL

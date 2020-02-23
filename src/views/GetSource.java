@@ -7,7 +7,6 @@ package views;
  */
 
 import javafx.fxml.FXMLLoader;
-
 import java.io.IOException;
 
 public class GetSource {
@@ -33,17 +32,5 @@ public class GetSource {
      */
     public static Object FXMLObjectLoader(String _fileName) throws IOException {
         return FXMLLoader.load(GetSource.class.getResource(getFXML(_fileName)));
-    }
-
-    /**
-     * Called when an FXML file is loaded based on the file name and path.
-     *
-     * @param _fileName
-     * @param _path
-     * @return
-     * @throws IOException
-     */
-    public static Object FXMLObjectLoader(String _fileName, String _path) throws IOException {
-        return FXMLLoader.load(GetSource.class.getResource(getFXML(_path + _fileName)));
     }
 }
