@@ -33,4 +33,5 @@ public class Store {
     public void setStoreName(String _storeName) {
         this.storeName = _storeName;
     }
+
 }

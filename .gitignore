@@ -2,3 +2,6 @@
 
 # ignore a directory
 .idea/
+
+# Ignore this file
+restaurant-pos-system.iml
