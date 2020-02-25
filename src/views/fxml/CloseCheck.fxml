@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OrderTypeController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CloseCheckController">
    <children>
-      <Button layoutX="180.0" layoutY="188.0" mnemonicParsing="false" onAction="#creditCardAction" onKeyPressed="#creditCardAction" prefHeight="25.0" prefWidth="241.0" text="Credit Card">
+      <Button layoutX="180.0" layoutY="188.0" mnemonicParsing="false" onAction="#creditAction" onKeyPressed="#creditAction" prefHeight="25.0" prefWidth="241.0" text="Credit Card">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

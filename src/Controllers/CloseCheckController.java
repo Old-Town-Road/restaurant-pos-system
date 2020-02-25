@@ -1,7 +1,7 @@
 package Controllers;
 
 /**
- * This class controls log in view.
+ * This class controls CloseCheck view.
  *
  * @author Raiana Zaman Last Updated: 2/24/2020
  */
@@ -18,49 +18,52 @@ import java.util.ResourceBundle;
 
 public class CloseCheckController implements Initializable {
 
-    public CloseCheckController() {
-    }
+	public CloseCheckController() {
+	}
 
-    /**
-     * Called once implementing the controller.
-     *
-     * @param _url
-     * @param _rb
-     */
-    public void initialize(URL _url, ResourceBundle _rb) {
-    }
+	/**
+	 * Called once implementing the controller.
+	 *
+	 * @param _url
+	 * @param _rb
+	 */
+	public void initialize(URL _url, ResourceBundle _rb) {
+	}
 
-    /**
-     * Called when cash button is clicked.
-     *
-     * @param _event
-     */
-    @FXML
-    private void cashAction(ActionEvent _event) {
-        Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-        stage.close();
-        new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
-    }
-    /**
-     * Called when creditCard button is clicked.
-     *
-     * @param _event
-     */
-    @FXML
-    private void creditCardAction(ActionEvent _event) {
-        Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-        stage.close();
-        new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
-    }
-    /**
-     * Called when other button is clicked.
-     *
-     * @param _event
-     */
-    @FXML
-    private void otherAction(ActionEvent _event) {
-        Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-        stage.close();
-        new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
-    }
+	/**
+	 * Called when cash button is clicked.
+	 *
+	 * @param _event
+	 */
+	@FXML
+	private void cashAction(ActionEvent _event) {
+		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+		stage.close();
+		new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
+	}
+
+	/**
+	 * 
+	 * Called when creditCard button is clicked.
+	 *
+	 * @param _event
+	 */
+	@FXML
+	private void creditAction(ActionEvent _event) {
+		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+		stage.close();
+		new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
+	}
+
+	/**
+	 * Called when other button is clicked.
+	 *
+	 * @param _event
+	 */
+	@FXML
+	private void otherAction(ActionEvent _event) {
+		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+		stage.close();
+		new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
+	}
 }
