@@ -1,4 +1,4 @@
-package Models;
+package models;
 /**
  * This class represents the Drink Item
  * @author Ashim Chalise, Ian Wilhelmsen Last Updated: 2/19/2020

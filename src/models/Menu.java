@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 /**
  * This class is used to organize items to be consumed by the menu view

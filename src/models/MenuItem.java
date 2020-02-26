@@ -1,4 +1,4 @@
-package Models;
+package models;
 /*
  * This class represents the Menu Items
  * @author- Ashim Chalise, Ian Wilhelmsen updated - 2/19/2020

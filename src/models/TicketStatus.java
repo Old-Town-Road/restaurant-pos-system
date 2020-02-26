@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 /**
  * This enumeration describes the base ticket states.

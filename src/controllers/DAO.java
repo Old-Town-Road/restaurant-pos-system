@@ -1,4 +1,4 @@
-package Controllers;
+package controllers;
 
 /**
  * DAO is a data access object. It creates connections to the db and takes back

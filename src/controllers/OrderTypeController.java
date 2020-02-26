@@ -1,7 +1,7 @@
-package Controllers;
+package controllers;
 
 /**
- * This class controls log in view.
+ * This class controls Order Type view.
  *
  * @author Sultan Al Bogami Last Updated: 2/22/2020
  */
@@ -16,9 +16,9 @@ import views.Frame;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LogInController implements Initializable {
+public class OrderTypeController implements Initializable {
 
-    public LogInController() {
+    public OrderTypeController() {
     }
 
     /**
@@ -31,14 +31,27 @@ public class LogInController implements Initializable {
     }
 
     /**
-     * Called when log in button is clicked.
+     * Called when dine in button is clicked.
      *
      * @param _event
      */
     @FXML
-    private void logInAction(ActionEvent _event) {
+    private void dineInAction(ActionEvent _event) {
         Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
         stage.close();
-        new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
+        new Frame(new Stage(), SetView.LOG_IN_VIEW);
+    }
+
+    /**
+     * Called when take out button is clicked.
+     *
+     * @param _event
+     */
+    @FXML
+    private void takeOutAction(ActionEvent _event) {
+        Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+        stage.close();
+        new Frame(new Stage(), SetView.LOG_IN_VIEW);
     }
 }
+

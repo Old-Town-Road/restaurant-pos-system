@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 /**
  * This class is to construct table model and allow some table functionalities.

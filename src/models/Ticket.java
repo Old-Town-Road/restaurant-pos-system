@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 /**
  * This class is to build the ticket object, which is inherited by two other

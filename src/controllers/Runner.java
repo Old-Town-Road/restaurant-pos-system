@@ -1,3 +1,4 @@
+package controllers;
 /**
  * This class starts up our application with the LogInWindow.fxml.
  *

@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 /**
  * This class extends the Ticket class and inherits its properties.

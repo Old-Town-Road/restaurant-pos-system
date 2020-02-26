@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 /**
  * This class is to build store object as part of the system.

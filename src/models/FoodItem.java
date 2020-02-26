@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 /*
  * This class represents the Food Item

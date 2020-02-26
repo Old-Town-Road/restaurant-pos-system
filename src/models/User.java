@@ -1,4 +1,4 @@
-package Models;
+package models;
 /*
  * This class represents the User Object
  * @author Ashim Chalise, Ian Wilhelmsen last updated - 02/19/2020
