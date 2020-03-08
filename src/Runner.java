@@ -21,7 +21,7 @@ public class Runner extends Application {
 
         // Creating a views.Frame object with log in view as our main view
        Frame frame = new Frame(primaryStage, SetView.LOG_IN_VIEW);
-      //Frame frame = new Frame(primaryStage, SetView.CLOSE_CHECK_VIEW);
+     // Frame frame = new Frame(primaryStage, SetView.CLOSE_CHECK_VIEW);
     }
 
     /**

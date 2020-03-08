@@ -8,16 +8,31 @@ package Models;
  * -> Updated some formating and added method comments.
  */
 
+import java.util.LinkedList;
+
+//import models.StockModel;
+
 public class User {
 
-    private int ID;
-    private String username;
+    private int userID;
+    private String userName;
     private String firstName;
     private String lastName;
+    
+    // Raiana
+    private String password; //Hash password later
+    private String fullName;
+	private String email;
+	
+	
+//	private double totalAmount;
+//	private double stockAmount;
+//	private LinkedList<StockModel> stockPortfolio = new LinkedList<StockModel>();
+//	
 
     public User(int _ID, String _username, String _firstName, String _lastName) {
-	this.ID = _ID;
-	this.username = _username;
+	this.userID = _ID;
+	this.userName = _username;
 	this.firstName = _firstName;
 	this.lastName = _lastName;
     }
@@ -37,11 +52,15 @@ public class User {
     // ====================GETTERS====================
 
     public int getID() {
-	return this.ID;
+	return this.userID;
     }
+    
+    /**
+	 * Getter for user name
+	 */
 
     public String getUsername() {
-	return this.username;
+	return this.userName;
     }
 
     public String getFirstName() {
@@ -51,22 +70,47 @@ public class User {
     public String getLastName() {
 	return this.lastName;
     }
+    public String getPassword(){
+		return password;
+	}
+	
+    /**
+	 * Getter for user email
+	 */
+	public String getEmail(){
+		return email;
+	}
+	
 
     // ====================SETTERS====================
 
     public void setID(int _ID) {
-	this.ID = _ID;
+	this.userID = _ID;
     }
 
     public void setUsername(String _username) {
-	this.username = _username;
+	this.userName = _username;
     }
 
     public void setFirstName(String _firstName) {
 	this.firstName = _firstName;
     }
+    
+	/**
+	 * Setter for password
+	 */
+	public void setPassword(String password){
+		this.password = password;
+	}
 
     public void setLastName(String _lastName) {
 	this.lastName = _lastName;
     }
+    
+    /**
+	 * Setter for user email
+	 */
+	public void setEmail(String email){
+		this.email = email;
+	}
 }
