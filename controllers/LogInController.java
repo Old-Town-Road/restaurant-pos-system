@@ -37,6 +37,8 @@ public class LogInController implements Initializable {
      */
     @FXML
     private void logInAction(ActionEvent _event) {
+    	//init a return value
+    	
         Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
         stage.close();
         new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
