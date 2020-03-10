@@ -39,7 +39,7 @@ public class OrderTypeController implements Initializable {
     private void dineInAction(ActionEvent _event) {
         Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
         stage.close();
-        new Frame(new Stage(), SetView.LOG_IN_VIEW);
+        new Frame(new Stage(), SetView.CLOSE_CHECK_VIEW);
     }
 
     /**
@@ -51,7 +51,7 @@ public class OrderTypeController implements Initializable {
     private void takeOutAction(ActionEvent _event) {
         Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
         stage.close();
-        new Frame(new Stage(), SetView.LOG_IN_VIEW);
+        new Frame(new Stage(), SetView.CLOSE_CHECK_VIEW);
     }
 }
 
