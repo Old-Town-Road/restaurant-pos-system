@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.OrderTypeController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.OrderTypeController">
    <children>
       <Button layoutX="180.0" layoutY="200.0" mnemonicParsing="false" onAction="#takeOutAction" onKeyPressed="#takeOutAction" prefHeight="25.0" prefWidth="241.0" text="Take Out">
          <font>
