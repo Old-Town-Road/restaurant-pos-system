@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/httpclient-4.5.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/httpcore-4.4.1.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/jackson-annotations-2.10.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/jackson-core-2.10.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/jackson-core-2.10.3.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/jackson-databind-2.10.3 copy.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/jackson-databind-2.10.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="/Users/raianazaman/Downloads/Dependency/jackson-databind-2.10.3.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

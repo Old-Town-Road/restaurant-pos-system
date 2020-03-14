@@ -4,16 +4,34 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LogInController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LogInController">
    <children>
       <Label layoutX="152.0" layoutY="155.0" text="Username" />
-      <TextField layoutX="226.0" layoutY="151.0" promptText="Username" />
-      <Label layoutX="152.0" layoutY="192.0" text="Password" />
+      <TextField layoutX="226.0" layoutY="151.0" promptText="Username or email" />
+      <Label layoutX="152.0" layoutY="192.0" text="Password">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
       <PasswordField layoutX="226.0" layoutY="188.0" promptText="Password" />
-      <Hyperlink layoutX="197.0" layoutY="238.0" prefHeight="25.0" prefWidth="173.0" text="Forgot Username or Password?" />
-      <Button layoutX="395.0" layoutY="238.0" mnemonicParsing="false" onAction="#logInAction" onKeyPressed="#logInAction" text="Log In" />
+      <Hyperlink layoutX="225.0" layoutY="220.0" prefHeight="25.0" prefWidth="161.0" text="Forgot Username or Password?">
+         <font>
+            <Font size="11.0" />
+         </font></Hyperlink>
+      <Button layoutX="380.0" layoutY="238.0" mnemonicParsing="false" onAction="#logInAction" onKeyPressed="#logInAction" prefHeight="27.0" prefWidth="69.0" style="-fx-background-color: #588bbb;" text="Sign In" textFill="#fafafa">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font></Button>
+      <Separator layoutX="169.0" layoutY="113.0" prefHeight="7.0" prefWidth="275.0" />
+      <Label alignment="CENTER" layoutX="285.0" layoutY="116.0" prefHeight="23.0" prefWidth="31.0" text="Or" textFill="#5b5a5a">
+         <font>
+            <Font name="Segoe UI" size="12.0" />
+         </font>
+      </Label>
+      <Button layoutX="169.0" layoutY="66.0" mnemonicParsing="false" onAction="#logInAction" onKeyPressed="#logInAction" prefHeight="34.0" prefWidth="275.0" text="Sign in with Google" textFill="#2c2626" textOverrun="WORD_ELLIPSIS" />
    </children>
 </AnchorPane>
