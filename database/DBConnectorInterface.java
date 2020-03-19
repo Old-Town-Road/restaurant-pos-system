@@ -14,9 +14,9 @@ public interface DBConnectorInterface {
 
 	public abstract int createObject(Map<String,String> _keyValuePairs, String _table);
 
-    public abstract HashMap<String, Object> readObject(Map<String,String> _keyValuePairs, String _table);
+    public abstract HashMap<String, Object> readObject(Map<String,String> _keyValuePairs, Class<?> _class);
 
-    public abstract Boolean updateObject(Map<String,String> _keyValuePairs, String _uuid, String _table);
+    public abstract boolean updateObject(Map<String,String> _keyValuePairs, String _uuid, String _table);
 
-    public abstract Boolean deleteObject(String _uuid, String _class);
+    public abstract boolean deleteObject(String _uuid, String _class);
 }
