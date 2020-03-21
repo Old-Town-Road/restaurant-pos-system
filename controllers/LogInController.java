@@ -13,12 +13,23 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import views.SetView;
 import views.Frame;
+import java.io.IOException;
+import java.util.Map;
 import java.net.URL;
 import java.util.ResourceBundle;
+import API.GoogleAuthImpl;
+import API.GoogleAuthWrapper;
+import API.IGoogleAuth;
+import API.OAuthException;
 
 public class LogInController implements Initializable {
 
-	public LogInController() {
+	GoogleAuthWrapper google;
+
+	public LogInController() throws IOException {
+
+		google = new GoogleAuthWrapper(8000, "297008996238-d2fmttvlbl4mnetvgf7837okn7squj1e.apps.googleusercontent.com",
+				"XESnLdvdh2e6Eiege72NgEtO");
 	}
 
 	/**
@@ -35,19 +46,29 @@ public class LogInController implements Initializable {
 	 * Called when log in button is clicked.
 	 *
 	 * @param _event
+	 * @throws OAuthException
+	 * @throws IOException
 	 */
+	// @FXML
+	// private void glogInAction(ActionEvent _event) throws IOException,
+	// OAuthException {
+	// Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+	// stage.close();
+	// new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
+	// }
+
 	@FXML
-	private void logInAction(ActionEvent _event) {
-		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-		stage.close();
-		new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
+	private void logInAction(ActionEvent _event) throws IOException, OAuthException {
+		System.out.println("erorr");
+		// Map<String, String> userInfo = google.getUserInfo();
+		try {
+			Map<String, String> userInfo = google.getUserInfo();
+			Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+			stage.close();
+			new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
+		} catch (IOException | OAuthException e) {
+			e.printStackTrace();
+		}
+		System.out.println("erorr");
 	}
- 
-	@FXML
-	private void glogInAction(ActionEvent _event) {
-		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-		stage.close();
-		new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
-	}
- 
 }

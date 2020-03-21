@@ -35,20 +35,20 @@ public class Runner extends Application {
 	 */
 	public static void main(String[] args) throws IOException {
 		launch(args);
-		GoogleAuthWrapper googleAuth = new GoogleAuthWrapper(8000,
-				"297008996238-d2fmttvlbl4mnetvgf7837okn7squj1e.apps.googleusercontent.com", "XESnLdvdh2e6Eiege72NgEtO");
-
-		try {
-			googleAuth.getUserInfo().forEach((k, v) -> System.out.println(k + " : " + v));
-		} catch (OAuthException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			googleAuth.getUserInfo().forEach((k, v) -> System.out.println(k + " : " + v));
-		} catch (OAuthException e) {
-			e.printStackTrace();
-		}
+//		GoogleAuthWrapper googleAuth = new GoogleAuthWrapper(8000,
+//				"297008996238-d2fmttvlbl4mnetvgf7837okn7squj1e.apps.googleusercontent.com", "XESnLdvdh2e6Eiege72NgEtO");
+//
+//		try {
+//			googleAuth.getUserInfo().forEach((k, v) -> System.out.println(k + " : " + v));
+//		} catch (OAuthException e) {
+//			e.printStackTrace();
+//		}
+//
+//		try {
+//			googleAuth.getUserInfo().forEach((k, v) -> System.out.println(k + " : " + v));
+//		} catch (OAuthException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 }
