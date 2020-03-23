@@ -15,7 +15,7 @@ public class SetView {
     // Dine In or Take Out view
     public static final String ORDER_TYPE_VIEW = "OrderType";
     // TODO Ashim this is your assigned view.
-
+    public static final String MENU_ORDER_VIEW = "MenuOrder";
     // Close check view
     public static final String CLOSE_CHECK_VIEW = "CloseCheck";
 }
