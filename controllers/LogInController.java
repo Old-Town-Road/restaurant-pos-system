@@ -4,6 +4,7 @@ package controllers;
  * This class controls log in view.
  *
  * @author Sultan Al Bogami Last Updated: 2/22/2020
+ * @author Raiana zaman Last Updated: 3/18/2020
  */
 
 import javafx.event.ActionEvent;
