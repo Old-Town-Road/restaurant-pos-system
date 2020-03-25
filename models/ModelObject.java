@@ -10,9 +10,9 @@ import java.util.UUID;
 import database.DataStoreAdapter;
 
 public abstract class ModelObject {
+
 	protected int id;
 	protected String uuid;
-	protected String name;
 	protected boolean active = true;
 
 	public ModelObject() {
@@ -68,10 +68,6 @@ public abstract class ModelObject {
 
 // ================================ GETTERS ====================================
 
-	public String getName() {
-		return this.name;
-	}
-
 	public String getUuid() {
 		return this.uuid;
 	}
@@ -81,10 +77,6 @@ public abstract class ModelObject {
 	}
 
 // ================================ SETTERS ====================================
-
-	public void setName(String _name) {
-		this.name = _name;
-	}
 
 	public void setUuid(String _uuid) {
 		this.uuid = _uuid;
