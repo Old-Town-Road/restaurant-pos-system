@@ -18,29 +18,29 @@ import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
 
-    public LogInController() {
-    }
+	public LogInController() {
+	}
 
-    /**
-     * Called once implementing the controller.
-     *
-     * @param _url
-     * @param _rb
-     */
-    public void initialize(URL _url, ResourceBundle _rb) {
-    }
+	/**
+	 * Called once implementing the controller.
+	 *
+	 * @param _url
+	 * @param _rb
+	 */
+	public void initialize(URL _url, ResourceBundle _rb) {
+	}
 
-    /**
-     * Called when log in button is clicked.
-     *
-     * @param _event
-     */
-    @FXML
-    private void logInAction(ActionEvent _event) {
-    	//init a return value
-    	
-        Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-        stage.close();
-        new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
-    }
+	/**
+	 * Called when log in button is clicked.
+	 *
+	 * @param _event
+	 */
+	@FXML
+	private void logInAction(ActionEvent _event) {
+		// init a return value
+
+		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+		stage.close();
+		new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
+	}
 }

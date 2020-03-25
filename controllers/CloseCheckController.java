@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 
 public class CloseCheckController implements Initializable {
 
+	//pubiic CloseCheckController(ModelObject _ticket, ModelObject _check)
 	public CloseCheckController() {
 	}
 

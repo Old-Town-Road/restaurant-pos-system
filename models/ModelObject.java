@@ -16,8 +16,8 @@ public abstract class ModelObject {
 	protected boolean active = true;
 
 	public ModelObject() {
-        this.setUuid(ModelObject.generateUuid());
-    }
+		this.setUuid(ModelObject.generateUuid());
+	}
 
 	public ModelObject loadById(int _id) {
 		HashMap<String, String> map = new HashMap<>();
@@ -37,8 +37,8 @@ public abstract class ModelObject {
 		return this.loadByCondition(map);
 	}
 
-	public boolean saveObjectFromDatabase () {
-		//Initialize a return value for the caller defaulted to false.
+	public boolean saveObjectFromDatabase() {
+		// Initialize a return value for the caller defaulted to false.
 		boolean retVal = false;
 		// Has this object already been created?
 		if (this.id == 0) {
@@ -46,11 +46,11 @@ public abstract class ModelObject {
 		} else {
 			retVal = DataStoreAdapter.updateObject(this);
 		}
-		//Return the final value to the caller.
+		// Return the final value to the caller.
 		return retVal;
 	}
 
-	public boolean deleteObjectFromDatabase () {
+	public boolean deleteObjectFromDatabase() {
 		return DataStoreAdapter.deleteObject(this);
 	}
 

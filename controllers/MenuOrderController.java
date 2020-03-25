@@ -19,4 +19,12 @@ public class MenuOrderController {//implements Initializable {
         stage.close();
         new Frame(new Stage(), SetView.CLOSE_CHECK_VIEW);
     }
-	}
+
+	/**
+	 * This method will be a broiler plate method to create a tab based of a menu object with buttons off the menu items from the object
+	 */
+
+	/**
+	 * This method will be a broiler plate method to create a button of a menu item
+	 */
+}

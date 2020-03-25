@@ -1,4 +1,5 @@
 package controllers;
+
 /**
  * This class starts up our application with the LogInWindow.fxml.
  *
@@ -12,25 +13,25 @@ import views.SetView;
 
 public class Runner extends Application {
 
-    /**
-     * Called when the software starts.
-     *
-     * @param primaryStage
-     * @throws Exception
-     */
-    public void start(Stage primaryStage) throws Exception {
+	/**
+	* Called when the software starts.
+	*
+	* @param primaryStage
+	* @throws Exception
+	*/
+	public void start(Stage primaryStage) throws Exception {
 
-        // Creating a views.Frame object with log in view as our main view
-        Frame frame = new Frame(primaryStage, SetView.LOG_IN_VIEW);
-    }
+		// Creating a views.Frame object with log in view as our main view
+		Frame frame = new Frame(primaryStage, SetView.LOG_IN_VIEW);
+	}
 
-    /**
-     * Called when the application launches.
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+	/**
+	* Called when the application launches.
+	*
+	* @param args
+	*/
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 }
