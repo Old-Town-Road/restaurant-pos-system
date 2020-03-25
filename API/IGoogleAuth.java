@@ -19,7 +19,7 @@ public interface IGoogleAuth {
 	 * Get Google user info
 	 * 
 	 * @param token
-	 *            The access token from getToken() method
+	 *  The access token from getToken() method
 	 * @return A map representing the JSON response from Google API
 	 */
 	Map<String, String> getProfile(String token) throws IOException, OAuthException;
