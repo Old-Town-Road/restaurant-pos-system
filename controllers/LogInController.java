@@ -29,7 +29,8 @@ public class LogInController implements Initializable {
 
 	public LogInController() throws IOException {
 
-		google = new GoogleAuthWrapper(8000, "297008996238-d2fmttvlbl4mnetvgf7837okn7squj1e.apps.googleusercontent.com",
+		google = new GoogleAuthWrapper(8000,
+				"297008996238-d2fmttvlbl4mnetvgf7837okn7squj1e.apps.googleusercontent.com",
 				"XESnLdvdh2e6Eiege72NgEtO");
 	}
 
@@ -42,7 +43,6 @@ public class LogInController implements Initializable {
 
 	public void initialize(URL _url, ResourceBundle _rb) {
 	}
-
 	/**
 	 * Called when log in button is clicked.
 	 *
@@ -50,26 +50,20 @@ public class LogInController implements Initializable {
 	 * @throws OAuthException
 	 * @throws IOException
 	 */
-	// @FXML
-	// private void glogInAction(ActionEvent _event) throws IOException,
-	// OAuthException {
-	// Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-	// stage.close();
-	// new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
-	// }
 
 	@FXML
 	private void logInAction(ActionEvent _event) throws IOException, OAuthException {
-		System.out.println("erorr");
 		// Map<String, String> userInfo = google.getUserInfo();
+		Map<String, String> userInfo = null;
 		try {
-			Map<String, String> userInfo = google.getUserInfo();
+			userInfo = google.getUserInfo();
 			Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
 			stage.close();
 			new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
 		} catch (IOException | OAuthException e) {
 			e.printStackTrace();
 		}
-		System.out.println("erorr");
+		//System.out.println("erorr");
+		userInfo.forEach((k, v) -> System.out.println(k + " : " + v));
 	}
 }
