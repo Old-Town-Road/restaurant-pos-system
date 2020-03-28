@@ -12,19 +12,22 @@ import models.ModelObject;
 public class DataStoreAdapter {
 	private static final DBConnectorInterface connector = new MySQLDBConnectorImpl();
 
-	public static boolean createObject (ModelObject _targetObject) {
-		return connector.createObject(_keyValuePairs, _table);
+	public static int createObject (ModelObject _targetObject) throws IllegalArgumentException, IllegalAccessException {
+		return connector.createObject(_targetObject.getDataKeyValuePairs(), _targetObject.getTableName());
 	}
 
 	public static HashMap<String, Object> readObject (Map<String, String> _keyValuePairs, Class<?> _targetClass) {
 		return connector.readObject(_keyValuePairs, _targetClass);
 	}
 
-	public static boolean updateObject (ModelObject _targetObject) {
-		return connector.updateObject(_keyValuePairs, _targetObject.getUuid(), _table);
+	public static boolean updateObject (ModelObject _targetObject) throws IllegalArgumentException, IllegalAccessException {
+		return connector.updateObject(_targetObject.getDataKeyValuePairs(), _targetObject.getUuid(), _targetObject.getTableName());
 	}
 
 	public static boolean deleteObject (ModelObject _targetObject) {
-		return connector.deleteObject(_targetObject.getUuid(), _table);
+		//Create a hashmap of the uuid and its value.
+		HashMap<String, String> keyValuePair = new HashMap<>();
+		keyValuePair.put(DatabaseConstants.DB_UUID_VALUE, _targetObject.getUuid());
+		return connector.deleteObject(keyValuePair, _targetObject.getTableName());
 	}
 }

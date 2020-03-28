@@ -49,11 +49,10 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	private final String readStoredProcedurePrefix = "read";
 	private final String updateStoredProcedurePrefix = "update";
 	private final String deleteStoredProcedurePrefix = "delete";
-	private final String uuidColumnString = "UUID";
 	private final String descriptionColumnString = "Description";
 
 	// annotation constants
-	private final String tableNameAnnotation = "tableName";
+	private final String tableNameAnnotation = DatabaseConstants.TABLE_NAME_ANNOTATION;
 	private final String notPrimitiveErrorMessage = "Input was not a primitive";
 
 	// SQL CallableStatements integer Constants
@@ -120,7 +119,6 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	public HashMap<String, Object> readObject(Map<String, String> _keyValuePairs, Class<?> _class) {
 		// Initialize a return value for the caller.
 		HashMap<String, Object> retVal = new HashMap<String, Object>();
-
 		// If we are not in debug mode then proceed.
 		if (!debugMode) {
 			try {
@@ -133,13 +131,11 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 				// Spin through the result set while there are still values.
 				while (results.next()) {
 					// Create a new instance of the class.
-					Object resultObject = _class.getConstructor().newInstance();
-					// Put the result, as an object, into the return HashMap.
-					this.fillOutObject(results, resultObject);
+					Object resultObject = this.fillOutObject(results, _class);
 					retVal.put((String) results.getObject(this.descriptionColumnString), resultObject);
 				}
 			} catch (SQLException | InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					| InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
 				// TODO find a common solution for this
 				e.printStackTrace();
 			}
@@ -196,20 +192,16 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * 
 	 * @return boolean: True if operation successful and false otherwise.
 	 */
-	public boolean deleteObject(String _uuid, String _table) {
+	public boolean deleteObject(Map<String, String> _keyValuePairs, String _table) {
 		// Initialize a return value and default to FALSE
 		boolean retVal = false;
 		// If debug is on then bypass all of this.
 		if (!debugMode) {
-			// We are going to homogenize the inputs by creating a Hashmap of 1 key value
-			// pair.
-			HashMap<String, String> keyValuePair = new HashMap<String, String>();
-			keyValuePair.put(this.uuidColumnString, _uuid);
 			// Prepare the call in a try catch block.
 			try {
-				this.prepCallableStatement(keyValuePair, this.deleteStoredProcedurePrefix, _table);
+				this.prepCallableStatement(_keyValuePairs, this.deleteStoredProcedurePrefix, _table);
 				// Find the number of returnable parameters.
-				int numberOfParameters = this.findNumberOfParametersWithReturn(keyValuePair,
+				int numberOfParameters = this.findNumberOfParametersWithReturn(_keyValuePairs,
 						this.deleteStoredProcedurePrefix);
 				// Execute the query.
 				this.sql.executeQuery();
@@ -413,6 +405,11 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		return retVal;
 	}
 
+	private Object makeModelObject(Class<?> _targetClass) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		Object retVal = _targetClass.getConstructor().newInstance();
+		return _targetClass.cast(retVal);
+	}
+
 	/**
 	 * This method fills up the object with results from the db.
 	 * 
@@ -421,13 +418,18 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 * @throws SQLException
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void fillOutObject(ResultSet _results, Object _targetObject)
-			throws IllegalArgumentException, IllegalAccessException, SQLException {
-		// Create a class reference for the target object.
-		Class<?> targetClass = _targetObject.getClass();
+	private Object fillOutObject(ResultSet _results, Class<?> _targetClass)
+			throws IllegalArgumentException, IllegalAccessException, SQLException, ClassNotFoundException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		// Create a return value for the method
+		Object retVal = this.makeModelObject(_targetClass);
 		// Loop through each field in the target class and
-		for (Field field : targetClass.getDeclaredFields()) {
+		for (Field field : _targetClass.getDeclaredFields()) {
 			// Use this to change the access of the field to public for this instance.
 			field.setAccessible(true);
 			// Grab the field annotation from the field.
@@ -437,13 +439,14 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 			Object value = _results.getObject(((ModelAnnotations) fieldAnnotaion).value());
 			// Type cast all of the pieces.
 			Class<?> type = field.getType();
-			if (checkPrimitiveType(type)) {
-				Class<?> typeToCast = getCastTypeForField(type);
+			if (this.checkPrimitiveType(type)) {
+				Class<?> typeToCast = this.getCastTypeForField(type);
 				value = typeToCast.cast(value);
 			}
 			// Fill the object up with all the values.
-			field.set(_targetObject, value);
+			field.set(retVal, value);
 		}
+		return retVal;
 	}
 
 	/**
