@@ -25,7 +25,7 @@ import API.OAuthException;
 
 public class LogInController implements Initializable {
 
-<<<<<<< HEAD
+
 	GoogleAuthWrapper google;
 
 	public LogInController() throws IOException {
@@ -68,31 +68,3 @@ public class LogInController implements Initializable {
 		userInfo.forEach((k, v) -> System.out.println(k + " : " + v));
 	}
 }
-=======
-    public LogInController() {
-    }
-
-    /**
-     * Called once implementing the controller.
-     *
-     * @param _url
-     * @param _rb
-     */
-    public void initialize(URL _url, ResourceBundle _rb) {
-    }
-
-    /**
-     * Called when log in button is clicked.
-     *
-     * @param _event
-     */
-    @FXML
-    private void logInAction(ActionEvent _event) {
-    	//init a return value
-        System.out.println("HAHA");
-        Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-        stage.close();
-        new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
-    }
-}
->>>>>>> 2c195fc58c57dea84315d9385a4879dc5cf72a0b
