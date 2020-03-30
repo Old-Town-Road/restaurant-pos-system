@@ -95,4 +95,4 @@ public class LogInController implements Initializable {
         new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
     }
 }
->>>>>>> 2c195fc58c57dea84315d9385a4879dc5cf72a0b
+
