@@ -1,90 +1,115 @@
 Drop database if exists `pizzaposdb`;
 CREATE DATABASE `pizzaposdb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-Create table if not exists `pizzaposdb`.`restcheck` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  `TableID` INT NOT NULL,
-  `UserID` INT NOT NULL,
-  `CheckStatus` INT NOT NULL,
-  `DateStarted` DATETIME NOT NULL,
-  `DateClosed` datetime NULL,
-  PRIMARY KEY (`ID`));
-Create table if not exists `pizzaposdb`.`CheckStatusLU`(
-	`ID` int NOT NULL,
-	`CheckStatus` nvarchar(50) NULL,
-    primary key(`ID`)
+Create table if not exists pizzaposdb.POSCheck (
+	  ID INT NOT NULL AUTO_INCREMENT,
+	  UUID nvarchar(36) NOT NULL,
+	  TableID INT NOT NULL,
+	  UserID INT NOT NULL,
+	  CheckStatus INT NOT NULL,
+	  DateStarted DATETIME NOT NULL,
+	  DateClosed datetime NULL,
+	  PRIMARY KEY (ID)
+);
+Create table if not exists pizzaposdb.CheckStatusLU (
+	ID int NOT NULL,
+	CheckStatus nvarchar(50) NULL,
+    primary key(ID)
  );
-Create table if not exists `pizzaposdb`.`Menu`(
-	`ID` int NOT NULL auto_increment,
-	`StoreID` int NOT NULL,
-	`MenuType` int NOT NULL,
-	`MenuName` nvarchar(50) NULL,
-	PRIMARY KEY (`ID`));
-Create table if not exists `pizzaposdb`.`MenuItem`  (
-	`ID` INT NOT NULL AUTO_INCREMENT,
+Create table if not exists pizzaposdb.Menu(
+	ID int NOT NULL auto_increment,
+    UUID nvarchar(36) NOT NULL,
+    sortValue int NOT NULL default 0,
+    isActive bit NOT NULL default 1,
+	StoreID int NOT NULL,
+	MenuType int NOT NULL,
+	MenuName nvarchar(50) NULL,
+	PRIMARY KEY (ID)
+);
+Create table if not exists pizzaposdb.MenuItem  (
+	ID INT NOT NULL AUTO_INCREMENT,
+    UUID nvarchar(36) NOT NULL,
+    sortValue int NOT NULL default 0,
+    isActive bit NOT NULL default 1,
 	MenuID int NOT NULL,
 	ItemName nvarchar(50) NOT NULL,
 	Price int NOT NULL,
 	PriorityScore int NULL,
 	ExecutionTime int NULL,
- primary key(`ID`));
-Create table if not exists `pizzaposdb`.`MenuTypeLU`  (
+	primary key(ID)
+);
+Create table if not exists pizzaposdb.MenuTypeLU  (
 	ID int NOT NULL,
 	MenuType nvarchar(50) NULL,
-    primary key(`ID`)); 
+    primary key(ID)
+); 
+Create table if not exists pizzaposdb.PaymentStatusLU  (
+	ID INT NOT NULL AUTO_INCREMENT,
+	PaymentStatusType nvarchar(50) NOT NULL,
+	primary key(ID)
+); 
 
-Create table if not exists `pizzaposdb`.`PaymentStatusLU`  (
-	`ID` INT NOT NULL AUTO_INCREMENT,
-	PaymentStatus nvarchar(50) NOT NULL,
-	primary key(`ID`)); 
-
-Create table if not exists `pizzaposdb`.`PaymentTypeLU`  (
-	`ID` INT NOT NULL AUTO_INCREMENT,
+Create table if not exists pizzaposdb.PaymentTypeLU (
+	ID INT NOT NULL AUTO_INCREMENT,
 	PaymentType nvarchar(50) NULL,
-primary key(`ID`)); 
+    primary key(ID)
+); 
 
-Create table if not exists `pizzaposdb`.`RoleLU`  (
+Create table if not exists pizzaposdb.RoleLU  (
 	ID int NOT NULL,
 	RoleType nvarchar(50) NULL,
- primary key(`ID`)); 
+	primary key(ID)
+); 
 
-Create table if not exists `pizzaposdb`.`Store`  (
+Create table if not exists pizzaposdb.Store  (
 	ID int NOT NULL,
-	StoreUserName nvarchar(50) NOT NULL,
- primary key(`ID`)); 
+	StoreName nvarchar(50) NOT NULL,
+	primary key(ID)
+); 
 
-Create table if not exists `pizzaposdb`.`RestTables`  (
-	`ID` INT NOT NULL AUTO_INCREMENT,
-	Name nvarchar(50) NOT NULL,
+Create table if not exists pizzaposdb.POSTables  (
+	ID INT NOT NULL AUTO_INCREMENT,
+	UUID nvarchar(36) NOT NULL,
+    sortValue int NOT NULL default 0,
+    isActive bit NOT NULL default 1,
+	TableName nvarchar(50) NOT NULL,
 	StoreID int NOT NULL,
 	TableStatus int NOT NULL,
- primary key(`ID`)); 
+	primary key(ID)
+); 
 
-Create table if not exists `pizzaposdb`.`TableStatusLU`  (
+Create table if not exists pizzaposdb.TableStatusLU  (
 	ID int NOT NULL,
 	TableStatus nvarchar(50) NULL,
- primary key(`ID`)); 
+	primary key(ID)
+); 
 
-Create table if not exists `pizzaposdb`.`Ticket`  (
-	`ID` INT NOT NULL AUTO_INCREMENT,
-	DateStarted date NOT NULL,
-	UserID int NOT NULL,
-	TableID int NOT NULL,
-	TicketStatus int NOT NULL,
-	TicketType int NOT NULL,
- primary key(`ID`)); 
+CREATE TABLE IF NOT EXISTS pizzaposdb.Ticket (
+    ID INT NOT NULL AUTO_INCREMENT,
+	UUID nvarchar(36) NOT NULL,
+    sortValue int NOT NULL default 0,
+    isActive bit NOT NULL default 1,
+    DateStarted DATE NOT NULL,
+    UserID INT NOT NULL,
+    TableID INT NOT NULL,
+    TicketStatus INT NOT NULL,
+    TicketType INT NOT NULL,
+    PRIMARY KEY (ID)
+); 
 
-Create table if not exists `pizzaposdb`.`TicketStatusLU`  (
-	`ID` INT NOT NULL AUTO_INCREMENT,
+Create table if not exists pizzaposdb.TicketStatusLU  (
+	ID INT NOT NULL AUTO_INCREMENT,
 	TicketStatus nvarchar(50) NULL,
- primary key(`ID`)); 
+	primary key(ID)
+); 
 
-CREATE TABLE IF NOT EXISTS `pizzaposdb`.`TicketTypeLU` (
+CREATE TABLE IF NOT EXISTS pizzaposdb.TicketTypeLU (
     ID INT NOT NULL,
     TicketType NVARCHAR(50) NULL,
-    PRIMARY KEY (`ID`)); 
+    PRIMARY KEY (ID)
+); 
 
-CREATE TABLE IF NOT EXISTS `pizzaposdb`.`TransactionHistory` (
-    `ID` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS pizzaposdb.TransactionHistory (
+    ID INT NOT NULL AUTO_INCREMENT,
     CheckID INT NOT NULL,
     UserID INT NOT NULL,
     PaymentType INT NOT NULL,
@@ -93,13 +118,14 @@ CREATE TABLE IF NOT EXISTS `pizzaposdb`.`TransactionHistory` (
     PRIMARY KEY (`ID`)
 ); 
 
-Create table if not exists `pizzaposdb`.`UserLU`  (
-	`ID` INT NOT NULL AUTO_INCREMENT,
+Create table if not exists pizzaposdb.UserLU  (
+	ID INT NOT NULL AUTO_INCREMENT,
 	UserName nvarchar(50) NOT NULL,
 	FirstName nvarchar(50) NOT NULL,
 	LastName nvarchar(50) NOT NULL,
 	RoleID int NOT NULL,
-    primary key(`ID`));
+    primary key(`ID`)
+);
 
 Alter table pizzaposdb.restcheck
 	ADD FOREIGN KEY
