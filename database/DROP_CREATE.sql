@@ -127,21 +127,21 @@ Create table if not exists pizzaposdb.UserLU  (
     primary key(`ID`)
 );
 
-Alter table pizzaposdb.restcheck
+Alter table pizzaposdb.POSCheck
 	ADD FOREIGN KEY
     check_table (TableId)
-    references pizzaposdb.RestTables (id)
+    references pizzaposdb.postables (id)
     on update cascade
     on delete cascade;
 
-Alter table pizzaposdb.restcheck
+Alter table pizzaposdb.POSCheck
 	ADD FOREIGN KEY
     check_userLU (UserID)
     references pizzaposdb.UserLU (ID)
     on update cascade
     on delete cascade;
     
-Alter table pizzaposdb.restcheck
+Alter table pizzaposdb.POSCheck
 	ADD FOREIGN KEY
     check_checkstatus (CheckStatus)
     references pizzaposdb.checkstatuslu (id)
@@ -180,7 +180,7 @@ alter table pizzaposdb.ticket
 alter table pizzaposdb.ticket
 	add foreign key
     ticket_resttable (tableid)
-    references pizzaposdb.resttables (id)
+    references pizzaposdb.postables (id)
     on update cascade
     on delete cascade;
 
@@ -208,7 +208,7 @@ alter table pizzaposdb.userlu
 alter table pizzaposdb.TransactionHistory
 	add foreign key
     transact_restcheck (checkid)
-    references pizzaposdb.restcheck (id)
+    references pizzaposdb.poscheck (id)
     on update cascade
     on delete cascade;
 
