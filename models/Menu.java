@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+
 /**
  * This class is used to organize items to be consumed by the menu view
  * 
@@ -9,12 +11,12 @@ package models;
 public class Menu {
     private int ID;
     private String menuName;
-    private String items;
+    private ArrayList<MenuItem> items = new ArrayList<MenuItem>();
 
-    public Menu(int _ID, String _menuName, String _items) {
+    public Menu(int _ID, String _menuName, MenuItem[] _items) {
 	this.ID = _ID;
 	this.menuName = _menuName;
-	this.items = _items;
+	this.setItems(_items);
     }
 
     // ====================GETTERS====================
@@ -26,7 +28,7 @@ public class Menu {
 	return this.menuName;
     }
 
-    public String getItems() {
+    public ArrayList<MenuItem> getItems() {
 	return this.items;
     }
 
@@ -40,8 +42,10 @@ public class Menu {
 	this.menuName = _menuName;
     }
 
-    public void setItems(String _items) {
-	this.items = _items;
+    public void setItems(MenuItem[] _items) {
+    	for(MenuItem items : _items) {
+    		this.items.add(items);
+    	}
     }
 
 }
