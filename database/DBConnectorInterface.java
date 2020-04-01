@@ -18,5 +18,5 @@ public interface DBConnectorInterface {
 
     public abstract boolean updateObject(Map<String,String> _keyValuePairs, String _uuid, String _table);
 
-    public abstract boolean deleteObject(String _uuid, String _class);
+    public abstract boolean deleteObject(Map<String, String> _keyValuePairs, String _table);
 }

@@ -1,8 +1,7 @@
-set /P inputPath=Enter Path: 
+set /P inputPath=Enter Path to Project: 
 cd \Program Files\MySQL\MySQL Server 8.0\bin\
-mysql -u root --password=CSC340Q -h localhost < %inputPath%\src\database\mysql\createOTRUser.sql
-mysql -u OTRUser --password=Burnt4Pizzas! -h localhost
-source %inputPath%\src\database\mysql\DROP_CREATE.sql
-source %inputPath%\src\database\mysql\luInserts.sql
-source %inputPath%\src\database\mysql\createUser.sql
+mysql -u root --password=CSC390Q --host=localhost -e "source %inputPath%\src\database\createOTRUser.sql"
+mysql -u OTRUser --password=Burnt4Pizzas! -h localhost -e "source %inputPath%\src\database\createDB.sql"
+mysql -u OTRUser --password=Burnt4Pizzas! -h localhost -e "source %inputPath%\src\database\luInserts.sql"
+mysql -u OTRUser --password=Burnt4Pizzas! -h localhost -e "source %inputPath%\src\database\createUser.sql"
 exit

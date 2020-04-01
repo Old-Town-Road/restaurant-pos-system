@@ -13,7 +13,7 @@ INSERT INTO pizzaposdb.MenuTypeLU
 		(3, 'Drinks');
 
 Insert into pizzaposdb.PaymentStatusLU
-		(ID, PaymentStatus)
+		(ID, PaymentStatusType)
 	values
 		(1, 'OPEN'),
 		(2, 'PAID'),
