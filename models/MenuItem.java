@@ -6,24 +6,36 @@ package models;
  * 2/19/2020
  * -> formating check and verification
  */
+import java.util.ArrayList;
 
 public class MenuItem extends Menu {
-    private String itemName;
+    private ArrayList<String> itemName = new ArrayList<String>();
     private int price;
     private int priorityScore;
     private int executionTime;
+    
 
-    public MenuItem(int _ID, String _menuName, String _item, String _itemName, int _price, int _priorityScore, int _executionTime) {
-	super(_ID, _menuName, _itemName);
-	this.itemName = _itemName;
+    public MenuItem(int _ID, String _menuName, String _item, ArrayList<String> _itemName, int _price, int _priorityScore, int _executionTime) {
+	super(_ID, _menuName, _item);
+	//this.itemName = _itemName;
 	this.price = _price;
 	this.priorityScore = _priorityScore;
 	this.executionTime = _executionTime;
+	
+	  itemName.add("hawaiian");
+	  itemName.add("chicken");
+	  itemName.add("pepperoni");
     }
 
+    
+    
+    
+    
+    
+    
 //====================GETTERS====================
 
-    public String getItemName() {
+    public ArrayList<String> getItemName() {
 	return this.itemName;
     }
 
@@ -41,7 +53,7 @@ public class MenuItem extends Menu {
 
 //====================SETTERS====================
 
-    public void setItemName(String _itemName) {
+    public void setItemName(ArrayList<String> _itemName) {
 	this.itemName = _itemName;
     }
 

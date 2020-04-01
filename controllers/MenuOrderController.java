@@ -10,8 +10,8 @@ import views.Frame;
 import java.net.URL;
 import java.util.ResourceBundle;
 /*
- * This class represents the User Object
- * @author Ashim Chalise last updated - 02/25/2020
+ * This class represents the Menu Page Controller
+ * @author Ashim Chalise last updated - 03/30/2020
  * 
  * 
  */
@@ -21,6 +21,7 @@ public class MenuOrderController {
 		
 	}
 	
+	//This method helps the user cash out by navigating to close check window
 	@FXML
 	void cashOutAction (ActionEvent _event) {
 		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
@@ -28,6 +29,7 @@ public class MenuOrderController {
         new Frame(new Stage(), SetView.CLOSE_CHECK_VIEW);
 	}
 	
+	//This method helps the user send the order and get started again
 	@FXML
 	void sendAction(ActionEvent _event) {
 		System.out.print("Order sent");
@@ -35,5 +37,6 @@ public class MenuOrderController {
         stage.close();
         new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
 	}
+	
 }
 	
