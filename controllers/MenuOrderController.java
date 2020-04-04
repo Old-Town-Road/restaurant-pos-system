@@ -57,7 +57,7 @@ public class MenuOrderController {
 			menusToTab.add(sideMenu);
 
 		} else {
-			// TOD Ian attaches db functionality.
+			// TODO Ian attaches db functionality.
 			// Get all menus from the DB that
 			menusToTab = null;
 		}
