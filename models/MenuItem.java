@@ -7,10 +7,9 @@ public class MenuItem {
 	private int priorityScore;
 	private int executionTime;
 
-	public MenuItem(int _ID, int _menuID, String _itemName, double _price, int _priorityScore,
-			int _executionTime) {
+	public MenuItem(int _ID, int _menuID, String _itemName, double _price, int _priorityScore, int _executionTime) {
 		this.itemName = _itemName;
-		this.menuID = _menuID;
+		this.menuID=_menuID;
 		this.price = _price;
 		this.priorityScore = _priorityScore;
 		this.executionTime = _executionTime;
@@ -34,6 +33,10 @@ public class MenuItem {
 		return this.executionTime;
 	}
 
+	public int getMenuID() {
+		return menuID;
+	}
+
 //====================SETTERS====================
 
 	public void setItemName(String _itemName) {
@@ -50,6 +53,10 @@ public class MenuItem {
 
 	public void setExectuionTime(int _executionTime) {
 		this.executionTime = _executionTime;
+	}
+
+	public void setMenuID(int menuID) {
+		this.menuID = menuID;
 	}
 
 }
