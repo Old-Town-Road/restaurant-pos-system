@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import models.MenuItem;
 
 /**
  * This class is used to organize items to be consumed by the menu view
@@ -18,6 +19,7 @@ public class Menu {
 		this.ID = _ID;
 		this.menuName = _menuName;
 		this.setItems(_items);
+		this.setMenuType(_menuType);
 	}
 
 	// ====================GETTERS====================
