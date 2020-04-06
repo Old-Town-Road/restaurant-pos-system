@@ -45,10 +45,10 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	private final String dbParameterStart = "(";
 	private final String sqlParameterPlaceholder = "?,";
 	private final String endSQLStatement = ")}";
-	private final String createStoredProcedurePrefix = "create";
-	private final String readStoredProcedurePrefix = "read";
-	private final String updateStoredProcedurePrefix = "update";
-	private final String deleteStoredProcedurePrefix = "delete";
+	private final String createStoredProcedurePrefix = "create_";
+	private final String readStoredProcedurePrefix = "read_";
+	private final String updateStoredProcedurePrefix = "update_";
+	private final String deleteStoredProcedurePrefix = "delete_";
 	private final String descriptionColumnString = "Description";
 
 	// annotation constants

@@ -32,7 +32,7 @@ Create table if not exists pizzaposdb.MenuItem  (
     isActive bit NOT NULL default 1,
 	MenuID int NOT NULL,
 	ItemName nvarchar(50) NOT NULL,
-	Price int NOT NULL,
+	Price double NOT NULL,
 	PriorityScore int NULL,
 	ExecutionTime int NULL,
 	primary key(ID)

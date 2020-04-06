@@ -17,8 +17,11 @@ import database.DatabaseConstants;
 
 public abstract class ModelObject {
 
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_ID_VALUE)
 	protected int id;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_UUID_VALUE)
 	protected String uuid;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_IS_ACTIVE_VALUE)
 	protected boolean active = true;
 
 	public ModelObject() {
