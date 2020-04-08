@@ -1,6 +1,6 @@
 Drop database if exists `pizzaposdb`;
 CREATE DATABASE `pizzaposdb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-Create table if not exists pizzaposdb.POSCheck (
+Create table if not exists pizzaposdb.PosCheck (
 	  ID INT NOT NULL AUTO_INCREMENT,
 	  UUID nvarchar(36) NOT NULL,
 	  TableID INT NOT NULL,
@@ -8,6 +8,8 @@ Create table if not exists pizzaposdb.POSCheck (
 	  CheckStatus INT NOT NULL,
 	  DateStarted DATETIME NOT NULL,
 	  DateClosed datetime NULL,
+      IsActive bit NOT NULL default 1,
+      SortValue int not null default 0,
 	  PRIMARY KEY (ID)
 );
 Create table if not exists pizzaposdb.CheckStatusLU (
