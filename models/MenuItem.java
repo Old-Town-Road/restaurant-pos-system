@@ -1,13 +1,22 @@
 package models;
 
-public class MenuItem {
+import database.DatabaseConstants;
+@ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_MENU_ITEM_VALUE)
+public class MenuItem extends ModelObject {
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_ITEM_NAME_VALUE)
 	private String itemName;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_MENU_ID_VALUE)
 	private int menuID;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_PRICE_VALUE)
 	private double price;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_PRIORITY_SCORE_VALUE)
 	private int priorityScore;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_EXECUTION_TIME_VALUE)
 	private int executionTime;
 
-	public MenuItem(int _ID, int _menuID, String _itemName, double _price, int _priorityScore, int _executionTime) {
+	public MenuItem (int _ID, String _UUID, int _menuID, String _itemName, double _price, int _priorityScore, int _executionTime) {
+		this.setId(_ID);
+		this.setUuid(_UUID);
 		this.itemName = _itemName;
 		this.menuID=_menuID;
 		this.price = _price;
