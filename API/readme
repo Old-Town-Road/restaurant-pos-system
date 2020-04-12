@@ -1,0 +1,18 @@
+We need to add this library:
+ 
+For Intellij- 
+Project structure > Libraries> add> from maven 
+
+1.	org.apache.httpcomponents:httpclient:4.52
+2.	commons-io:commons-io:2.62
+3.	com.fasterxml.jackson.core:jackson-databind:2.10.32
+
+For Eclipse 
+
+
+1.	https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind/2.10.3
+
+2.	https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient/4.5
+
+3.	https://mvnrepository.com/artifact/commons-io/commons-io/2.6
+
