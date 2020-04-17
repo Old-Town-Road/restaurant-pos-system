@@ -13,8 +13,10 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import views.SetView;
 import views.Frame;
+
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.scene.control.TextField;
 
 
@@ -27,20 +29,23 @@ public class OrderTypeController implements Initializable {
     /**
      * Called once implementing the controller.
      *
-     *  @author raiana zaman last update 04/14/2010
-     *  it should show username from logInController
+     * @author raiana zaman last update 04/14/2010
+     * it should show username from logInController
      */
 
 
+    @FXML
+    private TextField username;
 
-    @FXML private TextField username;
     public void initialize(URL _url, ResourceBundle _rb) {
-      // username.setText("helllo");
+        // username.setText("helllo");
 
     }
 
-    public void myFunction(String text)
-    {
+    /**
+     * Function to get userinfo
+     */
+    public void myFunction(String text) {
         username.setText(text);
     }
 
@@ -67,12 +72,6 @@ public class OrderTypeController implements Initializable {
         stage.close();
         new Frame(new Stage(), SetView.MENU_ORDER_VIEW);
     }
-    /**
-     *  @author raiana zaman last update 04/14/2010
-     * show username
-     *
-     * @param _event
-     */
 
 }
 
