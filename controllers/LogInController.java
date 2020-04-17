@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
 import views.SetView;
 import views.Frame;
@@ -22,7 +23,8 @@ import API.GoogleAuthImpl;
 import API.GoogleAuthWrapper;
 import API.IGoogleAuth;
 import API.OAuthException;
-
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 public class LogInController implements Initializable {
 
 
@@ -44,6 +46,8 @@ public class LogInController implements Initializable {
 
 	public void initialize(URL _url, ResourceBundle _rb) {
 	}
+
+
 	/**
 	 * Called when log in button is clicked.
 	 *
@@ -58,13 +62,36 @@ public class LogInController implements Initializable {
 		Map<String, String> userInfo = null;
 		try {
 			userInfo = google.getUserInfo();
-			Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-			stage.close();
-			new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
+			//Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+			//stage.close();
+			//new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
 		} catch (IOException | OAuthException e) {
 			e.printStackTrace();
 		}
+
+		//userInfo.get(1).toString();
 		//System.out.println("erorr");
 		userInfo.forEach((k, v) -> System.out.println(k + " : " + v));
+		openNewStage(userInfo.get("name"));
+
+		//loadSceneAndSendMessage(userInfo.get("name"));
+
+		//System.out.println("newvalue-1: "+ userInfo.get("given_name"));
+		//System.out.println("newvalue-2: "+ userInfo.get("name"));
+	}
+	void openNewStage( String Val) throws IOException {
+		// Loading the fxml of second controller where you want to send the data
+		FXMLLoader loader=new FXMLLoader(getClass().getResource("/views/fxml/OrderType.fxml"));
+		Parent root = (Parent) loader.load();
+
+		// Creating the object of second controller
+		OrderTypeController secController=loader.getController();
+		secController.myFunction(Val);
+
+
+		// Loading the stage
+		Stage stage=new Stage();
+		stage.setScene(new Scene(root));
+		stage.show();
 	}
 }
