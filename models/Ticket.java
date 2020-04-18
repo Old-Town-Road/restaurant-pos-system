@@ -16,10 +16,9 @@ package models;
 import java.util.Date;
 
 import database.DatabaseConstants;
+
 @ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_TICKET_VALUE)
-public class Ticket extends ModelObject{
-	
-	protected int ticketId;
+public class Ticket extends ModelObject {
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_DATE_STARTED_VALUE)
 	protected Date dateTime;
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_ID_VALUE)
@@ -29,8 +28,8 @@ public class Ticket extends ModelObject{
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TICKET_STATUS_VALUE)
 	protected TicketStatus ticketStatus;
 
-	Ticket(int _ticketId, Date _dateTime, int _userId, int _tableId, TicketStatus _ticketStatus) {
-		this.ticketId = _ticketId;
+	Ticket(int _ID, Date _dateTime, int _userId, int _tableId, TicketStatus _ticketStatus) {
+		this.id = _ID;
 		this.dateTime = _dateTime;
 		this.userId = _userId;
 		this.tableId = _tableId;
@@ -78,16 +77,12 @@ public class Ticket extends ModelObject{
 	 * @return string formated string that contains parameters from this instance
 	 */
 	public String toString() {
-		return "\n\n================= Ticket " + this.ticketId + " =================\n" + "Date & Time:\t"
+		return "\n\n================= Ticket " + this.getId() + " =================\n" + "Date & Time:\t"
 				+ this.dateTime + "\nUser ID:\t" + this.userId + "\nTable ID:\t" + this.tableId + "\nTicket Status:\t"
 				+ this.ticketStatus + "\n\n";
 	}
 
 	// ================= GETTERS ==========================
-	public int getTicketId() {
-		return this.ticketId;
-	}
-
 	public Date getDateTime() {
 		return this.dateTime;
 	}
@@ -105,10 +100,6 @@ public class Ticket extends ModelObject{
 	}
 
 	// ================= SETTERS ==========================
-	public void setTicketId(int _ticketId) {
-		this.ticketId = _ticketId;
-	}
-
 	public void setDateTime(Date _dateTime) {
 		this.dateTime = _dateTime;
 	}
