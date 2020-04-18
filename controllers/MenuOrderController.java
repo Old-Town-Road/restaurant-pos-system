@@ -1,10 +1,11 @@
 package controllers;
 
 /*
- * Author : Ashim Chalise, Date : 04/01/2020
+ * Author : Ashim Chalise Date : 04/04/2020
  */
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -14,11 +15,13 @@ import javafx.stage.Stage;
 import views.SetView;
 import views.Frame;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
 import models.Menu;
 import models.MenuItem;
@@ -28,8 +31,13 @@ public class MenuOrderController {
 	@FXML
 	private TabPane tabPane;
 	@FXML
-	private ListView listOfItems = new ListView();
+	private ListView<VBox> listOfItems = new ListView<VBox>();
 	@FXML
+	private Button VoidItem = new Button();
+	@FXML
+	private TextField tfTotal = new TextField();
+	
+	private double priceCount=0;
 	private boolean debug = true;
 	private ArrayList<Menu> menusToTab = new ArrayList<Menu>();
 
@@ -52,9 +60,28 @@ public class MenuOrderController {
 		for (Menu targetMenu : this.menusToTab) {
 			this.addTab(targetMenu);
 		}
+		//Calling the method for the void button.
+		VoidItem = removeItem(VoidItem);
 
 	}
 
+	//This is the method for void button. it removes an item from the order/
+	public Button removeItem(Button VoidItem) {
+		VoidItem.setOnAction(actionEvent -> {
+	        final int selectedIdx = listOfItems.getSelectionModel().getSelectedIndex();
+	        if (selectedIdx != -1) {
+	 
+	          final int newSelectedIdx = (selectedIdx == listOfItems.getItems().size() - 1)
+	               ? selectedIdx - 1
+	               : selectedIdx;
+	          
+	          
+	          listOfItems.getItems().remove(selectedIdx);
+	          listOfItems.getSelectionModel().select(newSelectedIdx);
+	        }
+	        });
+		return VoidItem;
+	}
 	// This method helps the user cash out by navigating to close check window
 	@FXML
 	void cashOutAction(ActionEvent _event) {
@@ -86,12 +113,26 @@ public class MenuOrderController {
 		VBox _vbox = new VBox();
 		for (int i = 0; i < _targetMenu.getItems().size(); i++) {
 			Button btn = new Button(_targetMenu.getItems().get(i).getItemName());
+			double price = _targetMenu.getItems().get(i).getPrice();
 			btn.setOnAction(actionEvent -> {
-				listOfItems.getItems().add(btn.getText());
+				listOfItems.getItems().add(vBoxInList(btn, price));
 			});
 			_vbox.getChildren().add(btn);
 		}
 
+		return _vbox;
+	}
+	
+	private VBox vBoxInList(Button btn, double price) {
+		Text name = new Text(btn.getText());
+		Text priceText = new Text(String.valueOf(price));
+
+		priceCount = price + priceCount;
+        tfTotal.setText(String.valueOf(priceCount));
+        
+        VBox _vbox = new VBox(name, priceText);
+        
+        
 		return _vbox;
 	}
 
