@@ -28,6 +28,57 @@ public abstract class ModelObject {
 		this.setUuid(ModelObject.generateUuid());
 	}
 
+	public HashMap<String, String> getDataKeyValuePairs() throws IllegalArgumentException, IllegalAccessException {
+		// Initialize a return value.
+		HashMap<String, String> retVal = new HashMap<>();
+		// Starting the current class spin through all levels of this class
+		Class<?> targetClass = this.getClass();
+		while (!targetClass.getName().equals(DatabaseConstants.TARGET_SUPER_CLASS)) {
+			// Spin through all the fields.
+			Field[] fields = targetClass.getDeclaredFields();
+			for (Field targetField : fields) {
+				// If this field is a private or protected field, continue.
+				int fieldModifier = targetField.getModifiers();
+				if (Modifier.isPrivate(fieldModifier) || Modifier.isProtected(fieldModifier)) {
+					// Capture the field name based off the annotation.
+					String dbFieldName = this.findValueFromFieldColumnDBAnnotation(targetField);
+					// Capture the value from the field.
+					String fieldValue = null;
+					if (targetField.getType() == boolean.class) {
+						fieldValue = (targetField.get(this).equals(true) ? "1" : "0");
+						// }elseif() {
+
+					} else {
+						fieldValue = targetField.get(this).toString();
+					}
+					// Stow the values in the return value
+					retVal.put(dbFieldName, fieldValue);
+				}
+			}
+			// Traverse up to the parent class.
+			targetClass = targetClass.getSuperclass();
+		}
+		// Return the final value to the caller.
+		return retVal;
+	}
+
+	public String findValueFromFieldColumnDBAnnotation(Field _targetField) {
+		// Initialize a return value.
+		String retVal = null;
+		// Grab the annotations from this field.
+		Annotation[] fieldAnnotations = _targetField.getAnnotations();
+		// Spin through the annotations until finding the column name.
+		for (Annotation annotation : fieldAnnotations) {
+			if (annotation instanceof ModelAnnotations
+					&& ((ModelAnnotations) annotation).key() == DatabaseConstants.DB_COLUMN_NAME_KEY) {
+				retVal = ((ModelAnnotations) annotation).value();
+				break;
+			}
+		}
+		// Return the value to the caller.
+		return retVal;
+	}
+
 	public ModelObject loadById(int _id) {
 		HashMap<String, String> keyValuePair = new HashMap<>();
 		keyValuePair.put(DatabaseConstants.DB_ID_VALUE, Integer.toString(this.getId()));
@@ -46,42 +97,9 @@ public abstract class ModelObject {
 		return this.loadByCondition(keyValuePair);
 	}
 
-	public HashMap<String,String> getDataKeyValuePairs() throws IllegalArgumentException, IllegalAccessException {
-		//Initialize a return value.
-		HashMap<String, String> retVal = new HashMap<>();
-		//Starting the current class spin through all levels of this class
-		Class<?> targetClass = this.getClass();
-		while (!targetClass.getName().equals(DatabaseConstants.TARGET_SUPER_CLASS)) {
-			//Spin through all the fields.
-			Field[] fields = targetClass.getDeclaredFields();
-			for(Field targetField : fields) {
-				//If this field is a private or protected field, continue.
-				int fieldModifier = targetField.getModifiers();
-				if(Modifier.isPrivate(fieldModifier) || Modifier.isProtected(fieldModifier)) {
-					//Capture the field name based off the annotation.
-					String dbFieldName = this.findValueFromFieldColumnDBAnnotation(targetField);
-					//Capture the value from the field.
-					String fieldValue = null;
-					if(targetField.getType() == boolean.class) {
-						fieldValue = (targetField.get(this).equals(true) ? "1" : "0");
-					//}elseif() {
-						
-					}else {
-						fieldValue = targetField.get(this).toString();
-					}
-					//Stow the values in the return value
-					retVal.put(dbFieldName, fieldValue);
-				}
-			}
-			//Traverse up to the parent class.
-			targetClass = targetClass.getSuperclass();
-		}
-		//Return the final value to the caller.
-		return retVal;
-	}
 	public HashMap<String, Object> loadByCondition(HashMap<String, String> _data) {
 		try {
-			//This method fills this object with data from the database.
+			// This method fills this object with data from the database.
 			return DataStoreAdapter.readObject(_data, this.getClass());
 		} catch (IllegalArgumentException ex) {
 			Logger.getLogger(ModelObject.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +107,7 @@ public abstract class ModelObject {
 		return null;
 	}
 
-	public boolean saveObjectFromDatabase() throws IllegalArgumentException, IllegalAccessException {
+	public boolean saveObjectInDatabase() throws IllegalArgumentException, IllegalAccessException {
 		// Initialize a return value for the caller defaulted to false.
 		boolean retVal = false;
 		// Has this object already been created?
@@ -124,23 +142,6 @@ public abstract class ModelObject {
 		return retVal;
 	}
 
-	public String findValueFromFieldColumnDBAnnotation (Field _targetField) {
-		//Initialize a return value.
-		String retVal = null;
-		//Grab the annotations from this field.
-		Annotation[] fieldAnnotations = _targetField.getAnnotations();
-		//Spin through the annotations until finding the column name.
-		for(Annotation annotation : fieldAnnotations) {
-			if(annotation instanceof ModelAnnotations && ((ModelAnnotations) annotation).key() 
-					== DatabaseConstants.DB_COLUMN_NAME_KEY) {
-				retVal = ((ModelAnnotations) annotation).value();
-				break;
-			}
-		}
-		//Return the value to the caller.
-		return retVal;
-	}
-
 	public void makeActive() {
 		this.active = true;
 	}
@@ -150,14 +151,14 @@ public abstract class ModelObject {
 	}
 
 	public Object returnOnlyValueFromSingleResult(HashMap<String, Object> _inputHash) {
-		//Initialize a return value for the caller.
+		// Initialize a return value for the caller.
 		Object retVal = null;
-		//Grab the only key from the hash.
-		for(String key : _inputHash.keySet()) {
-			//Set the return to the only value in the hash.
+		// Grab the only key from the hash.
+		for (String key : _inputHash.keySet()) {
+			// Set the return to the only value in the hash.
 			retVal = _inputHash.get(key);
 		}
-		//Return the final value to the caller.
+		// Return the final value to the caller.
 		return retVal;
 	}
 

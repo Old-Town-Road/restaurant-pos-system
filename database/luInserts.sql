@@ -49,3 +49,11 @@ Insert into pizzaposdb.TicketTypeLU
 	values
 		(1,'KITCHEN'),
 		(2,'BAR');
+
+INSERT INTO `pizzaposdb`.`store`
+(`ID`,
+`StoreName`)
+VALUES
+(1,
+'POS');
+

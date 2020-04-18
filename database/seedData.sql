@@ -1,14 +1,15 @@
 Insert into pizzaposdb.menu
-	(UUID,
+	(ID,
+    UUID,
     sortValue,
     isActive,
     StoreID,
     MenuType,
     MenuName)
     values
-    ("11f8d267-2d73-446c-85b7-193610156b4d", 1, 1, 1, 1, "Pizzas"),
-    ("fc265f91-c3e6-40bb-b2c9-6b93b8aa7807", 1, 1, 1, 2, "Sides"),
-    ("0ef6ed94-eab6-4c21-9c97-f487f417d570", 1, 1, 1, 3, "Drinks");
+    (1,"11f8d267-2d73-446c-85b7-193610156b4d", 1, 1, 1, 1, "Pizzas"),
+    (2,"fc265f91-c3e6-40bb-b2c9-6b93b8aa7807", 1, 1, 1, 2, "Sides"),
+    (3,"0ef6ed94-eab6-4c21-9c97-f487f417d570", 1, 1, 1, 3, "Drinks");
 
 Insert into pizzaposdb.menuitem
 	(UUID,

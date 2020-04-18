@@ -4,47 +4,51 @@ package models;
  * This class is to build the ticket object, which is inherited by two other
  * classes.
  *
- * @author Sultan Albogami, Ian Wilhelmsen Last Updated: 2/19/2020
- * 
- * NOTES:
- * 2/19/2020 IMW
- * -> Changed the type of _ticketStatus to new enum created.
- * -> Verified the styling.
- * -> Added descriptions for some methods
+ * @author Sultan Albogami, Ian Wilhelmsen Last Updated: 4/18/2020
  */
 
 import java.util.Date;
-
 import database.DatabaseConstants;
+import java.util.ArrayList;
 
 @ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_TICKET_VALUE)
 public class Ticket extends ModelObject {
-	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_DATE_STARTED_VALUE)
-	protected Date dateTime;
-	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_ID_VALUE)
-	protected int userId;
-	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TABLE_ID_VALUE)
-	protected int tableId;
-	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TICKET_STATUS_VALUE)
-	protected TicketStatus ticketStatus;
 
-	Ticket(int _ID, Date _dateTime, int _userId, int _tableId, TicketStatus _ticketStatus) {
-		this.id = _ID;
-		this.dateTime = _dateTime;
-		this.userId = _userId;
-		this.tableId = _tableId;
-		this.ticketStatus = _ticketStatus;
-	}
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_DATE_STARTED_VALUE)
+	private Date dateTime;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_ID_VALUE)
+	private int userId;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TABLE_ID_VALUE)
+	private int tableId;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TICKET_STATUS_VALUE)
+	private int ticketStatus;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TICKET_TYPE_VALUE)
+	private int ticketType;
+
+	private ArrayList<MenuItem> ticketItems = new ArrayList<MenuItem>();
 
 	/**
-	 * Called when a ticket is loaded.
-	 *
-	 * @param int _ticketId
-	 * @return boolean This verifies that method was successful
+	 * Blank constructor.
 	 */
-	boolean loadTicket(int _ticketId) {
-		return true;
-		// TODO Stubbed
+	Ticket () {
+	}
+
+	Ticket(Date _dateTime, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
+		this.setDateTime(_dateTime);
+		this.setUserId(_userId);
+		this.setTableId(_tableId);
+		this.setTicketStatus(_ticketStatus);
+		this.setTicketType(_ticketType);
+	}
+
+	Ticket(int _ID, String _UUID, Date _dateTime, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
+		this.setId(_ID);
+		this.setUuid(_UUID);
+		this.setDateTime(_dateTime);
+		this.setUserId(_userId);
+		this.setTableId(_tableId);
+		this.setTicketStatus(_ticketStatus);
+		this.setTicketType(_ticketType);
 	}
 
 	/**
@@ -95,8 +99,12 @@ public class Ticket extends ModelObject {
 		return this.tableId;
 	}
 
-	public TicketStatus getTicketStatus() {
+	public int getTicketStatus() {
 		return this.ticketStatus;
+	}
+
+	public int getTicketType() {
+		return this.ticketType;
 	}
 
 	// ================= SETTERS ==========================
@@ -112,8 +120,11 @@ public class Ticket extends ModelObject {
 		this.tableId = _tableId;
 	}
 
-	public void setTicketStatus(TicketStatus _ticketStatus) {
+	public void setTicketStatus(int _ticketStatus) {
 		this.ticketStatus = _ticketStatus;
 	}
 
+	public void setTicketType(int _ticketType) {
+		this.ticketType = _ticketType;
+	}
 }

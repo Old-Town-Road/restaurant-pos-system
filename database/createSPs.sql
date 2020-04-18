@@ -177,70 +177,70 @@ BEGIN
     SET retVal = 1;
 END$$
 
-create procedure create_PosCheck
-(
-	IN p_UUID varchar(36),
-    IN p_TableID int,
-    IN p_UserID int,
-    IN p_CheckStatus int,
-    IN p_DateStarted datetime,
-    IN p_DateClosed datetime,
-    OUT p_ID int
-)
-BEGIN
-	INSERT INTO `pizzaposdb`.`poscheck`
-	(
-		`ID`,
-		`UUID`,
-		`TableID`,
-		`UserID`,
-		`CheckStatus`,
-		`DateStarted`,
-		`DateClosed`
-	) VALUES
-	(
-		p_UUID,
-        p_TableID,
-        p_UserID,
-        p_CheckStatus,
-        p_DateStarted,
-        p_DateClosed
-    );
+-- create procedure create_PosCheck
+-- (
+-- 	IN p_UUID varchar(36),
+--     IN p_TableID int,
+--     IN p_UserID int,
+--     IN p_CheckStatus int,
+--     IN p_DateStarted datetime,
+--     IN p_DateClosed datetime,
+--     OUT p_ID int
+-- )
+-- BEGIN
+-- 	INSERT INTO `pizzaposdb`.`poscheck`
+-- 	(
+-- 		`ID`,
+-- 		`UUID`,
+-- 		`TableID`,
+-- 		`UserID`,
+-- 		`CheckStatus`,
+-- 		`DateStarted`,
+-- 		`DateClosed`
+-- 	) VALUES
+-- 	(
+-- 		p_UUID,
+--         p_TableID,
+--         p_UserID,
+--         p_CheckStatus,
+--         p_DateStarted,
+--         p_DateClosed
+--     );
 
-	set ID = (SELECT `poscheck`.`ID` FROM `pizzaposdb`.`poscheck`
-		where `poscheck`.`UUID` = p_UUID and
-			`TableID` = p_TableID and
-			`UserID` = p_UserID and
-			`CheckStatus` = p_CheckStatus and
-			`DateStarted` = p_DateStarted and
-			`DateClosed` = p_DateClosed);
-END$$
+-- 	set ID = (SELECT `poscheck`.`ID` FROM `pizzaposdb`.`poscheck`
+-- 		where `poscheck`.`UUID` = p_UUID and
+-- 			`TableID` = p_TableID and
+-- 			`UserID` = p_UserID and
+-- 			`CheckStatus` = p_CheckStatus and
+-- 			`DateStarted` = p_DateStarted and
+-- 			`DateClosed` = p_DateClosed);
+-- END$$
 
-create procedure read_PosCheck
-(
-	IN p_UserID
-    IN 
-)
-BEGIN
-	select * from pizzaposdb.PosCheck;
-END$$
+-- create procedure read_PosCheck
+-- (
+-- 	IN p_UserID
+--     IN 
+-- )
+-- BEGIN
+-- 	select * from pizzaposdb.PosCheck;
+-- END$$
 
-create procedure delete_PosCheck
-(
+-- create procedure delete_PosCheck
+-- (
 
-)
-BEGIN
-	UPDATE `pizzaposdb`.`poscheck`
-	SET
-		`ID` = <{ID: }>,
-		`UUID` = <{UUID: }>,
-		`TableID` = <{TableID: }>,
-		`UserID` = <{UserID: }>,
-		`CheckStatus` = <{CheckStatus: }>,
-		`DateStarted` = <{DateStarted: }>,
-		`DateClosed` = <{DateClosed: }>
-	WHERE `ID` = <{expr}>;
-END$$
+-- )
+-- BEGIN
+-- 	UPDATE `pizzaposdb`.`poscheck`
+-- 	SET
+-- 		`ID` = <{ID: }>,
+-- 		`UUID` = <{UUID: }>,
+-- 		`TableID` = <{TableID: }>,
+-- 		`UserID` = <{UserID: }>,
+-- 		`CheckStatus` = <{CheckStatus: }>,
+-- 		`DateStarted` = <{DateStarted: }>,
+-- 		`DateClosed` = <{DateClosed: }>
+-- 	WHERE `ID` = <{expr}>;
+-- END$$
 
 create procedure create_PosTables
 (
