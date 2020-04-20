@@ -44,10 +44,8 @@ public class LogInController implements Initializable {
      * @param _url
      * @param _rb
      */
-
     public void initialize(URL _url, ResourceBundle _rb) {
     }
-
 
     /**
      * Called when log in button is clicked.
@@ -75,7 +73,7 @@ public class LogInController implements Initializable {
 
 
         //System.out.println("newvalue-1: "+ userInfo.get("given_name"));
-        //System.out.println("newvalue-2: "+ userInfo.get("name"));
+        System.out.println("newvalue-2: "+ userInfo.get("name"));
     }
 
     /**
@@ -83,18 +81,13 @@ public class LogInController implements Initializable {
      *
      * @author Raiana zaman Last Updated: 4/16/2020
      */
-
     void openNewStage(String Val) throws IOException {
         /**Loading the fxml of second controller where you want to send the data*/
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/fxml/OrderType.fxml"));
         Parent root = (Parent) loader.load();
-
-
         /*** Creating the object of second controller */
         OrderTypeController secController = loader.getController();
         secController.myFunction(Val);
-
-
         /** Loading the stage */
         Stage stage = new Stage();
         stage.setScene(new Scene(root));

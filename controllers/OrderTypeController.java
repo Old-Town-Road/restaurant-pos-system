@@ -46,6 +46,7 @@ public class OrderTypeController implements Initializable {
      * Function to get userinfo
      */
     public void myFunction(String text) {
+
         username.setText(text);
     }
 
