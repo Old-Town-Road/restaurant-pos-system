@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 /**
  * This class adds some universal support to the Model classes.
  * 
@@ -79,32 +80,34 @@ public abstract class ModelObject {
 		return retVal;
 	}
 
-	public ModelObject loadById(int _id) {
-		HashMap<String, String> keyValuePair = new HashMap<>();
-		keyValuePair.put(DatabaseConstants.DB_ID_VALUE, Integer.toString(this.getId()));
-		return (ModelObject) this.returnOnlyValueFromSingleResult(this.loadByCondition(keyValuePair));
-	}
+	/*
+	 * public ModelObject loadById(int _id) { HashMap<String, String> keyValuePair =
+	 * new HashMap<>(); keyValuePair.put(DatabaseConstants.DB_ID_VALUE,
+	 * Integer.toString(this.getId())); return (ModelObject)
+	 * this.returnOnlyValueFromSingleResult(this.loadByCondition(keyValuePair)); }
+	 * 
+	 * public ModelObject loadByUuid(String _uuid) { HashMap<String, String>
+	 * keyValuePair = new HashMap<>();
+	 * keyValuePair.put(DatabaseConstants.DB_UUID_VALUE, this.getUuid()); return
+	 * (ModelObject)
+	 * this.returnOnlyValueFromSingleResult(this.loadByCondition(keyValuePair)); }
+	 */
 
-	public ModelObject loadByUuid(String _uuid) {
-		HashMap<String, String> keyValuePair = new HashMap<>();
-		keyValuePair.put(DatabaseConstants.DB_UUID_VALUE, this.getUuid());
-		return (ModelObject) this.returnOnlyValueFromSingleResult(this.loadByCondition(keyValuePair));
-	}
-
-	public HashMap<String, Object> loadByCondition(String _name, String _value) {
+	public ArrayList<ModelObject> loadByCondition(String _name, String _value) {
 		HashMap<String, String> keyValuePair = new HashMap<>();
 		keyValuePair.put(_name, _value);
 		return this.loadByCondition(keyValuePair);
 	}
 
-	public HashMap<String, Object> loadByCondition(HashMap<String, String> _data) {
+	public ArrayList<ModelObject> loadByCondition(HashMap<String, String> _data) {
+		ArrayList<ModelObject> retVal = new ArrayList<ModelObject>();
 		try {
 			// This method fills this object with data from the database.
-			return DataStoreAdapter.readObject(_data, this.getClass());
+			retVal = DataStoreAdapter.readObject(_data, this.getClass());
 		} catch (IllegalArgumentException ex) {
 			Logger.getLogger(ModelObject.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		return null;
+		return retVal;
 	}
 
 	public boolean saveObjectInDatabase() throws IllegalArgumentException, IllegalAccessException {

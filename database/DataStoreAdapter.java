@@ -2,11 +2,12 @@ package database;
 
 /**
  * 
- * @author Ian Wilhelmsen last update: 3/20/2020
+ * @author Ian Wilhelmsen last update: 4/20/2020
  */
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 import models.ModelObject;
 
 public class DataStoreAdapter {
@@ -16,7 +17,7 @@ public class DataStoreAdapter {
 		return connector.createObject(_targetObject.getDataKeyValuePairs(), _targetObject.getTableName());
 	}
 
-	public static HashMap<String, Object> readObject (Map<String, String> _keyValuePairs, Class<?> _targetClass) {
+	public static ArrayList<ModelObject> readObject (Map<String, String> _keyValuePairs, Class<?> _targetClass) {
 		return connector.readObject(_keyValuePairs, _targetClass);
 	}
 
@@ -27,7 +28,9 @@ public class DataStoreAdapter {
 	public static boolean deleteObject (ModelObject _targetObject) {
 		//Create a hashmap of the uuid and its value.
 		HashMap<String, String> keyValuePair = new HashMap<>();
+		keyValuePair.put(DatabaseConstants.DB_ID_VALUE, String.valueOf(_targetObject.getId()));
 		keyValuePair.put(DatabaseConstants.DB_UUID_VALUE, _targetObject.getUuid());
+		keyValuePair.put(DatabaseConstants.DB_IS_ACTIVE_VALUE, DatabaseConstants.booleanToBit(false));
 		return connector.deleteObject(keyValuePair, _targetObject.getTableName());
 	}
 }

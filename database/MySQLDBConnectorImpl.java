@@ -1,5 +1,6 @@
 package database;
 
+import java.util.ArrayList;
 /**
  * This class handles the connection to the MySQL DB.
  * Implements the DB ConnectorInterface.
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import models.ModelAnnotations;
+import models.ModelObject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -116,9 +118,9 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @return HashMap<String, Object> The series of return objects from the stored
 	 *         procedure call.
 	 */
-	public HashMap<String, Object> readObject(Map<String, String> _keyValuePairs, Class<?> _class) {
+	public ArrayList<ModelObject> readObject(Map<String, String> _keyValuePairs, Class<?> _class) {
 		// Initialize a return value for the caller.
-		HashMap<String, Object> retVal = new HashMap<String, Object>();
+		ArrayList<ModelObject> retVal = new ArrayList<ModelObject>();
 		// If we are not in debug mode then proceed.
 		if (!debugMode) {
 			try {
@@ -131,8 +133,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 				// Spin through the result set while there are still values.
 				while (results.next()) {
 					// Create a new instance of the class.
-					Object resultObject = this.fillOutObject(results, _class);
-					retVal.put((String) results.getObject(this.descriptionColumnString), resultObject);
+					ModelObject resultObject = (ModelObject) this.fillOutObject(results, _class);
+					retVal.add(resultObject);
 				}
 			} catch (SQLException | InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {

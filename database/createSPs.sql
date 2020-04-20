@@ -38,8 +38,8 @@ END$$
 
 create procedure read_Menu
 (
-	in p_StoreID int,
-    in p_IsActive int
+	in p_IsActive int,
+	in p_StoreID int
 )
 BEGIN
 	select * from `pizzaposdb`.`Menu`

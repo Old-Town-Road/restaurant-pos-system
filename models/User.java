@@ -13,28 +13,22 @@ import database.DatabaseConstants;
 @ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_USER_VALUE)
 public class User extends ModelObject {
 
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_USERNAME_VALUE)
 	private String username;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_FIRST_NAME_VALUE)
 	private String firstName;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_LAST_NAME_VALUE)
 	private String lastName;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_ROLEID_VALUE)
+	private int roleId;
 
-	public User(int _ID, String _username, String _firstName, String _lastName) {
-		this.setId(_ID);
-		this.username = _username;
-		this.firstName = _firstName;
-		this.lastName = _lastName;
-	}
-
-	/**
-	 * This is to fill the parameters of this instance from the database.
-	 * 
-	 * @param _ID int the userID to load
-	 * @return boolean returns whether the method was successful or not
-	 */
-	public boolean loadUser(int _ID) {
-		boolean retVal = false;
-
-		// @ todo attach controller for login.
-		return retVal;
+	public User(int _id, String _uuid, String _username, String _firstName, String _lastName, int _roleId) {
+		this.setId(_id);
+		this.setUuid(_uuid);
+		this.setUsername(_username);
+		this.setFirstName(_firstName);
+		this.setLastName(_lastName);
+		this.setRoleId(_roleId);
 	}
 
 	// ====================GETTERS====================
@@ -50,6 +44,9 @@ public class User extends ModelObject {
 		return this.lastName;
 	}
 
+	public int getRoleId() {
+		return this.roleId;
+	}
 	// ====================SETTERS====================
 	public void setUsername(String _username) {
 		this.username = _username;
@@ -61,5 +58,9 @@ public class User extends ModelObject {
 
 	public void setLastName(String _lastName) {
 		this.lastName = _lastName;
+	}
+
+	public void setRoleId(int _roleId) {
+		this.roleId = _roleId;
 	}
 }

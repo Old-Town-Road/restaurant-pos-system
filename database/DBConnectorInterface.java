@@ -8,15 +8,16 @@ package database;
  */
 
 import java.util.Map;
-import java.util.HashMap;
+import models.ModelObject;
+import java.util.ArrayList;
 
 public interface DBConnectorInterface {
 
-	public abstract int createObject(Map<String,String> _keyValuePairs, String _table);
+	public abstract int createObject(Map<String, String> _keyValuePairs, String _table);
 
-    public abstract HashMap<String, Object> readObject(Map<String,String> _keyValuePairs, Class<?> _class);
+	public abstract ArrayList<ModelObject> readObject(Map<String, String> _keyValuePairs, Class<?> _class);
 
-    public abstract boolean updateObject(Map<String,String> _keyValuePairs, String _uuid, String _table);
+	public abstract boolean updateObject(Map<String, String> _keyValuePairs, String _uuid, String _table);
 
-    public abstract boolean deleteObject(Map<String, String> _keyValuePairs, String _table);
+	public abstract boolean deleteObject(Map<String, String> _keyValuePairs, String _table);
 }
