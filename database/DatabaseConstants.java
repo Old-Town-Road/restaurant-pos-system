@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseConstants {
-	//Database table name values.
+	//Database keys for the annotations.
 	public static final String TABLE_NAME_ANNOTATION = "TableName";
+	public static final String DB_COLUMN_NAME_KEY = "colName";
+
+	//Database table name values.
 	public static final String DB_TABLE_MENU_TABLE_VALUE = "Menu";
 	public static final String DB_TABLE_MENU_ITEM_VALUE = "MenuItem";
 	public static final String DB_TABLE_CHECK_VALUE = "PosCheck";
@@ -20,13 +23,11 @@ public class DatabaseConstants {
 	public static final String TABLE_CLASS_NAME = "Table";
 	public static final String TICKET_CLASS_NAME = "Ticket";
 	public static final String USER_CLASS_NAME = "User";
+	public static final String CHECK_CLASS_NAME = "Check";
 	//public static final String MENU_CLASS_NAME
 
 	public static final String TARGET_SUPER_CLASS = "java.lang.Object";
 	public static final int STORE_ID_CONSTANT = 1;
-
-	//Database column key.
-	public static final String DB_COLUMN_NAME_KEY = "colName";
 
 	//Column names from the database for the main object
 	public static final String DB_ID_VALUE = "ID";
@@ -156,7 +157,12 @@ public class DatabaseConstants {
 	public static Map<String, String> getReadActiveUserKVPairs(String _userName) {
 		return getReadUserKVPairs(true, _userName);
 	}
-	
+
+	public static Map<String, String> getReadCheckKVPairs(){
+		HashMap<String, String> retVal = new HashMap<String, String>();
+		return retVal;
+	}
+
 	public static String booleanToBit(boolean _value) {
 		return (_value ? "1" : "0");
 	}
