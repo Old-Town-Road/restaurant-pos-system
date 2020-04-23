@@ -25,13 +25,7 @@ public class Ticket extends ModelObject {
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TICKET_TYPE_VALUE)
 	private int ticketType;
 
-	private ArrayList<MenuItem> ticketItems = new ArrayList<MenuItem>();
-
-	/**
-	 * Blank constructor.
-	 */
-	Ticket () {
-	}
+	private ArrayList<MenuItem> ticketItems = new ArrayList<MenuItem>();	
 
 	Ticket(Date _dateTime, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
 		this.setDateTime(_dateTime);
