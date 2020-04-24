@@ -3,6 +3,8 @@ package database;
 import java.util.HashMap;
 import java.util.Map;
 
+import models.ModelConstants;
+
 public class DatabaseConstants {
 	//Database keys for the annotations.
 	public static final String TABLE_NAME_ANNOTATION = "TableName";
@@ -28,6 +30,8 @@ public class DatabaseConstants {
 
 	public static final String TARGET_SUPER_CLASS = "java.lang.Object";
 	public static final int STORE_ID_CONSTANT = 1;
+	public static final int DEFAULT_SORT_VALUE = 999;
+	public static final int DEFAULT_ID_VALUE = 0;
 
 	//Column names from the database for the main object
 	public static final String DB_ID_VALUE = "ID";
@@ -67,6 +71,13 @@ public class DatabaseConstants {
 	public static final String DB_USER_FIRST_NAME_VALUE = "FirstName";
 	public static final String DB_USER_LAST_NAME_VALUE = "LastName";
 	public static final String DB_USER_ROLEID_VALUE = "RoleID";
+
+	//Transaction history model database column constants.
+	public static final String DB_TRANSACTION_HISTORY_CHECK_ID = "CheckID";
+	public static final String DB_TRANSACTION_HISTORY_FINAL_TOTAL = "FinalTotal";
+	public static final String DB_TRANSACTION_HISTORY_PAYMENT_TYPE = "PaymentType";
+	public static final String DB_TRANSACTION_HISTORY_PAYMENT_DATE = "PaymentDate";
+	public static final String DB_TRANSACTION_HISTORY_PAYMENT_STATUS = "PaymentStatus";
 
 	//Base key value arguments.
 	//public static Map<String, String>
@@ -147,6 +158,12 @@ public class DatabaseConstants {
 		return getReadTicketKVPairs(_userId, _tableId, true);
 	}
 
+	/**
+	 * The next functions supply the key value pairs for getting the users from the database.
+	 * @param _isActive
+	 * @param _userName
+	 * @return
+	 */
 	public static Map<String, String> getReadUserKVPairs(boolean _isActive, String _userName) {
 		HashMap<String, String> retVal = new HashMap<String, String>();
 		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
@@ -158,9 +175,25 @@ public class DatabaseConstants {
 		return getReadUserKVPairs(true, _userName);
 	}
 
-	public static Map<String, String> getReadCheckKVPairs(){
+	/**
+	 * The next functions supply the key value pairs for getting the tickets from the database.
+	 * @param _isActive
+	 * @param _tableId
+	 * @param _userId
+	 * @param _checkStatus
+	 * @return
+	 */
+	public static Map<String, String> getReadCheckKVPairs(boolean _isActive, int _tableId, int _userId, int _checkStatus){
 		HashMap<String, String> retVal = new HashMap<String, String>();
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
+		retVal.put(DB_TABLE_ID_VALUE, String.valueOf(_tableId));
+		retVal.put(DB_USER_ID_VALUE, String.valueOf(_userId));
+		retVal.put(DB_CHECK_STATUS_VALUE, String.valueOf(_checkStatus));
 		return retVal;
+	}
+
+	public static Map<String, String> getReadActiveOpenCheckKVPairs(int _tableId, int _userId) {
+		return getReadCheckKVPairs(true, _tableId, _userId, ModelConstants.CHECK_TYPE_OPEN);
 	}
 
 	public static String booleanToBit(boolean _value) {

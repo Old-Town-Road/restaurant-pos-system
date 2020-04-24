@@ -4,7 +4,7 @@ package models;
  * This class is to build the ticket object, which is inherited by two other
  * classes.
  *
- * @author Sultan Albogami, Ian Wilhelmsen Last Updated: 4/18/2020
+ * @author Sultan Albogami, Ian Wilhelmsen Last Updated: 4/23/2020
  */
 
 import java.util.Date;
@@ -25,9 +25,10 @@ public class Ticket extends ModelObject {
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TICKET_TYPE_VALUE)
 	private int ticketType;
 
-	private ArrayList<MenuItem> ticketItems = new ArrayList<MenuItem>();	
+	private ArrayList<TicketItem> ticketItems = new ArrayList<TicketItem>();	
 
 	Ticket(Date _dateTime, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
+		super();
 		this.setDateTime(_dateTime);
 		this.setUserId(_userId);
 		this.setTableId(_tableId);
@@ -35,9 +36,11 @@ public class Ticket extends ModelObject {
 		this.setTicketType(_ticketType);
 	}
 
-	Ticket(int _ID, String _UUID, Date _dateTime, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
-		this.setId(_ID);
-		this.setUuid(_UUID);
+	Ticket(int _id, String uuid, int _sortValue, boolean _isActive, Date _dateTime, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
+		this.setId(_id);
+		this.setUuid(uuid);
+		this.setSortValue(_sortValue);
+		this.setIsActive(_isActive);
 		this.setDateTime(_dateTime);
 		this.setUserId(_userId);
 		this.setTableId(_tableId);
@@ -48,12 +51,12 @@ public class Ticket extends ModelObject {
 	/**
 	 * Called when an item is added to the ticket.
 	 *
-	 * @param int _itemId
+	 * @param MenuItem _item
 	 * @return boolean This verifies that method was successful
 	 */
-	boolean addMenuItem(int _itemId) {
-		return true;
-		// TODO stubbed
+	public boolean addMenuItem(MenuItem _item) {
+		TicketItem ticketItem = new TicketItem(_item, this.getId());
+		return this.ticketItems.add(ticketItem);
 	}
 
 	/**
@@ -63,9 +66,35 @@ public class Ticket extends ModelObject {
 	 * @return boolean This verifies that method was successful
 	 */
 	boolean removeMenuItem(int _listIndex) {
-		// Should check if item is present first.
-		// TODO stubbed
-		return true;
+		return this.ticketItems.remove(this.ticketItems.get(_listIndex));
+	}
+
+	/**
+	 * This method gets the collective price of all the ticketitems associated with this ticket.
+	 * @return
+	 */
+	public double getPrice() {
+		double retVal = 0.0;
+		for(TicketItem currItem : this.ticketItems) {
+			retVal += currItem.getItemPrice();
+		}
+		return retVal;
+	}
+
+	/**
+	 * This method adjusts the price a ticket item in the list of this class.
+	 * @param _index
+	 * @param _price
+	 * @return
+	 */
+	public boolean adjustPriceOfIndexItem(int _index, double _price) {
+		boolean retVal = false;
+		retVal = (this.ticketItems.get(_index).getClass().toString() == DatabaseConstants.TICKET_CLASS_NAME);
+		if(retVal) {
+			TicketItem targetItem = this.ticketItems.get(_index);
+			this.ticketItems.set(_index, targetItem);
+		}
+		return retVal;
 	}
 
 	/**

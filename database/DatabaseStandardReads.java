@@ -107,7 +107,7 @@ public class DatabaseStandardReads {
 	 */
 	public static ArrayList<Check> getCheckByUserIdTableId(int _userId, int _tableId) throws ClassNotFoundException {
 		ArrayList<Check> retVal = new ArrayList<Check>();
-		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadCheckKVPairs(), Class.forName(DatabaseConstants.CHECK_CLASS_NAME));
+		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveOpenCheckKVPairs(_userId, _tableId), Class.forName(DatabaseConstants.CHECK_CLASS_NAME));
 		for(ModelObject currObj : tempRetVal) {
 			retVal.add((Check) currObj);
 		}

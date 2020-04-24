@@ -1,15 +1,10 @@
 package models;
 
-import database.DatabaseConstants;
-
 /*
  * This class represents the User Object
- * @author Ashim Chalise, Ian Wilhelmsen last updated - 02/19/2020
- * 
- * NOTES:
- * 2/19/2020 IMW
- * -> Updated some formating and added method comments.
+ * @author Ashim Chalise, Ian Wilhelmsen last updated - 4/23/2020
  */
+import database.DatabaseConstants;
 @ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_USER_VALUE)
 public class User extends ModelObject {
 
@@ -22,9 +17,11 @@ public class User extends ModelObject {
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_ROLEID_VALUE)
 	private int roleId;
 
-	public User(int _id, String _uuid, String _username, String _firstName, String _lastName, int _roleId) {
+	public User(int _id, String _uuid, int _sortValue, boolean _isActive, String _username, String _firstName, String _lastName, int _roleId) {
 		this.setId(_id);
 		this.setUuid(_uuid);
+		this.setSortValue(_sortValue);
+		this.setIsActive(_isActive);
 		this.setUsername(_username);
 		this.setFirstName(_firstName);
 		this.setLastName(_lastName);

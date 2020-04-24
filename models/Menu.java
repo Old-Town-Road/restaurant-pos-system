@@ -1,28 +1,34 @@
 package models;
 
+/**
+ * This class is used to organize items to be consumed by the menu view.
+ * 
+ * @author Ashim Chalise, Ian Wilhelmsen
+ * @since UPDATED: 4/23/2020
+ */
 import java.util.ArrayList;
 import database.DatabaseConstants;
 import models.MenuItem;
 
-/**
- * This class is used to organize items to be consumed by the menu view
- * 
- * @author Ashimchalise
- * @since UPDATED: 2/12/20
- */
 @ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_MENU_TABLE_VALUE)
 public class Menu extends ModelObject{
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_MENU_NAME_VALUE)
 	private String menuName;
 	private ArrayList<MenuItem> items = new ArrayList<MenuItem>();
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_MENU_TYPE_VALUE)
-	private MenuType menuType;
+	private int menuType;
 
-	public Menu(int _ID, String _UUID, String _menuName, MenuItem[] _items, MenuType _menuType) {
-		this.setId(_ID);
-		this.setUuid(_UUID);
+	public Menu(String _menuName, int _menuType) {
+		super();
 		this.setMenuName(_menuName);
-		this.setItems(_items);
+		this.setMenuType(_menuType);
+	}
+	public Menu(int _id, String _uuid, int _sortValue, boolean _isActive, String _menuName, int _menuType) {
+		this.setId(_id);
+		this.setUuid(_uuid);
+		this.setSortValue(_sortValue);
+		this.setIsActive(_isActive);
+		this.setMenuName(_menuName);
 		this.setMenuType(_menuType);
 	}
 
@@ -36,7 +42,7 @@ public class Menu extends ModelObject{
 		return this.items;
 	}
 
-	public MenuType getMenuType() {
+	public int getMenuType() {
 		return this.menuType;
 	}
 
@@ -52,7 +58,7 @@ public class Menu extends ModelObject{
 		}
 	}
 
-	public void setMenuType(MenuType _menuType ) {
+	public void setMenuType(int _menuType ) {
 		this.menuType = _menuType;
 	}
 }

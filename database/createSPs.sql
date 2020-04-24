@@ -249,7 +249,6 @@ create procedure create_PosTables
     IN p_IsActive bit,
     IN p_TableName varchar(50),
     IN p_StoreID int,
-    IN p_TableStatus int,
     OUT p_ID int
 )
 Begin
@@ -258,23 +257,20 @@ Begin
 		`SortValue`,
 		`IsActive`,
 		`TableName`,
-		`StoreID`,
-		`TableStatus`)
+		`StoreID`)
 	VALUES
 		(p_UUID,
         p_SortValue,
 		p_IsActive,
 		p_TableName,
-		p_StoreID,
-		p_TableStatus);
+		p_StoreID);
 	SET p_ID = (SELECT `postables`.`ID`
 		FROM `pizzaposdb`.`postables`
         Where `postables`.`UUID` = p_UUID and
 			`postables`.`SortValue` = p_SortValue and
 			`postables`.`IsActive` = p_IsActive and
 			`postables`.`TableName` = p_TableName and
-			`postables`.`StoreID` = p_StoreID and
-			`postables`.`TableStatus` = p_TableStatus);
+			`postables`.`StoreID` = p_StoreID);
 END$$
 
 create procedure read_PosTable
@@ -296,7 +292,6 @@ create procedure update_PosTable
     IN p_IsActive bit,
     IN p_TableName varchar(50),
     IN p_StoreID int,
-    IN p_TableStatus int,
     OUT retVal int
 )
 BEGIN
@@ -305,8 +300,7 @@ BEGIN
 			`sortValue` = p_SortValue,
 			`isActive` = p_IsActive,
 			`TableName` = p_TableName,
-			`StoreID` = p_StoreID,
-			`TableStatus` = p_TableStatus
+			`StoreID` = p_StoreID
 		WHERE `ID` = p_ID AND `UUID` = p_UUID;
 	SET retVal = 1;
 END$$

@@ -407,9 +407,21 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		return retVal;
 	}
 
-	private Object makeModelObject(Class<?> _targetClass) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		Object retVal = _targetClass.getConstructor().newInstance();
-		return _targetClass.cast(retVal);
+	/**
+	 * This method creates an instance of a target Model Object.
+	 * @param _targetClass
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 */
+	private ModelObject makeModelObject(Class<?> _targetClass) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		ModelObject retVal = (ModelObject) _targetClass.getConstructor().newInstance();
+		return (ModelObject) _targetClass.cast(retVal);
 	}
 
 	/**
@@ -489,6 +501,9 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		}
 	}
 
+	/**
+	 * Basic connection method to connect to the db.
+	 */
 	private void connect() {
 		try {
 			this.conn = DriverManager.getConnection(this.dbmsDriverInfo + this.hostString + this.dbName, this.userName,

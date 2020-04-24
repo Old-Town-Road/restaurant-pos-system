@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 /**
  * This class adds some universal support to the Model classes.
  * 
@@ -15,6 +14,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import database.DataStoreAdapter;
 import database.DatabaseConstants;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public abstract class ModelObject {
 
@@ -24,11 +25,22 @@ public abstract class ModelObject {
 	protected String uuid;
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_IS_ACTIVE_VALUE)
 	protected boolean active = true;
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_SORT_VALUE_VALUE)
+	protected int sortValue;
 
+	
 	public ModelObject() {
 		this.setUuid(ModelObject.generateUuid());
+		this.setId(DatabaseConstants.DEFAULT_ID_VALUE);
+		this.setSortValue(DatabaseConstants.DEFAULT_SORT_VALUE);
 	}
 
+	/**
+	 * This method returns a HashMap of key/value pairs for updating the model in the database.
+	 * @return HashMap of db column names and string values.
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
 	public HashMap<String, String> getDataKeyValuePairs() throws IllegalArgumentException, IllegalAccessException {
 		// Initialize a return value.
 		HashMap<String, String> retVal = new HashMap<>();
@@ -40,15 +52,13 @@ public abstract class ModelObject {
 			for (Field targetField : fields) {
 				// If this field is a private or protected field, continue.
 				int fieldModifier = targetField.getModifiers();
-				if (Modifier.isPrivate(fieldModifier) || Modifier.isProtected(fieldModifier)) {
+				if ((Modifier.isPrivate(fieldModifier) || Modifier.isProtected(fieldModifier)) && (!Collection.class.isAssignableFrom(targetField.getType()))){
 					// Capture the field name based off the annotation.
 					String dbFieldName = this.findValueFromFieldColumnDBAnnotation(targetField);
 					// Capture the value from the field.
 					String fieldValue = null;
 					if (targetField.getType() == boolean.class) {
 						fieldValue = (targetField.get(this).equals(true) ? "1" : "0");
-						// }elseif() {
-
 					} else {
 						fieldValue = targetField.get(this).toString();
 					}
@@ -63,6 +73,11 @@ public abstract class ModelObject {
 		return retVal;
 	}
 
+	/**
+	 * This method returns the string casted value of a targeted field found by reflection.
+	 * @param _targetField
+	 * @return
+	 */
 	public String findValueFromFieldColumnDBAnnotation(Field _targetField) {
 		// Initialize a return value.
 		String retVal = null;
@@ -93,12 +108,23 @@ public abstract class ModelObject {
 	 * this.returnOnlyValueFromSingleResult(this.loadByCondition(keyValuePair)); }
 	 */
 
+	/**
+	 * This is a load by condition of a singular key value pair.
+	 * @param _name
+	 * @param _value
+	 * @return
+	 */
 	public ArrayList<ModelObject> loadByCondition(String _name, String _value) {
 		HashMap<String, String> keyValuePair = new HashMap<>();
 		keyValuePair.put(_name, _value);
 		return this.loadByCondition(keyValuePair);
 	}
 
+	/**
+	 * This method is used to load the rest of the object based on a map of key value pairs.
+	 * @param _data
+	 * @return
+	 */
 	public ArrayList<ModelObject> loadByCondition(HashMap<String, String> _data) {
 		ArrayList<ModelObject> retVal = new ArrayList<ModelObject>();
 		try {
@@ -110,11 +136,17 @@ public abstract class ModelObject {
 		return retVal;
 	}
 
+	/**
+	 * This is a broiler plate method that will update or create an object in the database depending on the value of the ID.
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
 	public boolean saveObjectInDatabase() throws IllegalArgumentException, IllegalAccessException {
 		// Initialize a return value for the caller defaulted to false.
 		boolean retVal = false;
 		// Has this object already been created?
-		if (this.id == 0) {
+		if (this.id == DatabaseConstants.DEFAULT_ID_VALUE) {
 			this.setId(DataStoreAdapter.createObject(this));
 			retVal = true;
 		} else {
@@ -124,10 +156,19 @@ public abstract class ModelObject {
 		return retVal;
 	}
 
+	/**
+	 * This method makes a row in the database corresponding to this object inactive.
+	 * @return
+	 */
 	public boolean deleteObjectFromDatabase() {
 		return DataStoreAdapter.deleteObject(this);
 	}
 
+	/**
+	 * This returns the value from the annotation key value pair for class parameters.
+	 * @param _key
+	 * @return
+	 */
 	public String findValueFromAnnotationKey(String _key) {
 		// Initialize a return value for the caller.
 		String retVal = null;
@@ -145,14 +186,26 @@ public abstract class ModelObject {
 		return retVal;
 	}
 
+	/**
+	 * Makes the active field true.
+	 */
 	public void makeActive() {
 		this.active = true;
 	}
 
+	/**
+	 * Makes the active field false.
+	 */
 	public void makeInactive() {
 		this.active = false;
 	}
 
+	/**
+	 * This returns a single object from a hash of strings and objects
+	 * @param _inputHash
+	 * @return
+	 * @deprecated
+	 */
 	public Object returnOnlyValueFromSingleResult(HashMap<String, Object> _inputHash) {
 		// Initialize a return value for the caller.
 		Object retVal = null;
@@ -179,6 +232,10 @@ public abstract class ModelObject {
 		return this.id;
 	}
 
+	public int getSortValue() {
+		return this.sortValue;
+	}
+
 	public String getClassName() {
 		return this.getClass().getName();
 	}
@@ -194,5 +251,17 @@ public abstract class ModelObject {
 
 	public void setId(int _id) {
 		this.id = _id;
+	}
+
+	public void setSortValue(int _sortValue) {
+		this.sortValue = _sortValue;
+	}
+
+	public void setIsActive(boolean _isActive) {
+		if(_isActive) {
+			this.makeActive();
+		} else {
+			this.makeInactive();
+		}
 	}
 }

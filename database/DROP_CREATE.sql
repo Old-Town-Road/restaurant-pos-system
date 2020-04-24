@@ -75,7 +75,6 @@ Create table if not exists pizzaposdb.POSTables  (
     isActive bit NOT NULL default 1,
 	TableName nvarchar(50) NOT NULL,
 	StoreID int NOT NULL,
-	TableStatus int NOT NULL,
 	primary key(ID)
 ); 
 
@@ -114,6 +113,7 @@ CREATE TABLE IF NOT EXISTS pizzaposdb.TransactionHistory (
     ID INT NOT NULL AUTO_INCREMENT,
     CheckID INT NOT NULL,
     UserID INT NOT NULL,
+    FinalTotal double not null,
     PaymentType INT NOT NULL,
     PaymentDate DATE NOT NULL,
     PaymentStatus INT NOT NULL,
