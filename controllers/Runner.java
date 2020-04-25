@@ -1,5 +1,14 @@
 package controllers;
 
+import java.awt.Color;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
 /**
  * This class starts up our application with the LogInWindow.fxml.
  *
@@ -8,6 +17,7 @@ package controllers;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.scene.*;
 import views.Frame;
 import views.SetView;
 
@@ -22,6 +32,8 @@ public class Runner extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
 		// Creating a views.Frame object with log in view as our main view
+		
+		
 		Frame frame = new Frame(primaryStage, SetView.LOG_IN_VIEW);
 	}
 
@@ -31,7 +43,7 @@ public class Runner extends Application {
 	* @param args
 	*/
 	public static void main(String[] args) {
-		launch(args);
+		Application.launch(args);
 	}
 
 }

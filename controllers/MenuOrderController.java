@@ -1,5 +1,7 @@
 package controllers;
 
+import javafx.collections.ObservableList;
+
 /*
  * Author : Ashim Chalise Date : 04/04/2020
  */
@@ -17,17 +19,19 @@ import views.Frame;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Insets;
 import models.Menu;
 import models.MenuItem;
 
 public class MenuOrderController {
-
+	
 	@FXML
 	private TabPane tabPane;
 	@FXML
@@ -37,7 +41,7 @@ public class MenuOrderController {
 	@FXML
 	private TextField tfTotal = new TextField();
 	
-	private double priceCount=0;
+	private double priceCount = 0;
 	private boolean debug = true;
 	private ArrayList<Menu> menusToTab = new ArrayList<Menu>();
 
@@ -60,29 +64,14 @@ public class MenuOrderController {
 		for (Menu targetMenu : this.menusToTab) {
 			this.addTab(targetMenu);
 		}
-		//Calling the method for the void button.
-		VoidItem = removeItem(VoidItem);
-
+		removeItem();
+		
 	}
 
-	//This is the method for void button. it removes an item from the order/
-	public Button removeItem(Button VoidItem) {
-		VoidItem.setOnAction(actionEvent -> {
-	        final int selectedIdx = listOfItems.getSelectionModel().getSelectedIndex();
-	        if (selectedIdx != -1) {
-	 
-	          final int newSelectedIdx = (selectedIdx == listOfItems.getItems().size() - 1)
-	               ? selectedIdx - 1
-	               : selectedIdx;
-	          
-	          
-	          listOfItems.getItems().remove(selectedIdx);
-	          listOfItems.getSelectionModel().select(newSelectedIdx);
-	        }
-	        });
-		return VoidItem;
-	}
-	// This method helps the user cash out by navigating to close check window
+	/**
+	 * This method helps the user cash out by navigating to close check window
+	 * @param _event
+	 */
 	@FXML
 	void cashOutAction(ActionEvent _event) {
 		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
@@ -90,7 +79,10 @@ public class MenuOrderController {
 		new Frame(new Stage(), SetView.CLOSE_CHECK_VIEW);
 	}
 
-	// This method helps the user send the order and get started again
+	/**
+	 * This method helps the user send the order and get started again
+	 * @param _event
+	 */
 	@FXML
 	void sendAction(ActionEvent _event) {
 		System.out.print("Order sent");
@@ -99,44 +91,95 @@ public class MenuOrderController {
 		new Frame(new Stage(), SetView.ORDER_TYPE_VIEW);
 	}
 
-	// this method adds tabs dynamically to the tabPane.
+	/**
+	 * This method adds tabs dynamically to the tabPane.
+	 * @param _targetMenu
+	 */
 	@FXML
 	private void addTab(Menu _targetMenu) {
 		Tab tab = new Tab(_targetMenu.getMenuName());
+		
+		tabPane.setTabMinWidth(100);
+		tabPane.setTabMinHeight(25);
+		tab.setStyle("-fx-border-color:YELLOWGREEN ; -fx-background-color: DEEPSKYBLUE ;");
 		tab.setContent(createVboxAndPutButtons(_targetMenu));
 		tabPane.getTabs().add(tab);
 	}
-
-	// this is the method to create vboxes dynamically and put them inside tabs.
-	// this method is called by addTab() method.
+	
+	/**
+	 * This is the method to create Vboxes dynamically and put them inside tabs.
+	 	This method is called by addTab() method.
+	 * @param _targetMenu
+	 * @return vbox
+	 */
 	private VBox createVboxAndPutButtons(Menu _targetMenu) {
-		VBox _vbox = new VBox();
+		
+		VBox vbox = new VBox();
+		
+		vbox.setPadding(new Insets(25, 25, 25, 25));
+		vbox.setSpacing(25);
+		vbox.setStyle("-fx-background-color: wheat ;");
 		for (int i = 0; i < _targetMenu.getItems().size(); i++) {
 			Button btn = new Button(_targetMenu.getItems().get(i).getItemName());
+			
+			btn.setPrefWidth(140);
+			btn.setPrefHeight(25);
+			btn.setStyle("-fx-border-color:YELLOWGREEN ; -fx-background-color: DEEPSKYBLUE ;");
 			double price = _targetMenu.getItems().get(i).getPrice();
 			btn.setOnAction(actionEvent -> {
 				listOfItems.getItems().add(vBoxInList(btn, price));
 			});
-			_vbox.getChildren().add(btn);
+			vbox.getChildren().add(btn);
 		}
+		return vbox;
+	}
 
-		return _vbox;
+	/**
+	 * This method creates VBoxes to show name and price of items inside the List or Order.
+	 * This method is called by createVboxAndPutButtons() method.
+	 * @param _btn
+	 * @param _price
+	 * @return vbox
+	 */
+	private VBox vBoxInList(Button _btn, double _price) {
+		Text name = new Text(_btn.getText());
+		Text priceText = new Text(String.valueOf(_price));
+
+		priceCount = Math.round((_price + priceCount)*100.0)/100.0;
+		tfTotal.setText(String.valueOf(priceCount));
+		
+		VBox vbox = new VBox(name, priceText);
+		
+		return vbox;
 	}
 	
-	private VBox vBoxInList(Button btn, double price) {
-		Text name = new Text(btn.getText());
-		Text priceText = new Text(String.valueOf(price));
+	/**
+	 * This is the method for void button. It removes an item from the order.
+	 */
+		public void removeItem() {
+			VoidItem.setOnAction(actionEvent -> {
+				final int selectedIdx = listOfItems.getSelectionModel().getSelectedIndex();
+				if (selectedIdx != -1) {
 
-		priceCount = price + priceCount;
-        tfTotal.setText(String.valueOf(priceCount));
-        
-        VBox _vbox = new VBox(name, priceText);
-        
-        
-		return _vbox;
-	}
+					final int newSelectedIdx = (selectedIdx == listOfItems.getItems().size() - 1) ? selectedIdx - 1
+							: selectedIdx;
 
-	// This is the method that returns an ArrayList of fake data for the program.
+
+					listOfItems.getItems().remove(selectedIdx);
+					listOfItems.getSelectionModel().select(newSelectedIdx);
+					
+					
+					//priceCount = Math.round((priceCount - 
+					//tfTotal.setText(String.valueOf(priceCount));
+
+				}
+			});
+		}
+
+	/**
+	 * This is the method that returns an ArrayList of fake data for the program.
+	 * @return retVal
+	 */
 	private ArrayList<Menu> assembleFakeData() {
 		ArrayList<Menu> retVal = new ArrayList<Menu>();
 		MenuItem pepPizza = new MenuItem(1, 1, "Pepperoni Pizza", 13.99, 0, 0);
