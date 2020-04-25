@@ -4,14 +4,17 @@ package models;
  * This class is used to organize items to be consumed by the menu view.
  * 
  * @author Ashim Chalise, Ian Wilhelmsen
- * @since UPDATED: 4/23/2020
+ * @since UPDATED: 4/24/2020
  */
 import java.util.ArrayList;
+import java.util.Collection;
 import database.DatabaseConstants;
 import models.MenuItem;
 
 @ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_MENU_TABLE_VALUE)
 public class Menu extends ModelObject{
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_STORE_ID_VALUE)
+	private int storeId;
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_MENU_NAME_VALUE)
 	private String menuName;
 	private ArrayList<MenuItem> items = new ArrayList<MenuItem>();
@@ -20,6 +23,7 @@ public class Menu extends ModelObject{
 
 	public Menu(String _menuName, int _menuType) {
 		super();
+		this.setStoreId(DatabaseConstants.DEFAULT_SORT_VALUE);
 		this.setMenuName(_menuName);
 		this.setMenuType(_menuType);
 	}
@@ -28,6 +32,7 @@ public class Menu extends ModelObject{
 		this.setUuid(_uuid);
 		this.setSortValue(_sortValue);
 		this.setIsActive(_isActive);
+		this.setStoreId(DatabaseConstants.DEFAULT_SORT_VALUE);
 		this.setMenuName(_menuName);
 		this.setMenuType(_menuType);
 	}
@@ -46,6 +51,9 @@ public class Menu extends ModelObject{
 		return this.menuType;
 	}
 
+	public int getStoreId() {
+		return this.storeId;
+	}
 	// ====================SETTERS====================
 
 	public void setMenuName(String _menuName) {
@@ -58,7 +66,14 @@ public class Menu extends ModelObject{
 		}
 	}
 
+	public void setItems(Collection<MenuItem> _items) {
+		this.items.addAll(_items);
+	}
 	public void setMenuType(int _menuType ) {
 		this.menuType = _menuType;
+	}
+
+	public void setStoreId(int _storeId) {
+		this.storeId = _storeId;
 	}
 }

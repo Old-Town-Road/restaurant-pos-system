@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Ticket extends ModelObject {
 
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_DATE_STARTED_VALUE)
-	private Date dateTime;
+	private Date dateStarted;
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_ID_VALUE)
 	private int userId;
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TABLE_ID_VALUE)
@@ -27,21 +27,21 @@ public class Ticket extends ModelObject {
 
 	private ArrayList<TicketItem> ticketItems = new ArrayList<TicketItem>();	
 
-	Ticket(Date _dateTime, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
+	Ticket(Date _dateStarted, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
 		super();
-		this.setDateTime(_dateTime);
+		this.setDateStarted(_dateStarted);
 		this.setUserId(_userId);
 		this.setTableId(_tableId);
 		this.setTicketStatus(_ticketStatus);
 		this.setTicketType(_ticketType);
 	}
 
-	Ticket(int _id, String uuid, int _sortValue, boolean _isActive, Date _dateTime, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
+	Ticket(int _id, String uuid, int _sortValue, boolean _isActive, Date _dateStarted, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
 		this.setId(_id);
 		this.setUuid(uuid);
 		this.setSortValue(_sortValue);
 		this.setIsActive(_isActive);
-		this.setDateTime(_dateTime);
+		this.setDateStarted(_dateStarted);
 		this.setUserId(_userId);
 		this.setTableId(_tableId);
 		this.setTicketStatus(_ticketStatus);
@@ -105,13 +105,13 @@ public class Ticket extends ModelObject {
 	 */
 	public String toString() {
 		return "\n\n================= Ticket " + this.getId() + " =================\n" + "Date & Time:\t"
-				+ this.dateTime + "\nUser ID:\t" + this.userId + "\nTable ID:\t" + this.tableId + "\nTicket Status:\t"
+				+ this.dateStarted + "\nUser ID:\t" + this.userId + "\nTable ID:\t" + this.tableId + "\nTicket Status:\t"
 				+ this.ticketStatus + "\n\n";
 	}
 
 	// ================= GETTERS ==========================
-	public Date getDateTime() {
-		return this.dateTime;
+	public Date getDateStarted() {
+		return this.dateStarted;
 	}
 
 	public int getUserId() {
@@ -131,8 +131,8 @@ public class Ticket extends ModelObject {
 	}
 
 	// ================= SETTERS ==========================
-	public void setDateTime(Date _dateTime) {
-		this.dateTime = _dateTime;
+	public void setDateStarted(Date _dateStarted) {
+		this.dateStarted = _dateStarted;
 	}
 
 	public void setUserId(int _userId) {

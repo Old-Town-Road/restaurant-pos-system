@@ -18,6 +18,8 @@ public class DatabaseConstants {
 	public static final String DB_TABLE_STORE_VALUE = "Store";
 	public static final String DB_TABLE_TICKET_VALUE = "Ticket";
 	public static final String DB_TABLE_USER_VALUE = "UserLU";
+	public static final String DB_TABLE_TICKET_ITEM_VALUE = "TicketItem";
+	public static final String DB_TABLE_TRANSACTION_HISTORY_VALUE = "TransactionHistory";
 	
 	//All class names.
 	public static final String MENU_CLASS_NAME = "Menu";
@@ -26,7 +28,8 @@ public class DatabaseConstants {
 	public static final String TICKET_CLASS_NAME = "Ticket";
 	public static final String USER_CLASS_NAME = "User";
 	public static final String CHECK_CLASS_NAME = "Check";
-	//public static final String MENU_CLASS_NAME
+	public static final String TICKET_ITEM_CLASS_NAME = "TicketItem";
+	public static final String TRANSACTION_HISTORY_CLASS_NAME = "TransactionHistory";
 
 	public static final String TARGET_SUPER_CLASS = "java.lang.Object";
 	public static final int STORE_ID_CONSTANT = 1;
@@ -73,11 +76,16 @@ public class DatabaseConstants {
 	public static final String DB_USER_ROLEID_VALUE = "RoleID";
 
 	//Transaction history model database column constants.
-	public static final String DB_TRANSACTION_HISTORY_CHECK_ID = "CheckID";
-	public static final String DB_TRANSACTION_HISTORY_FINAL_TOTAL = "FinalTotal";
-	public static final String DB_TRANSACTION_HISTORY_PAYMENT_TYPE = "PaymentType";
-	public static final String DB_TRANSACTION_HISTORY_PAYMENT_DATE = "PaymentDate";
-	public static final String DB_TRANSACTION_HISTORY_PAYMENT_STATUS = "PaymentStatus";
+	public static final String DB_TRANSACTION_HISTORY_CHECK_ID_VALUE = "CheckID";
+	public static final String DB_TRANSACTION_HISTORY_FINAL_TOTAL_VALUE = "FinalTotal";
+	public static final String DB_TRANSACTION_HISTORY_PAYMENT_TYPE_VALUE = "PaymentType";
+	public static final String DB_TRANSACTION_HISTORY_PAYMENT_DATE_VALUE = "PaymentDate";
+	public static final String DB_TRANSACTION_HISTORY_PAYMENT_STATUS_VALUE = "PaymentStatus";
+
+	//Ticket Item model database column constants.
+	public static final String DB_TICKET_ITEM_TICKET_ID_VALUE = "TicketID";
+	public static final String DB_TICKET_ITEM_MENU_ITEM_ID_VALUE = "MenuItemID";
+	public static final String DB_TICKET_ITEM_ITEM_PRICE_VALUE = "ItemPrice";
 
 	//Base key value arguments.
 	//public static Map<String, String>
@@ -94,10 +102,21 @@ public class DatabaseConstants {
 		retVal.put(DB_STORE_ID_VALUE, String.valueOf(_storeID));
 		return retVal;
 	}
+
+	/**
+	 * This is an offshoot method of base ReadMenuKVPairs. It returns menus from the database.
+	 * @param _isActive
+	 * @param _storeID
+	 * @return
+	 */
 	public static Map<String, String> getReadMenuKVPairs(boolean _isActive, int _storeID) {
 		return getReadMenuKVPairs(booleanToBit(_isActive), _storeID);
 	}
 
+	/**
+	 * This is an offshoot method of the base getreadmenukvpairs but this only brings the active ones.
+	 * @return
+	 */
 	public static Map<String, String> getReadActiveMenuKVPairs() {
 		return getReadMenuKVPairs(booleanToBit(true), STORE_ID_CONSTANT);
 	}
@@ -116,6 +135,11 @@ public class DatabaseConstants {
 		return retVal;
 	}
 
+	/**
+	 * This method returns the active menu items from the database from getreadmenuutemkvpairs.
+	 * @param _menuId
+	 * @return
+	 */
 	public static Map<String, String> getReadActiveMenuItemKVPairs(int _menuId) {
 		return getReadMenuItemKVPairs(true, _menuId);
 	}
@@ -134,6 +158,10 @@ public class DatabaseConstants {
 		return retVal;
 	}
 
+	/**
+	 * This method only returns the kv pairs from the active tables from the database.
+	 * @return
+	 */
 	public static Map<String, String> getReadActiveTableKVPairs() {
 		return getReadTableKVPairs(true, STORE_ID_CONSTANT);
 	}
@@ -154,6 +182,12 @@ public class DatabaseConstants {
 		return retVal;
 	}
 
+	/**
+	 * This method provides the kv pairs for getting the active tickets from the database.
+	 * @param _userId
+	 * @param _tableId
+	 * @return
+	 */
 	public static Map<String, String> getReadActiveTicketKVPairs(int _userId, int _tableId) {
 		return getReadTicketKVPairs(_userId, _tableId, true);
 	}
@@ -171,6 +205,11 @@ public class DatabaseConstants {
 		return retVal;
 	}
 
+	/**
+	 * This method provideds the kv pairs to pull active users matching the username provided.
+	 * @param _userName
+	 * @return
+	 */
 	public static Map<String, String> getReadActiveUserKVPairs(String _userName) {
 		return getReadUserKVPairs(true, _userName);
 	}
@@ -192,10 +231,80 @@ public class DatabaseConstants {
 		return retVal;
 	}
 
+	/**
+	 * This method provides the kv pairs that return the open active checks in the database.
+	 * @param _tableId
+	 * @param _userId
+	 * @return
+	 */
 	public static Map<String, String> getReadActiveOpenCheckKVPairs(int _tableId, int _userId) {
 		return getReadCheckKVPairs(true, _tableId, _userId, ModelConstants.CHECK_TYPE_OPEN);
 	}
 
+	/**
+	 * This method grabs the key value pairs for ticket items.
+	 * @param _isActive
+	 * @param _menuID
+	 * @return
+	 */
+	public static Map<String, String> getReadTicketItemKVPairs(boolean _isActive, int _menuID) {
+		HashMap<String, String> retVal = new HashMap<String, String>();
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
+		retVal.put(DB_MENU_ID_VALUE, String.valueOf(_menuID));
+		return retVal;
+	}
+
+	/**
+	 * This method grabs the key value pairs for the active ticket items.
+	 * @param _menuID
+	 * @return
+	 */
+	public static Map<String, String> getReadActiveTicketItemKVPairs(int _menuID) {
+		return getReadTicketItemKVPairs(true, _menuID);
+	}
+
+	/**
+	 * This methods grabs the key value pairs for transaction history from the database.
+	 * @param _isActive
+	 * @param _userId
+	 * @param _paymentStatus
+	 * @return
+	 */
+	public static Map<String, String> getReadTransactionHistory(String _isActive, String _userId, String _paymentStatus) {
+		HashMap<String, String> retVal = new HashMap<String, String>();
+		retVal.put(DB_IS_ACTIVE_VALUE, _isActive);
+		retVal.put(DB_USER_ID_VALUE, _userId);
+		retVal.put(DB_TRANSACTION_HISTORY_PAYMENT_STATUS_VALUE, String.valueOf(_paymentStatus));
+		return retVal;
+	}
+
+	public static Map<String, String> getReadTransactionHistory(boolean _isActive, int _userId, int _paymentStatus) {
+		return getReadTransactionHistory(booleanToBit(_isActive), String.valueOf(_userId), String.valueOf(_paymentStatus));
+	}
+
+	/**
+	 * This method grabs the key value pairs for active open transaction history from the database.
+	 * @param _userId
+	 * @return
+	 */
+	public static Map<String, String> getReadActiveOpenTransactionHistoryByUserId(int _userId) {
+		return getReadTransactionHistory(true, _userId, ModelConstants.PAYMENT_STATUS_OPEN);
+	}
+
+	/**
+	 * This method grabs the key value pairs for active paid transaction histories by userId.
+	 * @param _userId
+	 * @return
+	 */
+	public static Map<String, String> getReadPaidTransactionHistoryByUserId(int _userId) {
+		return getReadTransactionHistory(true, _userId, ModelConstants.PAYMENT_STATUS_PAID);
+	}
+
+	/**
+	 * This method returns a string based on the boolean provided.
+	 * @param _value
+	 * @return
+	 */
 	public static String booleanToBit(boolean _value) {
 		return (_value ? "1" : "0");
 	}

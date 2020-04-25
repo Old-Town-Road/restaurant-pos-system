@@ -2,38 +2,38 @@ Drop database if exists `pizzaposdb`;
 CREATE DATABASE `pizzaposdb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 Create table if not exists pizzaposdb.PosCheck (
 	  ID INT NOT NULL AUTO_INCREMENT,
-	  UUID nvarchar(36) NOT NULL,
+	  UUID varchar(36) NOT NULL,
+      IsActive bit NOT NULL default 1,
+      SortValue int not null default 0,
 	  TableID INT NOT NULL,
 	  UserID INT NOT NULL,
 	  CheckStatus INT NOT NULL,
 	  DateStarted DATETIME NOT NULL,
 	  DateClosed datetime NULL,
-      IsActive bit NOT NULL default 1,
-      SortValue int not null default 0,
 	  PRIMARY KEY (ID)
 );
 Create table if not exists pizzaposdb.CheckStatusLU (
 	ID int NOT NULL,
-	CheckStatus nvarchar(50) NULL,
+	CheckStatus varchar(50) NULL,
     primary key(ID)
  );
 Create table if not exists pizzaposdb.Menu(
 	ID int NOT NULL auto_increment,
-    UUID nvarchar(36) NOT NULL,
-    sortValue int NOT NULL default 0,
-    isActive bit NOT NULL default 1,
+    UUID varchar(36) NOT NULL,
+    IsActive bit NOT NULL default 1,
+    SortValue int NOT NULL default 0,
 	StoreID int NOT NULL,
+    MenuName varchar(64) NULL,
 	MenuType int NOT NULL,
-	MenuName nvarchar(50) NULL,
 	PRIMARY KEY (ID)
 );
 Create table if not exists pizzaposdb.MenuItem  (
 	ID INT NOT NULL AUTO_INCREMENT,
-    UUID nvarchar(36) NOT NULL,
+    UUID varchar(36) NOT NULL,
     sortValue int NOT NULL default 0,
     isActive bit NOT NULL default 1,
 	MenuID int NOT NULL,
-	ItemName nvarchar(50) NOT NULL,
+	ItemName varchar(64) NOT NULL,
 	Price double NOT NULL,
 	PriorityScore int NULL,
 	ExecutionTime int NULL,
@@ -41,52 +41,52 @@ Create table if not exists pizzaposdb.MenuItem  (
 );
 Create table if not exists pizzaposdb.MenuTypeLU  (
 	ID int NOT NULL,
-	MenuType nvarchar(50) NULL,
+	MenuType varchar(50) NULL,
     primary key(ID)
 ); 
 Create table if not exists pizzaposdb.PaymentStatusLU  (
 	ID INT NOT NULL AUTO_INCREMENT,
-	PaymentStatusType nvarchar(50) NOT NULL,
+	PaymentStatusType varchar(50) NOT NULL,
 	primary key(ID)
 ); 
 
 Create table if not exists pizzaposdb.PaymentTypeLU (
 	ID INT NOT NULL AUTO_INCREMENT,
-	PaymentType nvarchar(50) NULL,
+	PaymentType varchar(50) NULL,
     primary key(ID)
 ); 
 
 Create table if not exists pizzaposdb.RoleLU  (
 	ID int NOT NULL,
-	RoleType nvarchar(50) NULL,
+	RoleType varchar(50) NULL,
 	primary key(ID)
 ); 
 
 Create table if not exists pizzaposdb.Store  (
 	ID int NOT NULL,
-	StoreName nvarchar(50) NOT NULL,
+	StoreName varchar(50) NOT NULL,
 	primary key(ID)
 ); 
 
 Create table if not exists pizzaposdb.POSTables  (
 	ID INT NOT NULL AUTO_INCREMENT,
-	UUID nvarchar(36) NOT NULL,
+	UUID varchar(36) NOT NULL,
     sortValue int NOT NULL default 0,
     isActive bit NOT NULL default 1,
-	TableName nvarchar(50) NOT NULL,
+	TableName varchar(50) NOT NULL,
 	StoreID int NOT NULL,
 	primary key(ID)
 ); 
 
 Create table if not exists pizzaposdb.TableStatusLU  (
 	ID int NOT NULL,
-	TableStatus nvarchar(50) NULL,
+	TableStatus varchar(50) NULL,
 	primary key(ID)
 ); 
 
 CREATE TABLE IF NOT EXISTS pizzaposdb.Ticket (
     ID INT NOT NULL AUTO_INCREMENT,
-	UUID nvarchar(36) NOT NULL,
+	UUID varchar(36) NOT NULL,
     sortValue int NOT NULL default 0,
     isActive bit NOT NULL default 1,
     DateStarted DATE NOT NULL,
@@ -99,18 +99,21 @@ CREATE TABLE IF NOT EXISTS pizzaposdb.Ticket (
 
 Create table if not exists pizzaposdb.TicketStatusLU  (
 	ID INT NOT NULL AUTO_INCREMENT,
-	TicketStatus nvarchar(50) NULL,
+	TicketStatus varchar(50) NULL,
 	primary key(ID)
 ); 
 
 CREATE TABLE IF NOT EXISTS pizzaposdb.TicketTypeLU (
     ID INT NOT NULL,
-    TicketType NVARCHAR(50) NULL,
+    TicketType varchar(50) NULL,
     PRIMARY KEY (ID)
 ); 
 
 CREATE TABLE IF NOT EXISTS pizzaposdb.TransactionHistory (
     ID INT NOT NULL AUTO_INCREMENT,
+    UUID varchar(36) not null,
+    IsActive bit default 1,
+    SortValue int default 0,
     CheckID INT NOT NULL,
     UserID INT NOT NULL,
     FinalTotal double not null,
@@ -122,17 +125,42 @@ CREATE TABLE IF NOT EXISTS pizzaposdb.TransactionHistory (
 
 Create table if not exists pizzaposdb.UserLU  (
 	ID INT NOT NULL AUTO_INCREMENT,
-	UserName nvarchar(50) NOT NULL,
-	FirstName nvarchar(50) NOT NULL,
-	LastName nvarchar(50) NOT NULL,
+	UserName varchar(50) NOT NULL,
+	FirstName varchar(50) NOT NULL,
+	LastName varchar(50) NOT NULL,
 	RoleID int NOT NULL,
     primary key(`ID`)
 );
 
+create table if not exists pizzaposdb.TicketItem (
+	ID int not null auto_increment,
+    UUID varchar(36) not null,
+    SortValue int default 0,
+    IsActive bit default 1,
+    TicketID int not null,
+    MenuItemID int not null,
+    ItemPrice double not null,
+    primary key(`ID`)
+);
+
+Alter table pizzaposdb.TicketItem
+	add foreign key
+    ticket_ticketitem (TicketID)
+    references pizzaposdb.ticket (ID)
+    on update cascade
+    on delete cascade;
+
+Alter table pizzaposdb.TicketItem
+	add foreign key
+    menuitem_ticketitem (MenuItemID)
+    references pizzaposdb.MenuItem (ID)
+    on update cascade
+    on delete cascade;
+
 Alter table pizzaposdb.POSCheck
 	ADD FOREIGN KEY
     check_table (TableId)
-    references pizzaposdb.postables (id)
+    references pizzaposdb.postables (ID)
     on update cascade
     on delete cascade;
 
@@ -146,14 +174,14 @@ Alter table pizzaposdb.POSCheck
 Alter table pizzaposdb.POSCheck
 	ADD FOREIGN KEY
     check_checkstatus (CheckStatus)
-    references pizzaposdb.checkstatuslu (id)
+    references pizzaposdb.checkstatuslu (ID)
     on update cascade
     on delete cascade;
 
 Alter table pizzaposdb.menu
 	ADD FOREIGN KEY
-    menu_store (StoreId)
-    references pizzaposdb.store (id)
+    menu_store (StoreID)
+    references pizzaposdb.store (ID)
     on update cascade
     on delete cascade;
 
@@ -161,76 +189,76 @@ Alter table pizzaposdb.menu
 Alter table pizzaposdb.menu
 	ADD FOREIGN KEY
     menu_menutype (menutype)
-    references pizzaposdb.menutypelu (id)
+    references pizzaposdb.menutypelu (ID)
     on update cascade
     on delete cascade;
 
 Alter table pizzaposdb.menuitem
 	ADD FOREIGN KEY
-    menuitem_menu (menuid)
-    references pizzaposdb.menu (id)
+    menuitem_menu (MenuID)
+    references pizzaposdb.menu (ID)
     on update cascade
     on delete cascade;
 
 alter table pizzaposdb.ticket
 	add foreign key
-    ticket_userid (userid)
-    references pizzaposdb.userlu (id)
+    ticket_userid (UserID)
+    references pizzaposdb.userlu (ID)
     on update cascade
     on delete cascade;
 
 alter table pizzaposdb.ticket
 	add foreign key
-    ticket_resttable (tableid)
-    references pizzaposdb.postables (id)
+    ticket_resttable (TableID)
+    references pizzaposdb.postables (ID)
     on update cascade
     on delete cascade;
 
 alter table pizzaposdb.ticket
 	add foreign key
-    ticket_ticketstatuslu (ticketstatus)
-    references pizzaposdb.ticketstatuslu (id)
+    ticket_ticketstatuslu (TicketStatus)
+    references pizzaposdb.ticketstatuslu (ID)
     on update cascade
     on delete cascade;
     
 alter table pizzaposdb.ticket
 	add foreign key
-    ticket_tickettypelu (tickettype)
-    references pizzaposdb.tickettypelu (id)
+    ticket_tickettypelu (TicketType)
+    references pizzaposdb.tickettypelu (ID)
     on update cascade
     on delete cascade;
 
 alter table pizzaposdb.userlu
 	add foreign key
-    userlu_roleid (roleid)
-    references pizzaposdb.rolelu (id)
+    userlu_roleid (RoleID)
+    references pizzaposdb.rolelu (ID)
     on update cascade
     on delete cascade;
 
 alter table pizzaposdb.TransactionHistory
 	add foreign key
-    transact_restcheck (checkid)
-    references pizzaposdb.poscheck (id)
+    transact_restcheck (CheckID)
+    references pizzaposdb.poscheck (ID)
     on update cascade
     on delete cascade;
 
 alter table pizzaposdb.transactionhistory
 	add foreign key
-    transact_userlu (userid)
-    references pizzaposdb.userlu (id)
+    transact_userlu (UserID)
+    references pizzaposdb.userlu (ID)
     on update cascade
     on delete cascade;
     
 alter table pizzaposdb.transactionhistory
 	add foreign key
-    transact_paymenttype (paymenttype)
-    references pizzaposdb.paymenttypelu (id)
+    transact_paymenttype (PaymentType)
+    references pizzaposdb.paymenttypelu (ID)
     on update cascade
     on delete cascade;
 
 alter table pizzaposdb.transactionhistory
 	add foreign key
-    transact_paymentstatus (paymentstatus)
-    references pizzaposdb.paymentstatuslu (id)
+    transact_paymentstatus (PaymentStatus)
+    references pizzaposdb.paymentstatuslu (ID)
     on update cascade
     on delete cascade;

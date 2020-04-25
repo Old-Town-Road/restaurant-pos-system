@@ -8,22 +8,23 @@ package models;
 import java.util.Date;
 import database.DatabaseConstants;
 
+@ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_TRANSACTION_HISTORY_VALUE)
 public class TransactionHistory extends ModelObject {
-	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_FINAL_TOTAL)
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_FINAL_TOTAL_VALUE)
 	private double finalTotal;
-	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_CHECK_ID)
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_CHECK_ID_VALUE)
 	private int checkId;
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_USER_ID_VALUE)
 	private int userId;
-	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_PAYMENT_TYPE)
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_PAYMENT_TYPE_VALUE)
 	private int paymentType;
-	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_PAYMENT_STATUS)
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_PAYMENT_STATUS_VALUE)
 	private int paymentStatus;
-	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_PAYMENT_DATE)
+	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_PAYMENT_DATE_VALUE)
 	private Date paymentDate;
 
 	public TransactionHistory(double _finalTotal, int _checkId, int _userId, int _paymentType, int _paymentStatus, Date _paymentDate) {
-		this.setSortValue(DatabaseConstants.DEFAULT_SORT_VALUE);
+		super();
 		this.setFinalTotal(_finalTotal);
 		this.setCheckId(_checkId);
 		this.setUserId(_userId);
