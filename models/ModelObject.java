@@ -6,6 +6,8 @@ package models;
  * @author Ian Wilhelmsen last updated: 3/20/2020
  */
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,9 +43,9 @@ public abstract class ModelObject {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public HashMap<String, String> getDataKeyValuePairs() throws IllegalArgumentException, IllegalAccessException {
+	public LinkedHashMap<String, String> getDataKeyValuePairs() throws IllegalArgumentException, IllegalAccessException {
 		// Initialize a return value.
-		HashMap<String, String> retVal = new HashMap<>();
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
 		// Starting the current class spin through all levels of this class
 		Class<?> targetClass = this.getClass();
 		while (!targetClass.getName().equals(DatabaseConstants.TARGET_SUPER_CLASS)) {
@@ -51,6 +53,7 @@ public abstract class ModelObject {
 			Field[] fields = targetClass.getDeclaredFields();
 			for (Field targetField : fields) {
 				// If this field is a private or protected field, continue.
+				targetField.setAccessible(true);
 				int fieldModifier = targetField.getModifiers();
 				if ((Modifier.isPrivate(fieldModifier) || Modifier.isProtected(fieldModifier)) && (!Collection.class.isAssignableFrom(targetField.getType()))){
 					// Capture the field name based off the annotation.
@@ -85,10 +88,13 @@ public abstract class ModelObject {
 		Annotation[] fieldAnnotations = _targetField.getAnnotations();
 		// Spin through the annotations until finding the column name.
 		for (Annotation annotation : fieldAnnotations) {
-			if (annotation instanceof ModelAnnotations
-					&& ((ModelAnnotations) annotation).key() == DatabaseConstants.DB_COLUMN_NAME_KEY) {
-				retVal = ((ModelAnnotations) annotation).value();
-				break;
+			// If this is the table name key, grab the value.
+			if (annotation instanceof ModelAnnotations) {
+				ModelAnnotations myAnnotation = ((ModelAnnotations) annotation);
+				if(myAnnotation.key().equals(DatabaseConstants.DB_COLUMN_NAME_KEY)) {
+					retVal = myAnnotation.value();
+					break;
+				}
 			}
 		}
 		// Return the value to the caller.
@@ -115,7 +121,7 @@ public abstract class ModelObject {
 	 * @return
 	 */
 	public ArrayList<ModelObject> loadByCondition(String _name, String _value) {
-		HashMap<String, String> keyValuePair = new HashMap<>();
+		LinkedHashMap<String, String> keyValuePair = new LinkedHashMap<String, String>();
 		keyValuePair.put(_name, _value);
 		return this.loadByCondition(keyValuePair);
 	}
@@ -125,7 +131,7 @@ public abstract class ModelObject {
 	 * @param _data
 	 * @return
 	 */
-	public ArrayList<ModelObject> loadByCondition(HashMap<String, String> _data) {
+	public ArrayList<ModelObject> loadByCondition(Map<String, String> _data) {
 		ArrayList<ModelObject> retVal = new ArrayList<ModelObject>();
 		try {
 			// This method fills this object with data from the database.
@@ -177,9 +183,13 @@ public abstract class ModelObject {
 		// Find the table name by the key.
 		for (Annotation annotation : classAnnotations) {
 			// If this is the table name key, grab the value.
-			if (annotation instanceof ModelAnnotations && ((ModelAnnotations) annotation).key() == _key) {
-				retVal = ((ModelAnnotations) annotation).value();
-				break;
+			if (annotation instanceof ModelAnnotations) {
+				ModelAnnotations myAnnotation = ((ModelAnnotations) annotation);
+				String bleh = myAnnotation.key();
+				if(myAnnotation.key().equals(_key)) {
+					retVal = myAnnotation.value();
+					break;
+				}
 			}
 		}
 		// Return the final value to the caller

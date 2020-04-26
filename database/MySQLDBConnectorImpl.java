@@ -32,21 +32,21 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	// connection information
 	private final String dbmsDriverInfo = "jdbc:mysql:";
 	private final String hostString = "//localhost:3306/";
-	private final String dbName = "";
-	private final String userName = "";
-	private final String password = "";
+	private final String dbName = "pizzaposdb";
+	private final String userName = "pizzaposuser";
+	private final String password = "Burnt4Pizzas!";
 
 	// NOTE: CLASS DEBUG MODE
-	// TODO flip this value for production
+	// TODO flip this value to false for production
 	// This will give back stubbed values while true
-	private final boolean debugMode = true;
+	private final boolean debugMode = false;
 
 	// SQL CallableStatements Strings for SQL statement creation
-	private final String startOfSQLStatement = "{call ";
+	private final String startOfSQLStatement = "{CALL ";
 	private final String dbNameDefiner = dbName + ".";
 	private final String dbParameterStart = "(";
 	private final String sqlParameterPlaceholder = "?,";
-	private final String endSQLStatement = ")}";
+	private final String endSQLStatement = "?)}";
 	private final String createStoredProcedurePrefix = "create_";
 	private final String readStoredProcedurePrefix = "read_";
 	private final String updateStoredProcedurePrefix = "update_";
@@ -61,6 +61,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	private final int successValue = 1;
 	private final int singleStoredProcedureReturn = 1;
 	private final int minIDReturnVal = 0;
+	private final int callableStartValue = 1;
 
 	MySQLDBConnectorImpl() {
 		// start the connection
@@ -137,7 +138,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 					retVal.add(resultObject);
 				}
 			} catch (SQLException | InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+					| InvocationTargetException | NoSuchMethodException | SecurityException
+					| ClassNotFoundException e) {
 				// TODO find a common solution for this
 				e.printStackTrace();
 			}
@@ -239,12 +241,13 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 			// procedure call.
 			int numberOfParameters = this.findNumberOfParametersWithReturn(_keyValuePairs, _storedProcedurePrefix);
 			// Construct the base call.
-			this.sql = this.conn.prepareCall(
-					this.makeSQLPreparedCallString(_storedProcedurePrefix + _tableName, numberOfParameters));
+			String ret = this.makeSQLPreparedCallString(_storedProcedurePrefix + _tableName, numberOfParameters);
+			this.sql = this.conn.prepareCall(ret);
 			// update the call with the parameters
 			this.assembleCallableStatement(_keyValuePairs);
 			// If there are parameters to be registered then do so.
-			this.registerOutParameters(numberOfParameters, _keyValuePairs.size());
+			this.sql.registerOutParameter(numberOfParameters, java.sql.Types.INTEGER); //TODO this is where it blows up
+			// this.registerOutParameters(numberOfParameters, _keyValuePairs.size());
 			// Catch any errors that come up.
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block.
@@ -261,7 +264,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		// spin through the map and populate the call
 		// REMEMBER: this SQL library call starts iterating at one.
 		// Start a counter
-		int i = 1;
+		int i = this.callableStartValue;
 		// spin through the key value pairs
 		for (Entry<String, String> keyValuePair : _keyValuePairs.entrySet()) {
 			// add in the parameter in a try catch
@@ -290,22 +293,28 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 */
 	private String makeSQLPreparedCallString(String _sqlStoredProcedureName, int _numberOfParameters) {
 		// initiate a return value as a string builder
-		StringBuilder retVal = new StringBuilder();
-		// start of the statement and add the stored procedure name
-		retVal.append(this.startOfSQLStatement);
-		retVal.append(this.dbNameDefiner);
-		retVal.append(_sqlStoredProcedureName);
-		retVal.append(this.dbParameterStart);
-		// loop through the number of parameters and add placeholders to return value
+//		StringBuilder retVal = new StringBuilder(); 
+//		// start of the statement and add the stored procedure name 
+//		retVal.append(this.startOfSQLStatement);
+//		retVal.append(this.dbNameDefiner); 
+//		retVal.append(_sqlStoredProcedureName);
+//		retVal.append(this.dbParameterStart);
+//		// loop through the number of parameters and add placeholders to return value.
+//		for (int i = 0; i < _numberOfParameters; i++) {
+//			// add a on a placeholder
+//			retVal.append(this.sqlParameterPlaceholder);
+//		}
+//		// Complete the sql callable by removing the trailing comma and adding the brace.
+//		retVal.replace(retVal.length() - 1, retVal.length() - 1, this.endSQLStatement);
+//		// return the value to the caller
+//		return retVal.toString();
+		String retVal = this.startOfSQLStatement + this.dbNameDefiner + _sqlStoredProcedureName + this.dbParameterStart;
 		for (int i = 0; i < _numberOfParameters; i++) {
 			// add a on a placeholder
-			retVal.append(this.sqlParameterPlaceholder);
+			retVal = retVal.concat(this.sqlParameterPlaceholder);
 		}
-		// complete the sql callable by removing the last trailing comma and adding the
-		// brace
-		retVal.replace(retVal.length() - 1, retVal.length() - 1, this.endSQLStatement);
-		// return the value to the caller
-		return retVal.toString();
+		retVal  = retVal.concat(this.endSQLStatement);
+		return retVal;
 	}
 
 	/**
@@ -355,10 +364,10 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 				// Initialize a number of parametes needed.
 				int numberOfParametersNeeded = _numberOfParameters - _numberOfKeyValuePairs;
 				// For the number of parameters needed, register that index as an out.
-				for (int i = 0; i <= numberOfParametersNeeded; i++) {
+				for (int i = 1; i <= numberOfParametersNeeded; i++) {
 					// Register this i in the callable statement.
 					// If the array of return data types is empty then assume it is an integer.
-					if (_typesToReturn.length == 0) {
+					if (_typesToReturn == null) {
 						this.sql.registerOutParameter(i + _numberOfKeyValuePairs, java.sql.Types.INTEGER);
 					}
 					// Else, decode the data type and register it.
@@ -409,6 +418,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 
 	/**
 	 * This method creates an instance of a target Model Object.
+	 * 
 	 * @param _targetClass
 	 * @return
 	 * @throws ClassNotFoundException
@@ -419,7 +429,9 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @throws NoSuchMethodException
 	 * @throws SecurityException
 	 */
-	private ModelObject makeModelObject(Class<?> _targetClass) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	private ModelObject makeModelObject(Class<?> _targetClass)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException {
 		ModelObject retVal = (ModelObject) _targetClass.getConstructor().newInstance();
 		return (ModelObject) _targetClass.cast(retVal);
 	}
@@ -432,14 +444,15 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 * @throws SQLException
-	 * @throws SecurityException 
-	 * @throws NoSuchMethodException 
-	 * @throws InvocationTargetException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws InstantiationException
+	 * @throws ClassNotFoundException
 	 */
 	private Object fillOutObject(ResultSet _results, Class<?> _targetClass)
-			throws IllegalArgumentException, IllegalAccessException, SQLException, ClassNotFoundException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
+			throws IllegalArgumentException, IllegalAccessException, SQLException, ClassNotFoundException,
+			InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		// Create a return value for the method
 		Object retVal = this.makeModelObject(_targetClass);
 		// Loop through each field in the target class and
@@ -476,6 +489,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 
 	/**
 	 * This method translates the primitive types for the object casts.
+	 * 
 	 * @param type: The input type to translate.
 	 * @return Class: The return is the target cast for consumption.
 	 */

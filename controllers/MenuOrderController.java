@@ -207,7 +207,7 @@ public class MenuOrderController {
 		MenuItem[] pMenu = { pepPizza, chePizza };
 		MenuItem[] dMenu = { cokeDrink, spriteDrink };
 		MenuItem[] sMenu = { friesSide, chicNuggetsSide };
-		//Menu(String _menuName, int _menuType)
+
 		Menu pizzaMenu = new Menu("Pizza", ModelConstants.MENU_TYPE_PIZZAS);
 		pizzaMenu.setItems(pMenu);
 		Menu drinkMenu = new Menu("Drink", ModelConstants.MENU_TYPE_DRINKS);
