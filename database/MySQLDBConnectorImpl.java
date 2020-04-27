@@ -1,6 +1,5 @@
 package database;
 
-import java.util.ArrayList;
 /**
  * This class handles the connection to the MySQL DB.
  * Implements the DB ConnectorInterface.
@@ -8,13 +7,12 @@ import java.util.ArrayList;
  * 
  * @author Ian Wilhelmsen, last updated: 3/19/2020
  */
-import java.util.HashMap;
+
 import java.util.Map;
 import java.util.Map.Entry;
-
+import java.util.ArrayList;
 import models.ModelAnnotations;
 import models.ModelObject;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -31,6 +29,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 
 	// connection information
 	private final String dbmsDriverInfo = "jdbc:mysql:";
+	private final String dbmsDriverClass = "com.mysql.cj.jdbc.Driver";
 	private final String hostString = "//localhost:3306/";
 	private final String dbName = "pizzaposdb";
 	private final String userName = "pizzaposuser";
@@ -51,7 +50,6 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	private final String readStoredProcedurePrefix = "read_";
 	private final String updateStoredProcedurePrefix = "update_";
 	private final String deleteStoredProcedurePrefix = "delete_";
-	private final String descriptionColumnString = "Description";
 
 	// annotation constants
 	private final String tableNameAnnotation = DatabaseConstants.TABLE_NAME_ANNOTATION;
@@ -65,7 +63,13 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 
 	MySQLDBConnectorImpl() {
 		// start the connection
-		this.connect();
+		try {
+			Class.forName(dbmsDriverClass);
+			this.connect();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -241,12 +245,14 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 			// procedure call.
 			int numberOfParameters = this.findNumberOfParametersWithReturn(_keyValuePairs, _storedProcedurePrefix);
 			// Construct the base call.
-			String ret = this.makeSQLPreparedCallString(_storedProcedurePrefix + _tableName, numberOfParameters);
-			this.sql = this.conn.prepareCall(ret);
+			//String ret = this.makeSQLPreparedCallString(_storedProcedurePrefix + _tableName, numberOfParameters);
+			//this.sql = this.conn.prepareCall(ret);
+			this.sql = this.conn.prepareCall(this.makeSQLPreparedCallString(_storedProcedurePrefix + _tableName, numberOfParameters));
 			// update the call with the parameters
 			this.assembleCallableStatement(_keyValuePairs);
 			// If there are parameters to be registered then do so.
-			this.sql.registerOutParameter(numberOfParameters, java.sql.Types.INTEGER); //TODO this is where it blows up
+			this.sql.registerOutParameter((numberOfParameters - 1), java.sql.Types.INTEGER);
+			//this.sql.registerOutParameter(numberOfParameters, java.sql.Types.INTEGER); //TODO this is where it blows up
 			// this.registerOutParameters(numberOfParameters, _keyValuePairs.size());
 			// Catch any errors that come up.
 		} catch (SQLException e) {
@@ -269,8 +275,11 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		for (Entry<String, String> keyValuePair : _keyValuePairs.entrySet()) {
 			// add in the parameter in a try catch
 			try {
-				// Adding in the value for the call
-				this.sql.setString(i, keyValuePair.getValue());
+				if(i <= _keyValuePairs.size() + 1)
+				{
+					// Adding in the value for the call
+					this.sql.setString(i, keyValuePair.getValue());
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -308,8 +317,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 //		retVal.replace(retVal.length() - 1, retVal.length() - 1, this.endSQLStatement);
 //		// return the value to the caller
 //		return retVal.toString();
-		String retVal = this.startOfSQLStatement + this.dbNameDefiner + _sqlStoredProcedureName + this.dbParameterStart;
-		for (int i = 0; i < _numberOfParameters; i++) {
+		String retVal = this.startOfSQLStatement + /* this.dbNameDefiner + */ _sqlStoredProcedureName + this.dbParameterStart;
+		for (int i = 1; i <= _numberOfParameters; i++) {
 			// add a on a placeholder
 			retVal = retVal.concat(this.sqlParameterPlaceholder);
 		}
@@ -355,7 +364,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @param _typesToReturn:      A string array of data types desired for each
 	 *                             output parameter IN ORDER.
 	 */
-	private void registerOutParameters(int _numberOfParameters, int _numberOfKeyValuePairs, int[] _typesToReturn) {
+	private void custRegisterOutParameters(int _numberOfParameters, int _numberOfKeyValuePairs, int[] _typesToReturn) {
 		// This is a sql contruct, surround this with a try catch block
 		try {
 			// If there is a difference in the length of the parameters needed for the call
@@ -386,10 +395,10 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * Override method for easier calling. See other method of same name in this
 	 * class with an additional argument.
 	 */
-	private void registerOutParameters(int _numberOfParameters, int _numberOfKeyValuePairs) {
+	private void custRegisterOutParameters(int _numberOfParameters, int _numberOfKeyValuePairs) {
 		// Initialize and empty integer array and pass it to the override method.
 		int[] emptyArray = null;
-		this.registerOutParameters(_numberOfParameters, _numberOfKeyValuePairs, emptyArray);
+		this.custRegisterOutParameters(_numberOfParameters, _numberOfKeyValuePairs, emptyArray);
 	}
 
 	/**

@@ -1,7 +1,6 @@
 package testing;
 
-import java.util.HashMap;
-
+import java.util.LinkedHashMap;
 import models.MenuItem;
 
 public class scratch {
@@ -9,7 +8,7 @@ public class scratch {
 	public static void main(String[] args) {
 		MenuItem pepPizza = new MenuItem(1, "Pepperoni Pizza", 13.99, 0, 0);
 		String tname = pepPizza.getTableName();
-		HashMap<String, String> kv = new HashMap<String,String>();
+		LinkedHashMap<String, String> kv = new LinkedHashMap<String,String>();
 		try {
 			kv.putAll(pepPizza.getDataKeyValuePairs());
 		} catch (IllegalArgumentException e) {

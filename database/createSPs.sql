@@ -1,5 +1,6 @@
 use pizzaposdb;
 Delimiter $$
+drop function if exists pizzaposdb.successValue$$
 CREATE FUNCTION `pizzaposdb`.`successValue` ()
 RETURNS INTEGER DETERMINISTIC
 BEGIN
@@ -8,12 +9,12 @@ END$$
 drop procedure if exists pizzaposdb.create_Menu$$
 create procedure create_Menu 
 (
+	IN StoreID int,
+    IN MenuName varchar(50),
+    IN MenuType int,
 	IN UUID varchar(36),
 	IN IsActive bit,
     IN SortValue int,
-    IN StoreID int,
-    IN MenuName varchar(50),
-    IN MenuType int,
     OUT ID int
 )
 BEGIN
@@ -46,8 +47,8 @@ END$$
 drop procedure if exists read_Menu$$
 create procedure read_Menu
 (
-	in IsActive int,
-	in StoreID int
+    in IsActive int,
+    in StoreID int
 )
 BEGIN
 	select * from `pizzaposdb`.`Menu`
@@ -58,13 +59,13 @@ END$$
 drop procedure if exists update_Menu$$
 create procedure update_Menu
 (
+	IN StoreID int,
+    IN MenuName varchar(50),
+    IN MenuType int,
 	IN ID int,
     IN UUID varchar(36),
 	IN IsActive bit,
     IN SortValue int,
-    IN StoreID int,
-    IN MenuName varchar(50),
-    IN MenuType int,
     OUT retVal int
 )
 BEGIN
@@ -96,14 +97,14 @@ END$$
 drop procedure if exists create_MenuItem$$
 create procedure create_MenuItem
 (
-	IN UUID varchar(36),
-	IN IsActive bit,
-    IN SortValue int,
-    IN ItemName varchar(64),
+	IN ItemName varchar(64),
     IN MenuID int,
     IN Price double,
     IN PriorityScore int,
     IN ExecutionTime int,
+    IN UUID varchar(36),
+	IN IsActive bit,
+    IN SortValue int,
     OUT ID int
 )
 BEGIN
@@ -154,15 +155,15 @@ END$$
 drop procedure if exists update_MenuItem$$
 create procedure update_MenuItem
 (
-	IN ID int,
-    IN UUID varchar(36),
-	IN IsActive bit,
-    IN SortValue int,
-    IN ItemName varchar(64),
+	IN ItemName varchar(64),
     IN MenuID int,
     IN Price double,
     IN PriorityScore int,
     IN ExecutionTime int,
+	IN ID int,
+    IN UUID varchar(36),
+	IN IsActive bit,
+    IN SortValue int,
     OUT retVal int
 )
 BEGIN
@@ -194,14 +195,14 @@ END$$
 drop procedure if exists create_PosCheck$$
 create procedure create_PosCheck
 (
-	IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    IN TableID int,
+	IN TableID int,
     IN UserID int,
     IN CheckStatus int,
     IN DateStarted datetime,
     IN DateClosed datetime,
+	IN UUID varchar(36),
+    IN IsActive bit,
+    IN SortValue int,
     OUT ID int
 )
 BEGIN
@@ -272,11 +273,11 @@ END$$
 drop procedure if exists create_PosTables$$
 create procedure create_PosTables
 (
+	IN TableName varchar(50),
+    IN StoreID int,
 	IN UUID varchar(36),
     IN IsActive bit,
     IN SortValue int,
-    IN TableName varchar(50),
-    IN StoreID int,
     OUT ID int
 )
 Begin
@@ -316,12 +317,12 @@ END$$
 Drop procedure if exists update_PosTable$$
 create procedure update_PosTable
 (
-	IN ID int,
+	IN TableName varchar(50),
+    IN StoreID int,
+    IN ID int,
     IN UUID varchar(36),
     IN IsActive bit,
     IN SortValue int,
-    IN TableName varchar(50),
-    IN StoreID int,
     OUT retVal int
 )
 BEGIN
@@ -354,14 +355,14 @@ END$$
 drop procedure if exists create_Ticket$$
 create procedure create_Ticket
 (
-	IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    IN DateStarted date,
+	IN DateStarted date,
     IN UserID int,
     IN TableID int,
     IN TicketStatus int,
     IN TicketType int,
+	IN UUID varchar(36),
+    IN IsActive bit,
+    IN SortValue int,
     OUT ID int
 )
 BEGIN
@@ -412,15 +413,15 @@ END$$
 drop procedure if exists update_Ticket$$
 create procedure update_Ticket
 (
-	IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    IN DateStarted date,
+	IN DateStarted date,
     IN UserID int,
     IN TableID int,
     IN TicketStatus int,
     IN TicketType int,
+	IN ID int,
+    IN UUID varchar(36),
+    IN IsActive bit,
+    IN SortValue int,
     OUT retVal int
 )
 BEGIN
@@ -455,12 +456,12 @@ END$$
 drop procedure if exists create_TicketItem$$
 create procedure create_TicketItem
 (
-	IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    IN TicketID int,
+	IN TicketID int,
     IN MenuItemID int,
     IN ItemPrice double,
+    IN UUID varchar(36),
+    IN IsActive bit,
+    IN SortValue int,
     OUT ID int
 )
 begin
@@ -502,13 +503,13 @@ end$$
 Drop procedure if exists update_TicketItem$$
 create procedure update_TicketItem
 (
-	IN ID int,
+	IN TicketID int,
+    IN MenuItemID int,
+    IN ItemPrice double,
+    IN ID int,
     IN UUID varchar(36),
     IN IsActive bit,
     IN SortValue int,
-    IN TicketID int,
-    IN MenuItemID int,
-    IN ItemPrice double,
     OUT retVal int
 )
 begin
@@ -540,15 +541,15 @@ end$$
 drop procedure if exists create_TransactionHistory$$
 create procedure create_TransactionHistory
 (
-	IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    IN FinalTotal double,
+	IN FinalTotal double,
     IN CheckID int,
     IN UserID int,
     IN PaymentType int,
     IN PaymentStatus int,
     IN PaymentDate date,
+    IN UUID varchar(36),
+    IN IsActive bit,
+    IN SortValue int,
     OUT ID int
 )
 begin
@@ -601,16 +602,16 @@ end$$
 drop procedure if exists update_TransactionHistory$$
 create procedure update_TransactionHistory
 (
-	IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    IN FinalTotal double,
+	IN FinalTotal double,
     IN CheckID int,
     IN UserID int,
     IN PaymentType int,
     IN PaymentStatus int,
     IN PaymentDate date,
+    IN ID int,
+    IN UUID varchar(36),
+    IN IsActive bit,
+    IN SortValue int,
     OUT retVal int
 )
 begin
