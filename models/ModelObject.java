@@ -3,11 +3,10 @@ package models;
 /**
  * This class adds some universal support to the Model classes.
  * 
- * @author Ian Wilhelmsen last updated: 3/20/2020
+ * @author Ian Wilhelmsen
+ * Last Updated: 4/27/2020
  */
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,9 +42,9 @@ public abstract class ModelObject {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public LinkedHashMap<String, String> getDataKeyValuePairs() throws IllegalArgumentException, IllegalAccessException {
+	public LinkedHashMap<String, Object> getDataKeyValuePairs() throws IllegalArgumentException, IllegalAccessException {
 		// Initialize a return value.
-		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String, Object>();
 		// Starting the current class spin through all levels of this class
 		Class<?> targetClass = this.getClass();
 		while (!targetClass.getName().equals(DatabaseConstants.TARGET_SUPER_CLASS)) {
@@ -59,14 +58,13 @@ public abstract class ModelObject {
 					// Capture the field name based off the annotation.
 					String dbFieldName = this.findValueFromFieldColumnDBAnnotation(targetField);
 					// Capture the value from the field.
-					String fieldValue = null;
-					if (targetField.getType() == boolean.class) {
-						fieldValue = (targetField.get(this).equals(true) ? "1" : "0");
-					} else {
-						fieldValue = targetField.get(this).toString();
-					}
+					/*
+					 * String fieldValue = null; if (targetField.getType() == boolean.class) {
+					 * fieldValue = (targetField.get(this).equals(true) ? "1" : "0"); } else {
+					 * fieldValue = targetField.get(this); }
+					 */
 					// Stow the values in the return value
-					retVal.put(dbFieldName, fieldValue);
+					retVal.put(dbFieldName, targetField.get(this));
 				}
 			}
 			// Traverse up to the parent class.
@@ -121,7 +119,7 @@ public abstract class ModelObject {
 	 * @return
 	 */
 	public ArrayList<ModelObject> loadByCondition(String _name, String _value) {
-		LinkedHashMap<String, String> keyValuePair = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, Object> keyValuePair = new LinkedHashMap<String, Object>();
 		keyValuePair.put(_name, _value);
 		return this.loadByCondition(keyValuePair);
 	}
@@ -131,7 +129,7 @@ public abstract class ModelObject {
 	 * @param _data
 	 * @return
 	 */
-	public ArrayList<ModelObject> loadByCondition(Map<String, String> _data) {
+	public ArrayList<ModelObject> loadByCondition(LinkedHashMap<String, Object> _data) {
 		ArrayList<ModelObject> retVal = new ArrayList<ModelObject>();
 		try {
 			// This method fills this object with data from the database.
@@ -185,7 +183,6 @@ public abstract class ModelObject {
 			// If this is the table name key, grab the value.
 			if (annotation instanceof ModelAnnotations) {
 				ModelAnnotations myAnnotation = ((ModelAnnotations) annotation);
-				String bleh = myAnnotation.key();
 				if(myAnnotation.key().equals(_key)) {
 					retVal = myAnnotation.value();
 					break;
@@ -216,7 +213,7 @@ public abstract class ModelObject {
 	 * @return
 	 * @deprecated
 	 */
-	public Object returnOnlyValueFromSingleResult(HashMap<String, Object> _inputHash) {
+	public Object returnOnlyValueFromSingleResult(LinkedHashMap<String, Object> _inputHash) {
 		// Initialize a return value for the caller.
 		Object retVal = null;
 		// Grab the only key from the hash.

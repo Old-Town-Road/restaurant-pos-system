@@ -3,10 +3,10 @@ package database;
 /**
  * This class fetches and stores information for the models in the database.
  * @author Ian Wilhelmsen
- * last update: 4/23/2020
+ * last update: 4/27/2020
  */
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import models.ModelObject;
@@ -29,9 +29,9 @@ public class DataStoreAdapter {
 	 * This method pulls down an array list of objects specified by the map provided. See StandardDatabaseReads for common use.
 	 * @param _keyValuePairs
 	 * @param _targetClass
-	 * @return Arraylist filled with the results
+	 * @return Array list filled with the results
 	 */
-	public static ArrayList<ModelObject> readObject (Map<String, String> _keyValuePairs, Class<?> _targetClass) {
+	public static ArrayList<ModelObject> readObject (Map<String, Object> _keyValuePairs, Class<?> _targetClass) {
 		return connector.readObject(_keyValuePairs, _targetClass);
 	}
 
@@ -52,11 +52,11 @@ public class DataStoreAdapter {
 	 * @return boolean the success value of the method.
 	 */
 	public static boolean deleteObject (ModelObject _targetObject) {
-		//Create a hashmap of the uuid and its value.
-		HashMap<String, String> keyValuePair = new HashMap<>();
-		keyValuePair.put(DatabaseConstants.DB_ID_VALUE, String.valueOf(_targetObject.getId()));
+		//Create a linked hashmap of the uuid and its value.
+		LinkedHashMap<String, Object> keyValuePair = new LinkedHashMap<String, Object>();
+		keyValuePair.put(DatabaseConstants.DB_ID_VALUE, _targetObject.getId());
 		keyValuePair.put(DatabaseConstants.DB_UUID_VALUE, _targetObject.getUuid());
-		keyValuePair.put(DatabaseConstants.DB_IS_ACTIVE_VALUE, DatabaseConstants.booleanToBit(false));
+		keyValuePair.put(DatabaseConstants.DB_IS_ACTIVE_VALUE, false);
 		return connector.deleteObject(keyValuePair, _targetObject.getTableName());
 	}
 }
