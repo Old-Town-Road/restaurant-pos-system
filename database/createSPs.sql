@@ -9,15 +9,28 @@ END$$
 drop procedure if exists pizzaposdb.create_Menu$$
 create procedure create_Menu 
 (
-	IN StoreID int,
-    IN MenuName varchar(50),
-    IN MenuType int,
-	IN UUID varchar(36),
-	IN IsActive bit,
-    IN SortValue int,
+	IN p_StoreID varchar(50),
+    IN p_MenuName varchar(50),
+    IN p_MenuType varchar(50),
+	IN p_UUID varchar(36),
+	IN p_IsActive varchar(50),
+    IN p_SortValue varchar(50),
     OUT ID int
 )
 BEGIN
+	declare StoreID int;
+    declare MenuName varchar(50);
+    declare MenuType int;
+	declare UUID varchar(36);
+	declare IsActive bit;
+    declare SortValue int;
+    set StoreID = p_StoreID;
+    set MenuName = p_MenuName;
+    set MenuType = p_MenuType;
+    set UUID = p_UUID;
+    set IsActive = p_IsActive;
+    set SortValue = p_SortValue;
+    
 	INSERT INTO `pizzaposdb`.`Menu`
     (
 		`UUID`,
@@ -47,10 +60,15 @@ END$$
 drop procedure if exists read_Menu$$
 create procedure read_Menu
 (
-    in IsActive int,
-    in StoreID int
+    in p_IsActive varchar(50),
+    in p_StoreID varchar(50)
 )
 BEGIN
+	declare IsActive int;
+    declare StoreID int;
+    set IsActive = p_IsActive;
+    set StoreID = p_StoreID;
+    
 	select * from `pizzaposdb`.`Menu`
     WHERE `Menu`.`IsActive` = IsActive and
 		`Menu`.`StoreID` = StoreID;
@@ -59,16 +77,23 @@ END$$
 drop procedure if exists update_Menu$$
 create procedure update_Menu
 (
-	IN StoreID int,
+	IN p_StoreID varchar(50),
+    IN p_MenuName varchar(50),
+    IN p_MenuType varchar(50),
+	IN p_ID varchar(50),
+    IN p_UUID varchar(36),
+	IN p_IsActive varchar(50),
+    IN p_SortValue varchar(50),
+    OUT retVal int
+)
+BEGIN
+IN StoreID int,
     IN MenuName varchar(50),
     IN MenuType int,
 	IN ID int,
     IN UUID varchar(36),
 	IN IsActive bit,
     IN SortValue int,
-    OUT retVal int
-)
-BEGIN
 	UPDATE `pizzaposdb`.`Menu` SET
 		`SortValue` = SortValue,
 		`IsActive` = IsActive,
