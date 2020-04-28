@@ -98,28 +98,18 @@ public class DatabaseConstants {
 	 * @param _storeID
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadMenuKVPairs(String _isActive, int _storeID) {
-		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String,Object>();
-		retVal.put(DB_IS_ACTIVE_VALUE, _isActive);
-		retVal.put(DB_STORE_ID_VALUE, _storeID);
+	public static LinkedHashMap<String, String> getReadMenuKVPairs(boolean _isActive, int _storeID) {
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String,String>();
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
+		retVal.put(DB_STORE_ID_VALUE, String.valueOf(_storeID));
 		return retVal;
-	}
-
-	/**
-	 * This is an offshoot method of base ReadMenuKVPairs. It returns menus from the database.
-	 * @param _isActive
-	 * @param _storeID
-	 * @return
-	 */
-	public static LinkedHashMap<String, Object> getReadMenuKVPairs(boolean _isActive, int _storeID) {
-		return getReadMenuKVPairs(_isActive, _storeID);
 	}
 
 	/**
 	 * This is an off shoot method of the base getreadmenukvpairs but this only brings the active ones.
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadActiveMenuKVPairs() {
+	public static LinkedHashMap<String, String> getReadActiveMenuKVPairs() {
 		return getReadMenuKVPairs(true, STORE_ID_CONSTANT);
 	}
 
@@ -130,10 +120,10 @@ public class DatabaseConstants {
 	 * @param _menuId
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadMenuItemKVPairs(boolean _isActive, int _menuId) {
-		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String, Object>();
-		retVal.put(DB_MENU_ID_VALUE, _menuId);
-		retVal.put(DB_IS_ACTIVE_VALUE, _isActive);
+	public static LinkedHashMap<String, String> getReadMenuItemKVPairs(boolean _isActive, int _menuId) {
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
+		retVal.put(DB_MENU_ID_VALUE, String.valueOf(_menuId));
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
 		return retVal;
 	}
 
@@ -142,7 +132,7 @@ public class DatabaseConstants {
 	 * @param _menuId
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadActiveMenuItemKVPairs(int _menuId) {
+	public static LinkedHashMap<String, String> getReadActiveMenuItemKVPairs(int _menuId) {
 		return getReadMenuItemKVPairs(true, _menuId);
 	}
 
@@ -153,10 +143,10 @@ public class DatabaseConstants {
 	 * @param _storeId
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadTableKVPairs(boolean _isActive, int _storeId) {
-		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String, Object>();
-		retVal.put(DB_STORE_ID_VALUE, _storeId);
-		retVal.put(DB_IS_ACTIVE_VALUE, _isActive);
+	public static LinkedHashMap<String, String> getReadTableKVPairs(boolean _isActive, int _storeId) {
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
+		retVal.put(DB_STORE_ID_VALUE, String.valueOf(_storeId));
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
 		return retVal;
 	}
 
@@ -164,7 +154,7 @@ public class DatabaseConstants {
 	 * This method only returns the kv pairs from the active tables from the database.
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadActiveTableKVPairs() {
+	public static LinkedHashMap<String, String> getReadActiveTableKVPairs() {
 		return getReadTableKVPairs(true, STORE_ID_CONSTANT);
 	}
 
@@ -176,11 +166,11 @@ public class DatabaseConstants {
 	 * @param _isActive
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadTicketKVPairs(int _userId, int _tableId, boolean _isActive) {
-		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String, Object>();
-		retVal.put(DB_USER_ID_VALUE, _userId);
-		retVal.put(DB_TABLE_ID_VALUE, _tableId);
-		retVal.put(DB_IS_ACTIVE_VALUE, _isActive);
+	public static LinkedHashMap<String, String> getReadTicketKVPairs(int _userId, int _tableId, boolean _isActive) {
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
+		retVal.put(DB_USER_ID_VALUE, String.valueOf(_userId));
+		retVal.put(DB_TABLE_ID_VALUE, String.valueOf(_tableId));
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
 		return retVal;
 	}
 
@@ -190,7 +180,7 @@ public class DatabaseConstants {
 	 * @param _tableId
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadActiveTicketKVPairs(int _userId, int _tableId) {
+	public static LinkedHashMap<String, String> getReadActiveTicketKVPairs(int _userId, int _tableId) {
 		return getReadTicketKVPairs(_userId, _tableId, true);
 	}
 
@@ -200,9 +190,9 @@ public class DatabaseConstants {
 	 * @param _userName
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadUserKVPairs(boolean _isActive, String _userName) {
-		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String, Object>();
-		retVal.put(DB_IS_ACTIVE_VALUE, _isActive);
+	public static LinkedHashMap<String, String> getReadUserKVPairs(boolean _isActive, String _userName) {
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
 		retVal.put(DB_USER_USERNAME_VALUE, _userName);
 		return retVal;
 	}
@@ -212,7 +202,7 @@ public class DatabaseConstants {
 	 * @param _userName
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadActiveUserKVPairs(String _userName) {
+	public static LinkedHashMap<String, String> getReadActiveUserKVPairs(String _userName) {
 		return getReadUserKVPairs(true, _userName);
 	}
 
@@ -224,12 +214,12 @@ public class DatabaseConstants {
 	 * @param _checkStatus
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadCheckKVPairs(boolean _isActive, int _tableId, int _userId, int _checkStatus){
-		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String, Object>();
-		retVal.put(DB_IS_ACTIVE_VALUE, _isActive);
-		retVal.put(DB_TABLE_ID_VALUE, _tableId);
-		retVal.put(DB_USER_ID_VALUE, _userId);
-		retVal.put(DB_CHECK_STATUS_VALUE, _checkStatus);
+	public static LinkedHashMap<String, String> getReadCheckKVPairs(boolean _isActive, int _tableId, int _userId, int _checkStatus){
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
+		retVal.put(DB_TABLE_ID_VALUE, String.valueOf(_tableId));
+		retVal.put(DB_USER_ID_VALUE, String.valueOf(_userId));
+		retVal.put(DB_CHECK_STATUS_VALUE, String.valueOf(_checkStatus));
 		return retVal;
 	}
 
@@ -239,7 +229,7 @@ public class DatabaseConstants {
 	 * @param _userId
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadActiveOpenCheckKVPairs(int _tableId, int _userId) {
+	public static LinkedHashMap<String, String> getReadActiveOpenCheckKVPairs(int _tableId, int _userId) {
 		return getReadCheckKVPairs(true, _tableId, _userId, ModelConstants.CHECK_TYPE_OPEN);
 	}
 
@@ -249,10 +239,10 @@ public class DatabaseConstants {
 	 * @param _menuID
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadTicketItemKVPairs(boolean _isActive, int _menuID) {
-		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String, Object>();
-		retVal.put(DB_IS_ACTIVE_VALUE, _isActive);
-		retVal.put(DB_MENU_ID_VALUE, _menuID);
+	public static LinkedHashMap<String, String> getReadTicketItemKVPairs(boolean _isActive, int _menuID) {
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
+		retVal.put(DB_MENU_ID_VALUE, String.valueOf(_menuID));
 		return retVal;
 	}
 
@@ -261,7 +251,7 @@ public class DatabaseConstants {
 	 * @param _menuID
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadActiveTicketItemKVPairs(int _menuID) {
+	public static LinkedHashMap<String, String> getReadActiveTicketItemKVPairs(int _menuID) {
 		return getReadTicketItemKVPairs(true, _menuID);
 	}
 
@@ -272,16 +262,12 @@ public class DatabaseConstants {
 	 * @param _paymentStatus
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadTransactionHistory(boolean _isActive, String _userId, String _paymentStatus) {
-		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String, Object>();
-		retVal.put(DB_IS_ACTIVE_VALUE, _isActive);
-		retVal.put(DB_USER_ID_VALUE, _userId);
-		retVal.put(DB_TRANSACTION_HISTORY_PAYMENT_STATUS_VALUE, _paymentStatus);
+	public static LinkedHashMap<String, String> getReadTransactionHistory(boolean _isActive, int _userId, int _paymentStatus) {
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
+		retVal.put(DB_IS_ACTIVE_VALUE, booleanToBit(_isActive));
+		retVal.put(DB_USER_ID_VALUE, String.valueOf(_userId));
+		retVal.put(DB_TRANSACTION_HISTORY_PAYMENT_STATUS_VALUE, String.valueOf(_paymentStatus));
 		return retVal;
-	}
-
-	public static LinkedHashMap<String, Object> getReadTransactionHistory(boolean _isActive, int _userId, int _paymentStatus) {
-		return getReadTransactionHistory(_isActive, String.valueOf(_userId), String.valueOf(_paymentStatus));
 	}
 
 	/**
@@ -289,7 +275,7 @@ public class DatabaseConstants {
 	 * @param _userId
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadActiveOpenTransactionHistoryByUserId(int _userId) {
+	public static LinkedHashMap<String, String> getReadActiveOpenTransactionHistoryByUserId(int _userId) {
 		return getReadTransactionHistory(true, _userId, ModelConstants.PAYMENT_STATUS_OPEN);
 	}
 
@@ -298,7 +284,7 @@ public class DatabaseConstants {
 	 * @param _userId
 	 * @return
 	 */
-	public static LinkedHashMap<String, Object> getReadPaidTransactionHistoryByUserId(int _userId) {
+	public static LinkedHashMap<String, String> getReadPaidTransactionHistoryByUserId(int _userId) {
 		return getReadTransactionHistory(true, _userId, ModelConstants.PAYMENT_STATUS_PAID);
 	}
 
@@ -306,7 +292,6 @@ public class DatabaseConstants {
 	 * This method returns a string based on the boolean provided.
 	 * @param _value
 	 * @return
-	 * @deprecated
 	 */
 	public static String booleanToBit(boolean _value) {
 		return (_value ? "1" : "0");

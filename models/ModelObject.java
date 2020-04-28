@@ -29,7 +29,6 @@ public abstract class ModelObject {
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_SORT_VALUE_VALUE)
 	protected int sortValue;
 
-	
 	public ModelObject() {
 		this.setUuid(ModelObject.generateUuid());
 		this.setId(DatabaseConstants.DEFAULT_ID_VALUE);
@@ -37,14 +36,17 @@ public abstract class ModelObject {
 	}
 
 	/**
-	 * This method returns a HashMap of key/value pairs for updating the model in the database.
-	 * @return HashMap of db column names and string values.
+	 * This method returns a HashMap of key/value pairs for updating the model in
+	 * the database.
+	 * 
+	 * @return LinkedHashMap of db column names and string values.
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public LinkedHashMap<String, Object> getDataKeyValuePairs() throws IllegalArgumentException, IllegalAccessException {
+	public LinkedHashMap<String, String> getDataKeyValuePairs()
+			throws IllegalArgumentException, IllegalAccessException {
 		// Initialize a return value.
-		LinkedHashMap<String, Object> retVal = new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, String> retVal = new LinkedHashMap<String, String>();
 		// Starting the current class spin through all levels of this class
 		Class<?> targetClass = this.getClass();
 		while (!targetClass.getName().equals(DatabaseConstants.TARGET_SUPER_CLASS)) {
@@ -54,17 +56,19 @@ public abstract class ModelObject {
 				// If this field is a private or protected field, continue.
 				targetField.setAccessible(true);
 				int fieldModifier = targetField.getModifiers();
-				if ((Modifier.isPrivate(fieldModifier) || Modifier.isProtected(fieldModifier)) && (!Collection.class.isAssignableFrom(targetField.getType()))){
+				if ((Modifier.isPrivate(fieldModifier) || Modifier.isProtected(fieldModifier))
+						&& (!Collection.class.isAssignableFrom(targetField.getType()))) {
 					// Capture the field name based off the annotation.
 					String dbFieldName = this.findValueFromFieldColumnDBAnnotation(targetField);
 					// Capture the value from the field.
-					/*
-					 * String fieldValue = null; if (targetField.getType() == boolean.class) {
-					 * fieldValue = (targetField.get(this).equals(true) ? "1" : "0"); } else {
-					 * fieldValue = targetField.get(this); }
-					 */
+					String fieldValue = null;
+					if (targetField.getType() == boolean.class) {
+						fieldValue = (targetField.get(this).equals(true) ? "1" : "0");
+					} else {
+						fieldValue = targetField.get(this).toString();
+					}
 					// Stow the values in the return value
-					retVal.put(dbFieldName, targetField.get(this));
+					retVal.put(dbFieldName, fieldValue);
 				}
 			}
 			// Traverse up to the parent class.
@@ -75,7 +79,9 @@ public abstract class ModelObject {
 	}
 
 	/**
-	 * This method returns the string casted value of a targeted field found by reflection.
+	 * This method returns the string casted value of a targeted field found by
+	 * reflection.
+	 * 
 	 * @param _targetField
 	 * @return
 	 */
@@ -89,7 +95,7 @@ public abstract class ModelObject {
 			// If this is the table name key, grab the value.
 			if (annotation instanceof ModelAnnotations) {
 				ModelAnnotations myAnnotation = ((ModelAnnotations) annotation);
-				if(myAnnotation.key().equals(DatabaseConstants.DB_COLUMN_NAME_KEY)) {
+				if (myAnnotation.key().equals(DatabaseConstants.DB_COLUMN_NAME_KEY)) {
 					retVal = myAnnotation.value();
 					break;
 				}
@@ -114,22 +120,25 @@ public abstract class ModelObject {
 
 	/**
 	 * This is a load by condition of a singular key value pair.
+	 * 
 	 * @param _name
 	 * @param _value
 	 * @return
 	 */
 	public ArrayList<ModelObject> loadByCondition(String _name, String _value) {
-		LinkedHashMap<String, Object> keyValuePair = new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, String> keyValuePair = new LinkedHashMap<String, String>();
 		keyValuePair.put(_name, _value);
 		return this.loadByCondition(keyValuePair);
 	}
 
 	/**
-	 * This method is used to load the rest of the object based on a map of key value pairs.
+	 * This method is used to load the rest of the object based on a map of key
+	 * value pairs.
+	 * 
 	 * @param _data
 	 * @return
 	 */
-	public ArrayList<ModelObject> loadByCondition(LinkedHashMap<String, Object> _data) {
+	public ArrayList<ModelObject> loadByCondition(LinkedHashMap<String, String> _data) {
 		ArrayList<ModelObject> retVal = new ArrayList<ModelObject>();
 		try {
 			// This method fills this object with data from the database.
@@ -141,7 +150,9 @@ public abstract class ModelObject {
 	}
 
 	/**
-	 * This is a broiler plate method that will update or create an object in the database depending on the value of the ID.
+	 * This is a broiler plate method that will update or create an object in the
+	 * database depending on the value of the ID.
+	 * 
 	 * @return
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
@@ -161,7 +172,9 @@ public abstract class ModelObject {
 	}
 
 	/**
-	 * This method makes a row in the database corresponding to this object inactive.
+	 * This method makes a row in the database corresponding to this object
+	 * inactive.
+	 * 
 	 * @return
 	 */
 	public boolean deleteObjectFromDatabase() {
@@ -169,7 +182,9 @@ public abstract class ModelObject {
 	}
 
 	/**
-	 * This returns the value from the annotation key value pair for class parameters.
+	 * This returns the value from the annotation key value pair for class
+	 * parameters.
+	 * 
 	 * @param _key
 	 * @return
 	 */
@@ -183,7 +198,7 @@ public abstract class ModelObject {
 			// If this is the table name key, grab the value.
 			if (annotation instanceof ModelAnnotations) {
 				ModelAnnotations myAnnotation = ((ModelAnnotations) annotation);
-				if(myAnnotation.key().equals(_key)) {
+				if (myAnnotation.key().equals(_key)) {
 					retVal = myAnnotation.value();
 					break;
 				}
@@ -209,6 +224,7 @@ public abstract class ModelObject {
 
 	/**
 	 * This returns a single object from a hash of strings and objects
+	 * 
 	 * @param _inputHash
 	 * @return
 	 * @deprecated
@@ -265,7 +281,7 @@ public abstract class ModelObject {
 	}
 
 	public void setIsActive(boolean _isActive) {
-		if(_isActive) {
+		if (_isActive) {
 			this.makeActive();
 		} else {
 			this.makeInactive();

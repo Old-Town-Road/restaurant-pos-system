@@ -7,17 +7,17 @@ package database;
  * Last Updated: 4/27/2020
  */
 
-import java.util.Map;
+import java.util.LinkedHashMap;
 import models.ModelObject;
 import java.util.ArrayList;
 
 public interface DBConnectorInterface {
 
-	public abstract int createObject(Map<String, Object> _keyValuePairs, String _table);
+	public abstract int createObject(LinkedHashMap<String, String> linkedHashMap, String _table);
 
-	public abstract ArrayList<ModelObject> readObject(Map<String, Object> _keyValuePairs, Class<?> _class);
+	public abstract ArrayList<ModelObject> readObject(LinkedHashMap<String, String> _keyValuePairs, Class<?> _class);
 
-	public abstract boolean updateObject(Map<String, Object> _keyValuePairs, String _uuid, String _table);
+	public abstract boolean updateObject(LinkedHashMap<String, String> _keyValuePairs, String _uuid, String _table);
 
-	public abstract boolean deleteObject(Map<String, Object> _keyValuePairs, String _table);
+	public abstract boolean deleteObject(LinkedHashMap<String, String> _keyValuePairs, String _table);
 }

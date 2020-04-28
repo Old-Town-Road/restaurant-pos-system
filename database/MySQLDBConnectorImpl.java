@@ -11,6 +11,7 @@ package database;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import models.ModelAnnotations;
 import models.ModelObject;
 import java.sql.Connection;
@@ -92,7 +93,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @param _table         the name of the class needed to store.
 	 * @return int the ID of the created object
 	 */
-	public int createObject(Map<String, Object> _keyValuePairs, String _table) {
+	public int createObject(LinkedHashMap<String, String> _keyValuePairs, String _table) {
 		// Initialize a response with a default of 0.
 		int retVal = 0;
 		// This is a stubbed response if the debug mode is on.
@@ -137,7 +138,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @return HashMap<String, Object> The series of return objects from the stored
 	 *         procedure call.
 	 */
-	public ArrayList<ModelObject> readObject(Map<String, Object> _keyValuePairs, Class<?> _class) {
+	public ArrayList<ModelObject> readObject(LinkedHashMap<String, String> _keyValuePairs, Class<?> _class) {
 		// Initialize a return value for the caller.
 		ArrayList<ModelObject> retVal = new ArrayList<ModelObject>();
 		// If we are not in debug mode then proceed.
@@ -176,7 +177,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * 
 	 * @return boolean: Returns true if call was successful.
 	 */
-	public boolean updateObject(Map<String, Object> _keyValuePairs, String _uuid, String _table) {
+	public boolean updateObject(LinkedHashMap<String, String> _keyValuePairs, String _uuid, String _table) {
 		// Initialize a return value and default FALSE.
 		boolean retVal = false;
 
@@ -214,7 +215,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * 
 	 * @return boolean: True if operation successful and false otherwise.
 	 */
-	public boolean deleteObject(Map<String, Object> _keyValuePairs, String _table) {
+	public boolean deleteObject(LinkedHashMap<String, String> _keyValuePairs, String _table) {
 		// Initialize a return value and default to FALSE
 		boolean retVal = false;
 		// If debug is on then bypass all of this.
@@ -251,7 +252,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 *                                procedure.
 	 * @param _tableName:             The string for the table name.
 	 */
-	private void prepCallableStatement(Map<String, Object> _keyValuePairs, String _storedProcedurePrefix,
+	private void prepCallableStatement(Map<String, String> _keyValuePairs, String _storedProcedurePrefix,
 			String _tableName) {
 		// This must be in a try catch block.
 		try {
@@ -281,19 +282,18 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * 
 	 * @param _keyValuePairs The key value pairs from the attributes of the class
 	 */
-	private void assembleCallableStatement(Map<String, Object> _keyValuePairs) {
+	private void assembleCallableStatement(Map<String, String> _keyValuePairs) {
 		// spin through the map and populate the call
 		// REMEMBER: this SQL library call starts iterating at one.
 		// Start a counter
 		int index = this.callableStartValue;
 		// spin through the key value pairs
-		for (Entry<String, Object> keyValuePair : _keyValuePairs.entrySet()) {
+		for (Entry<String, String> keyValuePair : _keyValuePairs.entrySet()) {
 			// add in the parameter in a try catch
 			try {
 				if (index <= _keyValuePairs.size() + 1) {
-					// this.sql.setString(i, keyValuePair.getValue());
-					// Adding in the value for the call
-					this.addValueToCallableStmt(keyValuePair.getValue(), index);
+					//Adding in the value for the call
+					this.sql.setString(index, keyValuePair.getValue());
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -301,50 +301,6 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 			}
 			// update the counter
 			index++;
-		}
-	}
-
-	/**
-	 * This function adds the value from the Key Value pair
-	 * to the Callable Statement.
-	 * @param _kvValue
-	 * @throws SQLException 
-	 */
-	private void addValueToCallableStmt(Object _kvValue, int _index) throws SQLException {
-		//If the value is a primitive then transform it.
-		if(this.checkPrimitiveType(_kvValue.getClass())) {
-			//Get the type from input.
-			this.addPrimitiveValueToCallableStmt(_index, _kvValue);
-		} else {
-			//The value is a string.
-			this.sql.setString(_index, (String) _kvValue);
-		}
-	}
-
-	private void addPrimitiveValueToCallableStmt(int _index, Object _kvValue) {
-		try {
-			if (_kvValue.getClass().getTypeName().equals(int.class.getName())) {
-				this.sql.setInt(_index, (int) _kvValue);
-			} else if (_kvValue.getClass().getTypeName().equals(long.class.getName())) {
-				this.sql.setLong(_index, (long) _kvValue);
-			} else if (_kvValue.getClass().getTypeName().equals(double.class.getName())) {
-				this.sql.setDouble(_index, (double) _kvValue);
-			} else if (_kvValue.getClass().getTypeName().equals(float.class.getName())) {
-				this.sql.setFloat(_index, (float) _kvValue);
-			} else if (_kvValue.getClass().getTypeName().equals(boolean.class.getName())) {
-				this.sql.setByte(_index, (byte) _kvValue);
-			} else if (_kvValue.getClass().getTypeName().equals(byte.class.getName())) {
-				this.sql.setByte(_index, (byte) _kvValue);
-			} else if (_kvValue.getClass().getTypeName().equals(char.class.getName())) {
-				this.sql.setString(_index, (String) _kvValue);
-			} else if (_kvValue.getClass().getTypeName().equals(short.class.getName())) {
-				this.sql.setShort(_index, (short) _kvValue);
-			} else {
-				throw new IllegalArgumentException(this.notPrimitiveErrorMessage);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -381,7 +337,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @return int: This is the number of parameters needed for the stored procedure
 	 *         prepared call.
 	 */
-	private int findNumberOfParametersWithReturn(Map<String, Object> _keyValuePairs, String _storedProcedurePrefix) {
+	private int findNumberOfParametersWithReturn(Map<String, String> _keyValuePairs, String _storedProcedurePrefix) {
 		// Initialize a return value for the caller.
 		int retVal = 0;
 		// Determine the size of the hashmap as the number of parameters. If this is a
