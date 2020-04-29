@@ -111,7 +111,7 @@ public class MenuOrderController {
 		tabPane.setTabMinHeight(25);
 		tab.setStyle("-fx-border-color:YELLOWGREEN ; -fx-background-color: DEEPSKYBLUE ;");
 		tab.setContent(createVboxAndPutButtons(_targetMenu));
-		tabPane.getTabs().add(tab);
+		//tabPane.getTabs().add(tab);
 	}
 	
 	/**
