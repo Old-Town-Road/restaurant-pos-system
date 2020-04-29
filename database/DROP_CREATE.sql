@@ -46,25 +46,25 @@ Create table if not exists pizzaposdb.MenuTypeLU  (
 ); 
 Create table if not exists pizzaposdb.PaymentStatusLU  (
 	ID INT NOT NULL AUTO_INCREMENT,
-	PaymentStatusType varchar(50) NOT NULL,
+	PaymentStatusType varchar(64) NOT NULL,
 	primary key(ID)
 ); 
 
 Create table if not exists pizzaposdb.PaymentTypeLU (
 	ID INT NOT NULL AUTO_INCREMENT,
-	PaymentType varchar(50) NULL,
+	PaymentType varchar(64) NULL,
     primary key(ID)
 ); 
 
 Create table if not exists pizzaposdb.RoleLU  (
 	ID int NOT NULL,
-	RoleType varchar(50) NULL,
+	RoleType varchar(64) NULL,
 	primary key(ID)
 ); 
 
 Create table if not exists pizzaposdb.Store  (
 	ID int NOT NULL,
-	StoreName varchar(50) NOT NULL,
+	StoreName varchar(64) NOT NULL,
 	primary key(ID)
 ); 
 
@@ -73,14 +73,14 @@ Create table if not exists pizzaposdb.POSTables  (
 	UUID varchar(36) NOT NULL,
     sortValue int NOT NULL default 0,
     isActive INT NOT NULL default 1,
-	TableName varchar(50) NOT NULL,
+	TableName varchar(64) NOT NULL,
 	StoreID int NOT NULL,
 	primary key(ID)
 ); 
 
 Create table if not exists pizzaposdb.TableStatusLU  (
 	ID int NOT NULL,
-	TableStatus varchar(50) NULL,
+	TableStatus varchar(64) NULL,
 	primary key(ID)
 ); 
 
@@ -99,13 +99,13 @@ CREATE TABLE IF NOT EXISTS pizzaposdb.Ticket (
 
 Create table if not exists pizzaposdb.TicketStatusLU  (
 	ID INT NOT NULL AUTO_INCREMENT,
-	TicketStatus varchar(50) NULL,
+	TicketStatus varchar(64) NULL,
 	primary key(ID)
 ); 
 
 CREATE TABLE IF NOT EXISTS pizzaposdb.TicketTypeLU (
     ID INT NOT NULL,
-    TicketType varchar(50) NULL,
+    TicketType varchar(64) NULL,
     PRIMARY KEY (ID)
 ); 
 
@@ -125,9 +125,9 @@ CREATE TABLE IF NOT EXISTS pizzaposdb.TransactionHistory (
 
 Create table if not exists pizzaposdb.UserLU  (
 	ID INT NOT NULL AUTO_INCREMENT,
-	UserName varchar(50) NOT NULL,
-	FirstName varchar(50) NOT NULL,
-	LastName varchar(50) NOT NULL,
+	UserName varchar(64) NOT NULL,
+	FirstName varchar(64) NOT NULL,
+	LastName varchar(64) NOT NULL,
 	RoleID int NOT NULL,
     primary key(`ID`)
 );

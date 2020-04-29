@@ -8,17 +8,17 @@ END$$
 drop procedure if exists pizzaposdb.create_Menu$$
 create procedure create_Menu 
 (
-	IN p_StoreID varchar(50),
-    IN p_MenuName varchar(50),
-    IN p_MenuType varchar(50),
+	IN p_StoreID varchar(64),
+    IN p_MenuName varchar(64),
+    IN p_MenuType varchar(64),
 	IN p_UUID varchar(36),
-	IN p_IsActive varchar(50),
-    IN p_SortValue varchar(50),
+	IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
     OUT retID int
 )
 BEGIN
 	declare StoreID int;
-    declare MenuName varchar(50);
+    declare MenuName varchar(64);
     declare MenuType int;
 	declare UUID varchar(36);
 	declare IsActive int;
@@ -53,14 +53,14 @@ END$$
 drop procedure if exists read_Menu$$
 create procedure read_Menu
 (
-    in p_IsActive varchar(50),
-    in p_StoreID varchar(50)
+    in p_IsActive varchar(64),
+    in p_StoreID varchar(64)
 )
 BEGIN
 	declare IsActive int;
     declare StoreID int;
-    set IsActive = p_IsActive;
-    set StoreID = p_StoreID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set StoreID = cast(p_StoreID as unsigned);
     
 	select * from `pizzaposdb`.`Menu`
     WHERE `Menu`.`IsActive` = IsActive and
@@ -70,23 +70,30 @@ END$$
 drop procedure if exists update_Menu$$
 create procedure update_Menu
 (
-	IN p_StoreID varchar(50),
-    IN p_MenuName varchar(50),
-    IN p_MenuType varchar(50),
-	IN p_ID varchar(50),
+	IN p_StoreID varchar(64),
+    IN p_MenuName varchar(64),
+    IN p_MenuType varchar(64),
+	IN p_ID varchar(64),
     IN p_UUID varchar(36),
-	IN p_IsActive varchar(50),
-    IN p_SortValue varchar(50),
+	IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
     OUT retVal int
 )
 BEGIN
 	declare StoreID int;
-    declare MenuName varchar(50);
+    declare MenuName varchar(64);
     declare MenuType int;
 	declare ID int;
     declare UUID varchar(36);
 	declare IsActive int;
     declare SortValue int;
+    set StoreID = cast(p_StoreID as unsigned);
+    set MenuName = p_MenuName;
+    set MenuType = cast(p_MenuType as unsigned);
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	UPDATE `pizzaposdb`.`Menu` SET
 		`SortValue` = SortValue,
 		`IsActive` = IsActive,
@@ -100,12 +107,18 @@ END$$
 drop procedure if exists delete_Menu$$
 create procedure delete_Menu
 (
-	in ID int,
-    in UUID int,
-    in IsActive bit,
+	in p_ID varchar(64),
+    in p_UUID varchar(36),
+    in p_IsActive varchar(64),
     OUT retVal int
 )
 BEGIN
+	declare ID int;
+    declare UUID varchar(36);
+    declare IsActive bit;
+    set ID = cast(p_ID as unsigned);
+    set IsActive = cast(p_IsActive as unsigned);
+    set UUID = p_UUID;
 	UPDATE `pizzaposdb``Menu` SET
 		`IsActive` = IsActive
 	where `UUID` = UUID and `ID` = ID;
@@ -123,7 +136,7 @@ create procedure create_MenuItem
     IN p_UUID varchar(64),
 	IN p_IsActive varchar(64),
     IN p_SortValue varchar(64),
-    OUT ID int
+    OUT retID int
 )
 BEGIN
 	declare ItemName varchar(64);
@@ -163,26 +176,20 @@ BEGIN
 		PriorityScore,
 		ExecutionTime
 	);
-    set ID = last_insert_id();
-	-- set ID = (SELECT `MenuItem`.`ID` FROM `pizzaposdb`.`MenuItem` where
--- 		`UUID` = UUID and
--- 		`SortValue` = SortValue and
--- 		`IsActive` = IsActive and
--- 		`MenuID` = MenuID and
---         `ItemName` = ItemName and
---         `Price` = Price and
---         `PriorityScore` = PriorityScore and
---         `ExecutionTime` = ExecutionTime);
-	-- select ID;
+    set retID = last_insert_id();
 END$$
 
 drop procedure if exists read_MenuItem$$
 create procedure read_MenuItem
 (
-	in MenuID int,
-    in IsActive int
+	in p_MenuID varchar(64),
+    in p_IsActive varchar(64)
 )
 BEGIN
+	declare MenuID int;
+    declare IsActive int;
+    set MenuID = cast(p_MenuID as unsigned);
+    set IsActive = cast(p_IsActive as unsigned);
 	select * from `pizzaposdb`.`MenuItem`
     WHERE `MenuItem`.`IsActive` = IsActive and
 		`Menu`.`MenuID` = MenuID;
@@ -191,18 +198,36 @@ END$$
 drop procedure if exists update_MenuItem$$
 create procedure update_MenuItem
 (
-	IN ItemName varchar(64),
-    IN MenuID int,
-    IN Price double,
-    IN PriorityScore int,
-    IN ExecutionTime int,
-	IN ID int,
-    IN UUID varchar(36),
-	IN IsActive bit,
-    IN SortValue int,
+	IN p_ItemName varchar(64),
+    IN p_MenuID varchar(64),
+    IN p_Price varchar(64),
+    IN p_PriorityScore varchar(64),
+    IN p_ExecutionTime varchar(64),
+	IN p_ID varchar(64),
+    IN p_UUID varchar(36),
+	IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
     OUT retVal int
 )
 BEGIN
+	declare ItemName varchar(64);
+    declare MenuID int;
+    declare Price double;
+    declare PriorityScore int;
+    declare ExecutionTime int;
+	declare ID int;
+    declare UUID varchar(36);
+	declare IsActive int;
+    declare SortValue int;
+    set ItemName = p_ItemName;
+    set MenuID = cast(p_MenuID as unsigned);
+    set Price = cast(p_Price as decimal(10,2));
+    set PriorityScore = cast(p_PriorityScore as unsigned);
+    set ExecutionTime = cast(p_ExecutionTIme as unsigned);
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	UPDATE `pizzaposdb`.`MenuItem` SET
 		`SortValue` = SortValue,
 		`IsActive` = IsActive,
@@ -216,12 +241,18 @@ END$$
 drop procedure if exists delete_MenuItem$$
 create procedure delete_MenuItem
 (
-	in ID int,
-    in UUID int,
-    in IsActive bit,
+	in ID varchar(64),
+    in UUID varchar(36),
+    in IsActive varchar(64),
     OUT retVal int
 )
 BEGIN
+	declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
 	UPDATE `pizzaposdb``MenuItem` SET
 		`IsActive` = IsActive
 	where `UUID` = UUID and `ID` = ID;
@@ -231,17 +262,33 @@ END$$
 drop procedure if exists create_PosCheck$$
 create procedure create_PosCheck
 (
-	IN TableID int,
-    IN UserID int,
-    IN CheckStatus int,
-    IN DateStarted datetime,
-    IN DateClosed datetime,
-	IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    OUT ID int
+	IN p_TableID varchar(64),
+    IN p_UserID varchar(64),
+    IN p_CheckStatus varchar(64),
+    IN p_DateStarted varchar(64),
+    IN p_DateClosed varchar(64),
+	IN p_UUID varchar(36),
+    IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
+    OUT retID int
 )
 BEGIN
+	declare TableID int;
+    declare UserID int;
+    declare CheckStatus int;
+    declare DateStarted datetime;
+    declare DateClosed datetime;
+	declare UUID varchar(36);
+    declare IsActive int;
+    declare SortValue int;
+    set TableID = cast(p_TableID as unsigned);
+    set UserID = cast(p_UserID as unsigned);
+    set CheckStatus = cast(p_CheckStatus as unsigned);
+    set DateStarted = cast(p_DateStarted as datetime);
+    set DateClosed = cast(p_DateClosed as datetime);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	INSERT INTO `pizzaposdb`.`poscheck`
 	(
 		`UUID`,
@@ -263,26 +310,26 @@ BEGIN
         DateStarted,
         DateClosed
     );
-	set ID = (SELECT `poscheck`.`ID` FROM `pizzaposdb`.`poscheck`
-		where `UUID` = UUID and
-		`SortValue` = SortValue and
-        `IsActive` = IsActive and
-		`TableID` = TableID and
-		`UserID` = UserID and
-		`CheckStatus` = CheckStatus and
-		`DateStarted` = DateStarted and
-		`DateClosed` = DateClosed);
+	set retID = last_insert_id();
 END$$
 
 drop procedure if exists read_PosCheck$$
 create procedure read_PosCheck
 (
-	IN IsActive int,
-    IN TableID int,
-    IN UserID int,
-    IN CheckStatus int
+	IN p_IsActive varchar(64),
+    IN p_TableID varchar(64),
+    IN p_UserID varchar(64),
+    IN p_CheckStatus varchar(64)
 )
 BEGIN
+	declare IsActive int;
+    declare TableID int;
+    declare UserID int;
+    declare CheckStatus int;
+    set IsActive = cast(p_IsActive as unsigned);
+    set TableID = cast(p_TableID as unsigned);
+    set UserID = cast(p_UserID as unsigned);
+    set CheckStatus = cast(p_CheckStatus as unsigned);
 	select * from pizzaposdb.PosCheck
     where `IsActive` = IsActive and
     `TableID` = TableID and
@@ -293,12 +340,18 @@ END$$
 drop procedure if exists delete_PosCheck$$
 create procedure delete_PosCheck
 (
-	IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
+	in p_ID varchar(64),
+    in p_UUID varchar(36),
+    in p_IsActive varchar(64),
     OUT retVal int
 )
 BEGIN
+	declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
 	UPDATE `pizzaposdb`.`poscheck`
 	SET
 		`IsActive` = IsActive
@@ -309,14 +362,24 @@ END$$
 drop procedure if exists create_PosTables$$
 create procedure create_PosTables
 (
-	IN TableName varchar(50),
-    IN StoreID int,
-	IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    OUT ID int
+	IN p_TableName varchar(64),
+    IN p_StoreID varchar(64),
+	IN p_UUID varchar(36),
+    IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
+    OUT retID int
 )
 Begin
+	declare TableName varchar(64);
+    declare StoreID int;
+	declare UUID varchar(36);
+    declare IsActive int;
+    declare SortValue int;
+    set TableName = p_TableName;
+    set StoreID = cast(p_StoreID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	INSERT INTO `pizzaposdb`.`postables`
 		(`UUID`,
 		`SortValue`,
@@ -329,22 +392,20 @@ Begin
 		IsActive,
 		TableName,
 		StoreID);
-	SET ID = (SELECT `postables`.`ID`
-		FROM `pizzaposdb`.`postables`
-        Where `postables`.`UUID` = UUID and
-			`postables`.`SortValue` = SortValue and
-			`postables`.`IsActive` = IsActive and
-			`postables`.`TableName` = TableName and
-			`postables`.`StoreID` = StoreID);
+	SET retID = last_insert_id();
 END$$
 
 Drop procedure if exists read_PosTable$$
 create procedure read_PosTable
 (
-	IN IsActive bit,
-    IN StoreID int
+	IN p_IsActive varchar(64),
+    IN p_StoreID varchar(64)
 )
 BEGIN
+	declare IsActive int;
+    declare StoreID int;
+    set IsActive = cast(p_IsActive as unsigned);
+    set StoreID = cast(p_StoreID as unsigned);
 	SELECT * FROM `pizzaposdb`.`postables`
     WHERE `StoreID` = StoreID and
 		`IsActive` = IsActive;
@@ -353,15 +414,27 @@ END$$
 Drop procedure if exists update_PosTable$$
 create procedure update_PosTable
 (
-	IN TableName varchar(50),
-    IN StoreID int,
-    IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
+	IN p_TableName varchar(64),
+    IN p_StoreID varchar(64),
+    IN p_ID varchar(64),
+    IN p_UUID varchar(36),
+    IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
     OUT retVal int
 )
 BEGIN
+	declare TableName varchar(64);
+    declare StoreID int;
+    declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    declare SortValue int;
+    set TableName = p_TableName;
+    set StoreID = cast(p_StoreID as unsigned);
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	UPDATE `pizzaposdb`.`postables`
 		SET
 			`sortValue` = SortValue,
@@ -375,12 +448,18 @@ END$$
 Drop procedure if exists delete_PosTable$$
 create procedure delete_PosTable
 (
-	IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
+	in p_ID varchar(64),
+    in p_UUID varchar(36),
+    in p_IsActive varchar(64),
     OUT retVal int
 )
 BEGIN
+	declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
 	UPDATE `pizzaposdb`.`postables`
 		SET
 			`IsActive` = IsActive
@@ -391,17 +470,35 @@ END$$
 drop procedure if exists create_Ticket$$
 create procedure create_Ticket
 (
-	IN DateStarted date,
-    IN UserID int,
-    IN TableID int,
-    IN TicketStatus int,
-    IN TicketType int,
-	IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    OUT ID int
+	IN p_DateStarted varchar(64),
+    IN p_UserID varchar(64),
+    IN p_TableID varchar(64),
+    IN p_TicketStatus varchar(64),
+    IN p_TicketType varchar(64),
+	IN p_UUID varchar(36),
+    IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
+    OUT retID int
 )
 BEGIN
+	declare DateStarted date;
+    declare UserID int;
+    declare TableID int;
+    declare TicketStatus int;
+    declare TicketType int;
+    declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    declare SortValue int;
+    set DateStarted = cast(p_DateStarted as date);
+    set UserID = cast(p_UserID as unsigned);
+    set TableID = cast(p_TableID as unsigned);
+    set TicketStatus = cast(p_TicketStatus as unsigned);
+    set TicketType = cast(p_TicketType as unsigned);
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	INSERT INTO `pizzaposdb`.`ticket`
 		(`UUID`,
 		`SortValue`,
@@ -420,16 +517,7 @@ BEGIN
         TableID,
         TicketStatus,
         TicketType);
-	SET ID = (SELECT `ticket`.`ID`
-		FROM `pizzaposdb`.`ticket`
-        WHERE `ticket`.`UUID` = UUID AND
-		`ticket`.`SortValue` = SortValue AND
-		`ticket`.`IsActive` = IsActive AND
-		`ticket`.`DateStarted` = DateStarted AND
-		`ticket`.`UserID` = UserID AND
-		`ticket`.`TableID` = TableID AND
-		`ticket`.`TicketStatus`= TicketStatus AND
-		`ticket`.`TicketType`= TicketType);
+	SET retID = last_insert_id();
 END$$
 
 drop procedure if exists read_Ticket$$
@@ -449,18 +537,36 @@ END$$
 drop procedure if exists update_Ticket$$
 create procedure update_Ticket
 (
-	IN DateStarted date,
-    IN UserID int,
-    IN TableID int,
-    IN TicketStatus int,
-    IN TicketType int,
-	IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
+	IN p_DateStarted varchar(64),
+    IN p_UserID varchar(64),
+    IN p_TableID varchar(64),
+    IN p_TicketStatus varchar(64),
+    IN p_TicketType varchar(64),
+	IN p_ID varchar(64),
+    IN p_UUID varchar(36),
+    IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
     OUT retVal int
 )
 BEGIN
+	declare DateStarted date;
+    declare UserID int;
+    declare TableID int;
+    declare TicketStatus int;
+    declare TicketType int;
+    declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    declare SortValue int;
+    set DateStarted = cast(p_DateStarted as date);
+    set UserID = cast(p_UserID as unsigned);
+    set TableID = cast(p_TableID as unsigned);
+    set TicketStatus = cast(p_TicketStatus as unsigned);
+    set TicketType = cast(p_TicketType as unsigned);
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	UPDATE `pizzaposdb`.`ticket`
 		SET
 			`SortValue` = SortValue,
@@ -477,12 +583,18 @@ END$$
 drop procedure if exists delete_Ticket$$
 create procedure delete_Ticket
 (
-	IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
+	in p_ID varchar(64),
+    in p_UUID varchar(36),
+    in p_IsActive varchar(64),
     OUT retVal int
 )
 BEGIN
+	declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
 	UPDATE `pizzaposdb`.`Ticket`
 		SET `IsActive` = IsActive
         WHERE `ID` = ID and `UUID` = UUID;
@@ -492,15 +604,27 @@ END$$
 drop procedure if exists create_TicketItem$$
 create procedure create_TicketItem
 (
-	IN TicketID int,
-    IN MenuItemID int,
-    IN ItemPrice double,
-    IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    OUT ID int
+	IN p_TicketID varchar(64),
+    IN p_MenuItemID varchar(64),
+    IN p_ItemPrice varchar(64),
+    IN p_UUID varchar(36),
+    IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
+    OUT retID int
 )
 begin
+	declare TicketID int;
+    declare MenuItemID int;
+    declare ItemPrice double;
+    declare UUID varchar(36);
+    declare IsActive int;
+    declare SortValue int;
+    set TicketID = cast(p_TicketID as unsigned);
+    set MenuItemID = cast(p_MenuItemID as unsigned);
+    set ItemPrice = cast(p_ItemPrice as decimal(10, 2));
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	Insert into `pizzaposdb`.`TicketItem`
     (`UUID`,
     `IsActive`,
@@ -515,40 +639,52 @@ begin
     TicketID,
     MenuItemID,
     ItemPrice);
-	set ID = (select ID from `pizzaposdb`.`TicketItem`
-		where `UUID` = UUID and
-        `IsActive` = IsActive and
-        `SortValue` = SortValue and
-        `TicketID` = TicketID and
-        `MenuItemID` = MenuItemID and
-        `ItemPrice` = ItemPrice);
+	set retID = last_insert_id();
 END$$
 
 Drop procedure if exists read_TicketItem$$
 create procedure read_TicketItem
 (
-	IN IsActive bit,
-    IN MenuID int
+	IN p_IsActive varchar(64),
+    IN p_TicketID varchar(64)
 )
 begin
+	declare IsActive int;
+    declare TicketID int;
+    set IsActive = cast(p_IsActive as unsigned);
+    set TicketID = cast(p_TicketID as unsigned);
 	select * from `pizzaposdb`.`TicketItem`
     where `IsActive` = IsActive and
-    `MenuID` = MenuID;
+    `TicketID` = TicketID;
 end$$
 
 Drop procedure if exists update_TicketItem$$
 create procedure update_TicketItem
 (
-	IN TicketID int,
-    IN MenuItemID int,
-    IN ItemPrice double,
-    IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
+	IN p_TicketID varchar(64),
+    IN p_MenuItemID varchar(64),
+    IN p_ItemPrice varchar(64),
+    IN p_ID varchar(64),
+    IN p_UUID varchar(36),
+    IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
     OUT retVal int
 )
 begin
+	declare TicketID int;
+    declare MenuItemID int;
+    declare ItemPrice double;
+    declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    declare SortValue int;
+    set TicketID = cast(p_TicketID as unsigned);
+    set MenuItemID = cast(p_MenuItemID as unsigned);
+    set ItemPrice = cast(p_ItemPrice as decimal(10,2));
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	update `pizzaposdb`.`TicketItem` set
 		`IsActive` = IsActive,
         `SortValue` = SortValue,
@@ -556,18 +692,24 @@ begin
         `MenuItemID` = MenuItemID,
         `ItemPrice` = ItemPrice
 	where `ID` = ID and `UUID` = UUID;
-    set retVal = 1;
+    set retVal = successValue();
 end$$
 
 Drop procedure if exists delete_TicketItem$$
 create procedure delete_TicketItem
 (
-	IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
+	in p_ID varchar(64),
+    in p_UUID varchar(36),
+    in p_IsActive varchar(64),
     OUT retVal int
 )
 begin
+	declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
 	update `pizzaposdb`.`TicketItem` set
 		`IsActive` = IsActive
 	where `ID` = ID and `UUID` = UUID;
@@ -577,18 +719,36 @@ end$$
 drop procedure if exists create_TransactionHistory$$
 create procedure create_TransactionHistory
 (
-	IN FinalTotal double,
-    IN CheckID int,
-    IN UserID int,
-    IN PaymentType int,
-    IN PaymentStatus int,
-    IN PaymentDate date,
-    IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
-    OUT ID int
+	IN p_FinalTotal varchar(64),
+    IN p_CheckID varchar(64),
+    IN p_UserID varchar(64),
+    IN p_PaymentType varchar(64),
+    IN p_PaymentStatus varchar(64),
+    IN p_PaymentDate varchar(64),
+    IN p_UUID varchar(36),
+    IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
+    OUT retID int
 )
 begin
+    declare FinalTotal double;
+    declare CheckID int;
+    declare UserID int;
+    declare PaymentType int;
+    declare PaymentStatus int;
+    declare PaymentDate date;
+    declare UUID varchar(36);
+    declare IsActive int;
+    declare SortValue int;
+    set FinalTotal = cast(p_FinalTotal as decimal(10,2));
+    set CheckID = cast(p_CheckID as unsigned);
+    set UserID = cast(p_UserID as unsigned);
+    set PaymentType = cast(p_PaymentType as unsigned);
+    set PaymentStatus = cast(p_PaymentStatus as unsigned);
+    set PaymentDate = cast(p_PaymentDate as date);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	insert into `pizzaposdb`.`TransactionHistory`
 		(`UUID`,
         `IsActive`,
@@ -609,26 +769,23 @@ begin
         PaymentType,
         PaymentStatus,
         PaymentDate);
-	Set ID = (select ID from `pizzaposdb`.`TransactionHistory`
-			where `UUID` = UUID and
-			`IsActive` = IsActive and
-			`SortValue` = SortValue and
-			`FinalTotal` = FinalTotal and
-			`CheckID` = CheckID and
-			`UserID` = UserID and
-			`PaymentType` = PaymentType and
-			`PaymentStatus` = PaymentStatus and
-			`PaymentDate` = PaymentDate);
+	Set retID = last_insert_id();
 end$$
 
 drop procedure if exists read_TransactionHistory$$
 create procedure read_TransactionHistory
 (
-	IN IsActive bit,
-    IN UserID int,
-    IN PaymentStatus int
+	IN p_IsActive varchar(64),
+    IN p_UserID varchar(64),
+    IN p_PaymentStatus varchar(64)
 )
 begin
+	declare IsActive int;
+    declare UserID int;
+    declare PaymentStatus int;
+    set IsActive = cast(p_IsActive as unsigned);
+    set UserID = cast(p_UserID as unsigned);
+    set PaymentStatus = cast(p_PaymentStatus as unsigned);
 	select * from `pizzaposdb`.`TransactionHistory`
     where `UserID` = UserID and 
     `PaymentStatus` = PaymentStatus and
@@ -638,19 +795,39 @@ end$$
 drop procedure if exists update_TransactionHistory$$
 create procedure update_TransactionHistory
 (
-	IN FinalTotal double,
-    IN CheckID int,
-    IN UserID int,
-    IN PaymentType int,
-    IN PaymentStatus int,
-    IN PaymentDate date,
-    IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
-    IN SortValue int,
+	IN p_FinalTotal varchar(64),
+    IN p_CheckID varchar(64),
+    IN p_UserID varchar(64),
+    IN p_PaymentType varchar(64),
+    IN p_PaymentStatus varchar(64),
+    IN p_PaymentDate varchar(64),
+    IN p_ID varchar(64),
+    IN p_UUID varchar(36),
+    IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
     OUT retVal int
 )
 begin
+    declare FinalTotal double;
+    declare CheckID int;
+    declare UserID int;
+    declare PaymentType int;
+    declare PaymentStatus int;
+    declare PaymentDate date;
+    declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    declare SortValue int;
+    set FinalTotal = cast(p_FinalTotal as decimal(10,2));
+    set CheckID = cast(p_CheckID as unsigned);
+    set UserID = cast(p_UserID as unsigned);
+    set PaymentType = cast(p_PaymentType as unsigned);
+    set PaymentStatus = cast(p_PaymentStatus as unsigned);
+    set PaymentDate = cast(p_PaymentDate as date);
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
 	update `pizzaposdb`.`TransactionHistory` set
         `IsActive` = IsActive,
 		`SortValue` = SortValue,
@@ -661,18 +838,24 @@ begin
         `PaymentStatus` = PaymentStatus,
         `PaymentDate` = PaymentDate
         where `ID` = ID and `UUID` = UUID;
-	set retVal = 1;
+	set retVal = successValue();
 end$$
 
 drop procedure if exists delete_TransactionHistory$$
 create procedure delete_TransactionHistory
 (
-	IN ID int,
-    IN UUID varchar(36),
-    IN IsActive bit,
+	in p_ID varchar(64),
+    in p_UUID varchar(36),
+    in p_IsActive varchar(64),
     OUT retVal int
 )
 begin
+	declare ID int;
+    declare UUID varchar(36);
+    declare IsActive int;
+    set ID = cast(p_ID as unsigned);
+    set UUID = p_UUID;
+    set IsActive = cast(p_IsActive as unsigned);
 	update `pizzaposdb`.`TransactionHistory` set
         `IsActive` = IsActive
         where `ID` = ID  and `UUID` = UUID;
