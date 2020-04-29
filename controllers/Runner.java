@@ -6,6 +6,10 @@ package controllers;
  * @author Sultan Al Bogami Last Updated: 2/22/2020
  */
 
+import java.io.IOException;
+
+import API.GoogleAuthWrapper;
+import API.OAuthException;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import views.Frame;
@@ -31,10 +35,6 @@ public class Runner extends Application {
 	* @throws Exception
 	*/
 	public void start(Stage primaryStage) throws Exception {
-
-		// Creating a views.Frame object with log in view as our main view
-		
-		
 		Frame frame = new Frame(primaryStage, SetView.LOG_IN_VIEW);
 	}
 
@@ -43,8 +43,9 @@ public class Runner extends Application {
 	*
 	* @param args
 	*/
-	public static void main(String[] args) {
-		Application.launch(args);
+	public static void main(String[] args) throws IOException {
+		launch(args);
+		//Application.launch(args);
 	}
 
 }
