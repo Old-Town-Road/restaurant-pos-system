@@ -8,8 +8,8 @@ package controllers;
 
 import java.io.IOException;
 
-import API.GoogleAuthWrapper;
-import API.OAuthException;
+//import API.GoogleAuthWrapper;
+//import API.OAuthException;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import views.Frame;
@@ -44,8 +44,8 @@ public class Runner extends Application {
 	* @param args
 	*/
 	public static void main(String[] args) throws IOException {
-		launch(args);
-		//Application.launch(args);
+		//launch(args);
+		Application.launch(args);
 	}
 
 }
