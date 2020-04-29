@@ -65,7 +65,7 @@ public class MenuOrderController {
 			this.menusToTab = this.assembleFakeData();
 		} else {
 			// Get all menus from the DB and cast each to a the correct 
-			//this.menusToTab = DatabaseStandardReads.getFilledListOfMenus(); 
+			this.menusToTab = DatabaseStandardReads.getFilledListOfMenus(); 
 		}
 
 		// Feed the list to the tab pan
@@ -207,7 +207,7 @@ public class MenuOrderController {
 		MenuItem[] pMenu = { pepPizza, chePizza };
 		MenuItem[] dMenu = { cokeDrink, spriteDrink };
 		MenuItem[] sMenu = { friesSide, chicNuggetsSide };
-		//Menu(String _menuName, int _menuType)
+
 		Menu pizzaMenu = new Menu("Pizza", ModelConstants.MENU_TYPE_PIZZAS);
 		pizzaMenu.setItems(pMenu);
 		Menu drinkMenu = new Menu("Drink", ModelConstants.MENU_TYPE_DRINKS);
