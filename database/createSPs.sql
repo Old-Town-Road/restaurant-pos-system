@@ -1,6 +1,5 @@
 use pizzaposdb;
 Delimiter $$
-drop function if exists pizzaposdb.successValue$$
 CREATE FUNCTION `pizzaposdb`.`successValue` ()
 RETURNS INTEGER DETERMINISTIC
 BEGIN
@@ -15,21 +14,21 @@ create procedure create_Menu
 	IN p_UUID varchar(36),
 	IN p_IsActive varchar(50),
     IN p_SortValue varchar(50),
-    OUT ID int
+    OUT retID int
 )
 BEGIN
 	declare StoreID int;
     declare MenuName varchar(50);
     declare MenuType int;
 	declare UUID varchar(36);
-	declare IsActive bit;
+	declare IsActive int;
     declare SortValue int;
-    set StoreID = p_StoreID;
+    set StoreID = cast(p_StoreID as unsigned);
     set MenuName = p_MenuName;
-    set MenuType = p_MenuType;
+    set MenuType = cast(p_MenuType as unsigned);
     set UUID = p_UUID;
-    set IsActive = p_IsActive;
-    set SortValue = p_SortValue;
+    set IsActive = cast(p_IsActive as unsigned);
+    set SortValue = cast(p_SortValue as unsigned);
     
 	INSERT INTO `pizzaposdb`.`Menu`
     (
@@ -48,13 +47,7 @@ BEGIN
         MenuType,
         MenuName
 	);
-	set ID = (SELECT `Menu`.`ID` FROM `pizzaposdb`.`Menu` where
-		`UUID` = UUID and
-		`SortValue` = SortValue and
-		`IsActive` = IsActive and
-		`StoreID` = StoreID and
-		`MenuType` = MenuType and
-		`MenuName` = MenuName);
+	set retID = last_insert_id();
 END$$
 
 drop procedure if exists read_Menu$$
@@ -87,13 +80,13 @@ create procedure update_Menu
     OUT retVal int
 )
 BEGIN
-IN StoreID int,
-    IN MenuName varchar(50),
-    IN MenuType int,
-	IN ID int,
-    IN UUID varchar(36),
-	IN IsActive bit,
-    IN SortValue int,
+	declare StoreID int;
+    declare MenuName varchar(50);
+    declare MenuType int;
+	declare ID int;
+    declare UUID varchar(36);
+	declare IsActive int;
+    declare SortValue int;
 	UPDATE `pizzaposdb`.`Menu` SET
 		`SortValue` = SortValue,
 		`IsActive` = IsActive,
@@ -122,17 +115,33 @@ END$$
 drop procedure if exists create_MenuItem$$
 create procedure create_MenuItem
 (
-	IN ItemName varchar(64),
-    IN MenuID int,
-    IN Price double,
-    IN PriorityScore int,
-    IN ExecutionTime int,
-    IN UUID varchar(36),
-	IN IsActive bit,
-    IN SortValue int,
+	IN p_ItemName varchar(64),
+    IN p_MenuID varchar(64),
+    IN p_Price varchar(64),
+    IN p_PriorityScore varchar(64),
+    IN p_ExecutionTime varchar(64),
+    IN p_UUID varchar(64),
+	IN p_IsActive varchar(64),
+    IN p_SortValue varchar(64),
     OUT ID int
 )
 BEGIN
+	declare ItemName varchar(64);
+    declare MenuID int;
+    declare Price double;
+    declare PriorityScore int;
+    declare ExecutionTime int;
+    declare UUID varchar(36);
+	declare IsActive int;
+    declare SortValue int;
+    set ItemName = p_ItemName;
+    set MenuID = cast(p_MenuID as unsigned);
+    set Price = cast(p_Price as decimal(10,2));
+    set PriorityScore = cast(p_PriorityScore as unsigned);
+    set ExecutionTime = cast(p_ExecutionTime as unsigned);
+    set UUID = p_UUID;
+	set IsActive = cast(p_IsActive as binary);
+    set SortValue = cast(p_SortValue as unsigned);
 	INSERT INTO `pizzaposdb`.`MenuItem`
     (
 		`UUID`,
@@ -154,15 +163,17 @@ BEGIN
 		PriorityScore,
 		ExecutionTime
 	);
-	set ID = (SELECT `MenuItem`.`ID` FROM `pizzaposdb`.`MenuItem` where
-		`UUID` = UUID and
-		`SortValue` = SortValue and
-		`IsActive` = IsActive and
-		`MenuID` = MenuID and
-        `ItemName` = ItemName and
-        `Price` = Price and
-        `PriorityScore` = PriorityScore and
-        `ExecutionTime` = ExecutionTime);
+    set ID = last_insert_id();
+	-- set ID = (SELECT `MenuItem`.`ID` FROM `pizzaposdb`.`MenuItem` where
+-- 		`UUID` = UUID and
+-- 		`SortValue` = SortValue and
+-- 		`IsActive` = IsActive and
+-- 		`MenuID` = MenuID and
+--         `ItemName` = ItemName and
+--         `Price` = Price and
+--         `PriorityScore` = PriorityScore and
+--         `ExecutionTime` = ExecutionTime);
+	-- select ID;
 END$$
 
 drop procedure if exists read_MenuItem$$
