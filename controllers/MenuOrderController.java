@@ -27,11 +27,6 @@ import models.MenuItem;
 import models.ModelConstants;
 
 //Unused imports
-import javafx.collections.ObservableList;
-import java.util.HashMap;
-import java.util.Map;
-import database.DataStoreAdapter;
-import database.DatabaseConstants;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
@@ -58,7 +53,7 @@ public class MenuOrderController {
 		this.initialize();
 	}
 
-	public void initialize() throws ClassNotFoundException {
+	void initialize() throws ClassNotFoundException {
 		// Get all menus for the tab pane and put them in an array.
 		if (debug) {
 			// this is where Ashim adds fake data.
@@ -104,14 +99,14 @@ public class MenuOrderController {
 	 * @param _targetMenu
 	 */
 	@FXML
-	private void addTab(Menu _targetMenu) {
+	void addTab(Menu _targetMenu) {
 		Tab tab = new Tab(_targetMenu.getMenuName());
 		
-		tabPane.setTabMinWidth(100);
-		tabPane.setTabMinHeight(25);
+		this.tabPane.setTabMinWidth(100);
+		this.tabPane.setTabMinHeight(25);
 		tab.setStyle("-fx-border-color:YELLOWGREEN ; -fx-background-color: DEEPSKYBLUE ;");
 		tab.setContent(createVboxAndPutButtons(_targetMenu));
-		tabPane.getTabs().add(tab);
+		//this.tabPane.getTabs().add(tab);
 	}
 	
 	/**
@@ -120,7 +115,7 @@ public class MenuOrderController {
 	 * @param _targetMenu
 	 * @return vbox
 	 */
-	private VBox createVboxAndPutButtons(Menu _targetMenu) {
+	VBox createVboxAndPutButtons(Menu _targetMenu) {
 		
 		VBox vbox = new VBox();
 		
@@ -149,7 +144,7 @@ public class MenuOrderController {
 	 * @param _price
 	 * @return vbox
 	 */
-	private VBox vBoxInList(Button _btn, double _price) {
+	VBox vBoxInList(Button _btn, double _price) {
 		Text name = new Text(_btn.getText());
 		Text priceText = new Text(String.valueOf(_price));
 
@@ -166,20 +161,16 @@ public class MenuOrderController {
 	 */
 		public void removeItem() {
 			VoidItem.setOnAction(actionEvent -> {
-				final int selectedIdx = listOfItems.getSelectionModel().getSelectedIndex();
+				int selectedIdx = listOfItems.getSelectionModel().getSelectedIndex();
 				if (selectedIdx != -1) {
 
-					final int newSelectedIdx = (selectedIdx == listOfItems.getItems().size() - 1) ? selectedIdx - 1
+					int newSelectedIdx = (selectedIdx == listOfItems.getItems().size() - 1) ? selectedIdx - 1
 							: selectedIdx;
-
-
 					listOfItems.getItems().remove(selectedIdx);
 					listOfItems.getSelectionModel().select(newSelectedIdx);
-					
-					
+
 					//priceCount = Math.round((priceCount - 
 					//tfTotal.setText(String.valueOf(priceCount));
-
 				}
 			});
 		}
@@ -188,7 +179,7 @@ public class MenuOrderController {
 	 * This is the method that returns an ArrayList of fake data for the program.
 	 * @return retVal
 	 */
-	private ArrayList<Menu> assembleFakeData() {
+	ArrayList<Menu> assembleFakeData() {
 		ArrayList<Menu> retVal = new ArrayList<Menu>();
 
 		MenuItem pepPizza = new MenuItem(1, "Pepperoni Pizza", 13.99, 0, 0);
