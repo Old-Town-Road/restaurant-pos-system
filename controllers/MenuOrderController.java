@@ -36,7 +36,7 @@ import javafx.event.EventHandler;
 public class MenuOrderController {
 
 	@FXML
-	private TabPane tabPanes = new TabPane();
+	public TabPane tabPanes = new TabPane();
 	@FXML
 	private ListView<VBox> listOfItems = new ListView<VBox>();
 	@FXML
@@ -45,7 +45,7 @@ public class MenuOrderController {
 	private TextField tfTotal = new TextField();
 
 	private double priceCount = 0;
-	private boolean debug = true;
+	private boolean debug = false;
 
 	private ArrayList<Menu> menusToTab = new ArrayList<Menu>();
 

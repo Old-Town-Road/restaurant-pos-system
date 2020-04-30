@@ -71,13 +71,4 @@ class TestDataStoreAdapter {
 		assertTrue("fail delete booze menu", this.boozeMenu.deleteObjectFromDatabase());
 		assertTrue("fail delete finger menu", this.fingerFoodsMenu.deleteObjectFromDatabase());
 	}
-
-	/*
-	 * @Test final void testReadObject() { fail("Not yet implemented"); // TODO }
-	 * 
-	 * @Test final void testUpdateObject() { fail("Not yet implemented"); // TODO }
-	 * 
-	 *  // TODO }
-	 */
-
 }
