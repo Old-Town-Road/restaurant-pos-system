@@ -119,7 +119,7 @@ BEGIN
     set ID = cast(p_ID as unsigned);
     set IsActive = cast(p_IsActive as unsigned);
     set UUID = p_UUID;
-	UPDATE `pizzaposdb``Menu` SET
+	UPDATE `pizzaposdb`.`Menu` SET
 		`IsActive` = IsActive
 	where `UUID` = UUID and `ID` = ID;
     SET retVal = successValue();
@@ -253,7 +253,7 @@ BEGIN
     set ID = cast(p_ID as unsigned);
     set UUID = p_UUID;
     set IsActive = cast(p_IsActive as unsigned);
-	UPDATE `pizzaposdb``MenuItem` SET
+	UPDATE `pizzaposdb`.`MenuItem` SET
 		`IsActive` = IsActive
 	where `UUID` = UUID and `ID` = ID;
     SET retVal = successValue();

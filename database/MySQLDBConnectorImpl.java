@@ -370,9 +370,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 				int numberOfParametersNeeded = _numberOfParameters - _numberOfKeyValuePairs;
 				// For the number of parameters needed, register that index as an out.
 				for (int i = 1; i <= numberOfParametersNeeded; i++) {
-					int temp = i + _numberOfKeyValuePairs;
 					this.sql.registerOutParameter(i + _numberOfKeyValuePairs, _typesToReturn[(i - 1)]);
-					int bleh = 1;
 				}
 			}
 		} catch (SQLException e) {

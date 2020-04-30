@@ -20,9 +20,9 @@ class TestDataStoreAdapter {
 	private MenuItem friesSide = new MenuItem(3, "nachos", 5.99, 0, 0);
 	private MenuItem chicNuggetsSide = new MenuItem(3, "olives", 8.99, 0, 0);
 
-	private Menu pizzaMenu = new Menu("Pasta", ModelConstants.MENU_TYPE_PIZZAS);
-	private Menu drinkMenu = new Menu("booze", ModelConstants.MENU_TYPE_DRINKS);
-	private Menu sideMenu = new Menu("FingerFood", ModelConstants.MENU_TYPE_SIDES);
+	private Menu pastaMenu = new Menu("Pasta", ModelConstants.MENU_TYPE_PIZZAS);
+	private Menu boozeMenu = new Menu("booze", ModelConstants.MENU_TYPE_DRINKS);
+	private Menu fingerFoodsMenu = new Menu("FingerFood", ModelConstants.MENU_TYPE_SIDES);
 
 	private boolean alignmentFlag = false;
 
@@ -43,21 +43,27 @@ class TestDataStoreAdapter {
 		MenuItem[] dMenu = { cokeDrink, spriteDrink };
 		MenuItem[] sMenu = { friesSide, chicNuggetsSide };
 
-		pizzaMenu.setItems(pMenu);
-		drinkMenu.setItems(dMenu);
-		sideMenu.setItems(sMenu);
+		this.pastaMenu.setItems(pMenu);
+		this.boozeMenu.setItems(dMenu);
+		this.fingerFoodsMenu.setItems(sMenu);
 	}
 	@Test
 	final void testCreateObject() {
 		//Test basic creations
 		try {
-			//assertTrue("Not a successful creation", this.pepPizza.saveObjectInDatabase());
-			//assertTrue("menu fail", this.pizzaMenu.saveObjectInDatabase());
-			assertTrue("failed creation", this.pizzaMenu.saveMenuAndContents());
-		} catch (IllegalArgumentException e) {// | IllegalAccessException e) {
-			// TODO Auto-generated catch block
+			assertTrue("failed creation pasta menu", this.pastaMenu.saveMenuAndContents());
+			assertTrue("failed creation booze menu", this.boozeMenu.saveMenuAndContents());
+			assertTrue("failed creation finger food menu", this.fingerFoodsMenu.saveMenuAndContents());
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	final void testDeleteObject() {
+		assertTrue("fail delete pasta menu", this.pastaMenu.deleteObjectFromDatabase());
+		assertTrue("fail delete booze menu", this.boozeMenu.deleteObjectFromDatabase());
+		assertTrue("fail delete finger menu", this.fingerFoodsMenu.deleteObjectFromDatabase());
 	}
 
 	/*
@@ -65,7 +71,7 @@ class TestDataStoreAdapter {
 	 * 
 	 * @Test final void testUpdateObject() { fail("Not yet implemented"); // TODO }
 	 * 
-	 * @Test final void testDeleteObject() { fail("Not yet implemented"); // TODO }
+	 *  // TODO }
 	 */
 
 }
