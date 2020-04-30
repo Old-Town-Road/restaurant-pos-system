@@ -40,6 +40,9 @@ public class TicketItem extends ModelObject {
 		this.setItemPrice(_itemPrice);
 	}
 
+	public TicketItem() {
+	}
+
 	// ================= GETTERS ==========================
 	public int getTicketId() {
 		return ticketId;

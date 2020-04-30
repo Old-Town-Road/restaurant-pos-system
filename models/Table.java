@@ -30,6 +30,8 @@ public class Table extends ModelObject{
 		this.setStoreId(ModelConstants.STORE_TYPE_POS);
 	}
 
+	public Table() {
+	}
 	// ================= GETTERS ==========================
 	public String getPOSTableName() {
 		return this.tableName;

@@ -22,8 +22,8 @@ public class Menu extends ModelObject{
 	private int menuType;
 
 	public Menu() {
-		
 	}
+
 	public Menu(String _menuName, int _menuType) {
 		super();
 		this.setStoreId(DatabaseConstants.STORE_ID_CONSTANT);

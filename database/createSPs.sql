@@ -49,15 +49,28 @@ drop procedure if exists read_Menu$$
 create procedure read_Menu
 (
     in p_IsActive varchar(64),
-    in p_StoreID varchar(64)
+    in p_StoreID varchar(64),
+	out p_StoreID int,
+    out p_MenuName varchar(64),
+    out p_MenuType int,
+	out p_ID int,
+    out p_UUID varchar(36),
+	out p_IsActive int,
+    out p_SortValue int
 )
 BEGIN
 	declare currIsActive int;
     declare currStoreID int;
     set currIsActive = cast(p_IsActive as unsigned);
     set currStoreID = cast(p_StoreID as unsigned);
-    
-	select * from `pizzaposdb`.`Menu`
+    SELECT `menu`.`StoreID`,
+		`menu`.`MenuName`,
+		`menu`.`MenuType`,
+		`menu`.`ID`,
+		`menu`.`UUID`,
+		`menu`.`IsActive`,
+		`menu`.`SortValue`
+	FROM `pizzaposdb`.`menu`
     WHERE `Menu`.`IsActive` = currIsActive and
 		`Menu`.`StoreID` = currStoreID;
 END$$

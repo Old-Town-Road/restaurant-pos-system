@@ -21,7 +21,7 @@ public class DataStoreAdapter {
 	 * @throws IllegalAccessException
 	 */
 	public static int createObject (ModelObject _targetObject) throws IllegalArgumentException, IllegalAccessException {
-		return connector.createObject(_targetObject.getDataKeyValuePairs(), _targetObject.getTableName());
+		return connector.createObject(_targetObject.getDataKeyValuePairs(), _targetObject.getSingleIntegerReutrnTypeSet(), _targetObject.getClass());
 	}
 
 	/**
@@ -30,8 +30,8 @@ public class DataStoreAdapter {
 	 * @param _targetClass
 	 * @return Array list filled with the results
 	 */
-	public static ArrayList<ModelObject> readObject (LinkedHashMap<String, String> _keyValuePairs, Class<?> _targetClass) {
-		return connector.readObject(_keyValuePairs, _targetClass);
+	public static ArrayList<ModelObject> readObject (LinkedHashMap<String, String> _keyValuePairs, ModelObject _targetObject) {
+		return connector.readObject(_keyValuePairs, _targetObject.getSingleIntegerReutrnTypeSet(), _targetObject.getClass());
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class DataStoreAdapter {
 	 * @throws IllegalAccessException
 	 */
 	public static boolean updateObject (ModelObject _targetObject) throws IllegalArgumentException, IllegalAccessException {
-		return connector.updateObject(_targetObject.getDataKeyValuePairs(), _targetObject.getUuid(), _targetObject.getTableName());
+		return connector.updateObject(_targetObject.getDataKeyValuePairs(), _targetObject.getSingleIntegerReutrnTypeSet(), _targetObject.getUuid(), _targetObject.getClass());
 	}
 
 	/**
@@ -56,6 +56,6 @@ public class DataStoreAdapter {
 		keyValuePair.put(DatabaseConstants.DB_ID_VALUE, String.valueOf(_targetObject.getId()));
 		keyValuePair.put(DatabaseConstants.DB_UUID_VALUE, _targetObject.getUuid());
 		keyValuePair.put(DatabaseConstants.DB_IS_ACTIVE_VALUE, DatabaseConstants.booleanToBit(false));
-		return connector.deleteObject(keyValuePair, _targetObject.getTableName());
+		return connector.deleteObject(keyValuePair, _targetObject.getSingleIntegerReutrnTypeSet(), _targetObject.getClass());
 	}
 }

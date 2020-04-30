@@ -40,6 +40,9 @@ public class MenuItem extends ModelObject {
 		this.executionTime = _executionTime;
 	}
 
+	public MenuItem() {
+	}
+
 //====================GETTERS====================
 
 	public String getItemName() {

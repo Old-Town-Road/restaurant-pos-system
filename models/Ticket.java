@@ -27,7 +27,7 @@ public class Ticket extends ModelObject {
 
 	private ArrayList<TicketItem> ticketItems = new ArrayList<TicketItem>();	
 
-	Ticket(Date _dateStarted, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
+	public Ticket(Date _dateStarted, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
 		super();
 		this.setDateStarted(_dateStarted);
 		this.setUserId(_userId);
@@ -36,7 +36,7 @@ public class Ticket extends ModelObject {
 		this.setTicketType(_ticketType);
 	}
 
-	Ticket(int _id, String uuid, int _sortValue, boolean _isActive, Date _dateStarted, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
+	public Ticket(int _id, String uuid, int _sortValue, boolean _isActive, Date _dateStarted, int _userId, int _tableId, int _ticketStatus, int _ticketType) {
 		this.setId(_id);
 		this.setUuid(uuid);
 		this.setSortValue(_sortValue);
@@ -46,6 +46,9 @@ public class Ticket extends ModelObject {
 		this.setTableId(_tableId);
 		this.setTicketStatus(_ticketStatus);
 		this.setTicketType(_ticketType);
+	}
+
+	public Ticket() {
 	}
 
 	/**

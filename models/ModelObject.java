@@ -79,6 +79,60 @@ public abstract class ModelObject {
 	}
 
 	/**
+	 * This method returns an int array that contains the return types of this method.
+	 * @return
+	 */
+	public int[] getReturnTypeSet() {
+		ArrayList<Integer> retVal = new ArrayList<Integer>();
+		// Starting the current class spin through all levels of this class
+		Class<?> targetClass = this.getClass();
+		while (!targetClass.getName().equals(DatabaseConstants.TARGET_SUPER_CLASS)) {
+			// Spin through all the fields.
+			Field[] fields = targetClass.getDeclaredFields();
+			for (Field targetField : fields) {
+				// If this field is a private or protected field, continue.
+				targetField.setAccessible(true);
+				int fieldModifier = targetField.getModifiers();
+				if ((Modifier.isPrivate(fieldModifier) || Modifier.isProtected(fieldModifier))
+						&& (!Collection.class.isAssignableFrom(targetField.getType()))) {
+					retVal.add(this.convertTypeToSQLType(targetField.getType()));
+				}
+			}
+		}
+		return retVal.stream().mapToInt(i->i).toArray();
+	}
+
+	/**
+	 * Converts a type to an int that corresponds to the sql type.
+	 * @param _type
+	 * @return
+	 */
+	public int convertTypeToSQLType(Class<?> _type) {
+		if (_type == int.class) {
+			return java.sql.Types.INTEGER;
+		} else if (_type == long.class) {
+			return java.sql.Types.BIGINT;
+		} else if (_type == double.class) {
+			return java.sql.Types.DOUBLE;
+		} else if (_type == float.class) {
+			return java.sql.Types.FLOAT;
+		} else if (_type == boolean.class) {
+			return java.sql.Types.BOOLEAN;
+		} else if (_type == byte.class) {
+			return java.sql.Types.BIT;
+		} else if (_type == char.class) {
+			return java.sql.Types.CHAR;
+		} else if (_type == short.class) {
+			return java.sql.Types.SMALLINT;
+		} else {
+			return java.sql.Types.VARCHAR;
+		}
+	}
+	public int[] getSingleIntegerReutrnTypeSet() {
+		int[] retVal = {java.sql.Types.INTEGER};
+		return retVal;
+	}
+	/**
 	 * This method returns the string casted value of a targeted field found by
 	 * reflection.
 	 * 
@@ -142,7 +196,7 @@ public abstract class ModelObject {
 		ArrayList<ModelObject> retVal = new ArrayList<ModelObject>();
 		try {
 			// This method fills this object with data from the database.
-			retVal = DataStoreAdapter.readObject(_data, this.getClass());
+			retVal = DataStoreAdapter.readObject(_data, this);
 		} catch (IllegalArgumentException ex) {
 			Logger.getLogger(ModelObject.class.getName()).log(Level.SEVERE, null, ex);
 		}

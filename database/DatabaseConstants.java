@@ -32,6 +32,7 @@ public class DatabaseConstants {
 	public static final String CHECK_CLASS_NAME = "Check";
 	public static final String TICKET_ITEM_CLASS_NAME = "TicketItem";
 	public static final String TRANSACTION_HISTORY_CLASS_NAME = "TransactionHistory";
+	public static final String MODEL_OBJECT_CLASS_NAME = "ModelObject";
 	public static final String MODELS_PACKAGE_NAME = "models.";
 
 	public static final String TARGET_SUPER_CLASS = "java.lang.Object";

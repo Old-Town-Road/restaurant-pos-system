@@ -46,6 +46,8 @@ public class Check extends ModelObject{
 		this.setDateClosed(_dateClosed);
 	}
 
+	public Check() {
+	}
 	/**
 	 * This method adds a ticket to a check.
 	 * @param _ticket a single ticket object.

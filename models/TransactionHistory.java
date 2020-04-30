@@ -46,6 +46,9 @@ public class TransactionHistory extends ModelObject {
 		this.setPaymentDate(_paymentDate);
 	}
 
+	public TransactionHistory() {
+	}
+
 //=====================Getters=====================================//
 	public int getPaymentType() {
 		return this.paymentType;

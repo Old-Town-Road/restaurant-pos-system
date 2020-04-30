@@ -22,8 +22,9 @@ public class DatabaseStandardReads {
 	 */
 	public static ArrayList<Menu> getFilledListOfMenus() throws ClassNotFoundException {
 		ArrayList<Menu> retVal = new ArrayList<Menu>();
-		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveMenuKVPairs(), 
-				Class.forName(DatabaseConstants.MODELS_PACKAGE_NAME + DatabaseConstants.MENU_CLASS_NAME));
+		Menu targetObject = new Menu();
+		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveMenuKVPairs(), targetObject);
+				//Class.forName(DatabaseConstants.MODELS_PACKAGE_NAME + DatabaseConstants.MENU_CLASS_NAME));
 		// For each member cast each to the Menu class and assign each it's menu items
 		for (ModelObject currObj : tempRetVal) {
 			Menu currMenu = (Menu) currObj;
@@ -41,9 +42,10 @@ public class DatabaseStandardReads {
 	 */
 	public static ArrayList<MenuItem> getListOfMenuItemsByMenuId(int _menuId) throws ClassNotFoundException {
 		ArrayList<MenuItem> retVal = new ArrayList<MenuItem>();
+		MenuItem targetObject = new MenuItem();
 		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(
-				DatabaseConstants.getReadActiveMenuItemKVPairs(_menuId),
-				Class.forName(DatabaseConstants.MENU_ITEM_CLASS_NAME));
+				DatabaseConstants.getReadActiveMenuItemKVPairs(_menuId), targetObject);
+				//Class.forName(DatabaseConstants.MENU_ITEM_CLASS_NAME));
 		// Cast each member to the MenuItem class.
 		for (ModelObject currObj : tempRetVal) {
 			retVal.add((MenuItem) currObj);
@@ -58,8 +60,9 @@ public class DatabaseStandardReads {
 	 */
 	public static ArrayList<Table> getListOfTables() throws ClassNotFoundException {
 		ArrayList<Table> retVal = new ArrayList<Table>();
-		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveTableKVPairs(),
-				Class.forName(DatabaseConstants.TABLE_CLASS_NAME));
+		Table targetObject = new Table();
+		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveTableKVPairs(), targetObject);
+				//Class.forName(DatabaseConstants.TABLE_CLASS_NAME));
 		// Cast each member as a Table.
 		for (ModelObject currObj : tempRetVal) {
 			retVal.add((Table) currObj);
@@ -76,7 +79,9 @@ public class DatabaseStandardReads {
 	 */
 	public static ArrayList<Ticket> getListOfTicketsByUserIdTableId(int _userId, int _tableId) throws ClassNotFoundException {
 		ArrayList<Ticket> retVal = new ArrayList<Ticket>();
-		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveTicketKVPairs(_userId, _tableId), Class.forName(DatabaseConstants.TICKET_CLASS_NAME));
+		Ticket targetObject = new Ticket();
+		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveTicketKVPairs(_userId, _tableId), targetObject);
+				//Class.forName(DatabaseConstants.TICKET_CLASS_NAME));
 		for (ModelObject currObj : tempRetVal) {
 			retVal.add((Ticket) currObj);
 		}
@@ -91,7 +96,9 @@ public class DatabaseStandardReads {
 	 */
 	public static ArrayList<User> getListOfUsersByUserNames(String _userName) throws ClassNotFoundException {
 		ArrayList<User> retVal = new ArrayList<User>();
-		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveUserKVPairs(_userName), Class.forName(DatabaseConstants.USER_CLASS_NAME));
+		User targetObject = new User();
+		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveUserKVPairs(_userName), targetObject);
+				//Class.forName(DatabaseConstants.USER_CLASS_NAME));
 		for(ModelObject currObj : tempRetVal) {
 			retVal.add((User) currObj);
 		}
@@ -107,7 +114,9 @@ public class DatabaseStandardReads {
 	 */
 	public static ArrayList<Check> getCheckByUserIdTableId(int _userId, int _tableId) throws ClassNotFoundException {
 		ArrayList<Check> retVal = new ArrayList<Check>();
-		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveOpenCheckKVPairs(_userId, _tableId), Class.forName(DatabaseConstants.CHECK_CLASS_NAME));
+		Check targetObject = new Check();
+		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveOpenCheckKVPairs(_userId, _tableId), targetObject);
+				//Class.forName(DatabaseConstants.CHECK_CLASS_NAME));
 		for(ModelObject currObj : tempRetVal) {
 			retVal.add((Check) currObj);
 		}

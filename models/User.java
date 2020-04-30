@@ -28,6 +28,9 @@ public class User extends ModelObject {
 		this.setRoleId(_roleId);
 	}
 
+	public User() {
+	}
+
 	// ====================GETTERS====================
 	public String getUsername() {
 		return this.username;
