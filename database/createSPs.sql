@@ -50,13 +50,13 @@ create procedure read_Menu
 (
     in p_IsActive varchar(64),
     in p_StoreID varchar(64),
-	out p_StoreID int,
-    out p_MenuName varchar(64),
-    out p_MenuType int,
-	out p_ID int,
-    out p_UUID varchar(36),
-	out p_IsActive int,
-    out p_SortValue int
+	out op_StoreID int,
+    out op_MenuName varchar(64),
+    out op_MenuType int,
+	out op_ID int,
+    out op_UUID varchar(36),
+	out op_IsActive int,
+    out op_SortValue int
 )
 BEGIN
 	declare currIsActive int;
