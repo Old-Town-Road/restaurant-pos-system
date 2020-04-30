@@ -256,21 +256,15 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 			String _tableName) {
 		// This must be in a try catch block.
 		try {
-			// Initialize a count of the number of parameters needed for the stored
-			// procedure call.
+			// Initialize a count of the number of parameters needed call.
 			int numberOfParameters = this.findNumberOfParametersWithReturn(_keyValuePairs, _storedProcedurePrefix);
 			// Construct the base call.
-			// String ret = this.makeSQLPreparedCallString(_storedProcedurePrefix +
-			// _tableName, numberOfParameters);
-			// this.sql = this.conn.prepareCall(ret);
 			this.sql = this.conn.prepareCall(
 					this.makeSQLPreparedCallString(_storedProcedurePrefix + _tableName, numberOfParameters));
 			// update the call with the parameters
 			this.assembleCallableStatement(_keyValuePairs);
 			// If there are parameters to be registered then do so.
-			this.sql.registerOutParameter(numberOfParameters, java.sql.Types.INTEGER);
-			// //TODO rework this back in.
-			// this.registerOutParameters(numberOfParameters, _keyValuePairs.size());
+			this.custRegisterOutParameters(numberOfParameters, _keyValuePairs.size(), _storedProcedurePrefix);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block.
 			e.printStackTrace();
@@ -292,7 +286,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 			// add in the parameter in a try catch
 			try {
 				if (index <= _keyValuePairs.size() + 1) {
-					//Adding in the value for the call
+					// Adding in the value for the call
 					this.sql.setString(index, keyValuePair.getValue());
 				}
 			} catch (SQLException e) {
@@ -340,16 +334,16 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	private int findNumberOfParametersWithReturn(Map<String, String> _keyValuePairs, String _storedProcedurePrefix) {
 		// Initialize a return value for the caller.
 		int retVal = 0;
-		// Determine the size of the hashmap as the number of parameters. If this is a
-		// create, delete or update statement then we are expect to an back.
-		if (_storedProcedurePrefix == this.readStoredProcedurePrefix) {
-			// This is a read statement and we only need the number of parameters in the
-			// map.
-			retVal = _keyValuePairs.size();
+		if (_storedProcedurePrefix == this.readStoredProcedurePrefix
+				|| _storedProcedurePrefix == this.createStoredProcedurePrefix 
+				|| _storedProcedurePrefix == this.updateStoredProcedurePrefix
+				|| _storedProcedurePrefix == this.deleteStoredProcedurePrefix) {
+			// Current procedures only needs one extra variable.
+			retVal = _keyValuePairs.size() + this.singleStoredProcedureReturn;
 		}
 		// Otherwise, count an additional parameter for the return.
 		else {
-			retVal = _keyValuePairs.size() + this.singleStoredProcedureReturn;
+			retVal = _keyValuePairs.size();
 		}
 		// return the final value to the caller
 		return retVal;
@@ -364,25 +358,21 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @param _typesToReturn:      A string array of data types desired for each
 	 *                             output parameter IN ORDER.
 	 */
+	@SuppressWarnings("null")
 	private void custRegisterOutParameters(int _numberOfParameters, int _numberOfKeyValuePairs, int[] _typesToReturn) {
 		// This is a sql contruct, surround this with a try catch block
 		try {
 			// If there is a difference in the length of the parameters needed for the call
 			// and the number of parameters requested then register those.
-			if (_numberOfParameters != _numberOfKeyValuePairs) {
+			if (_numberOfParameters != _numberOfKeyValuePairs
+					&& (_typesToReturn != null || _typesToReturn.length != 0)) {
 				// Initialize a number of parametes needed.
 				int numberOfParametersNeeded = _numberOfParameters - _numberOfKeyValuePairs;
 				// For the number of parameters needed, register that index as an out.
 				for (int i = 1; i <= numberOfParametersNeeded; i++) {
-					// Register this i in the callable statement.
-					// If the array of return data types is empty then assume it is an integer.
-					if (_typesToReturn == null) {
-						this.sql.registerOutParameter(i + _numberOfKeyValuePairs, java.sql.Types.INTEGER);
-					}
-					// Else, decode the data type and register it.
-					else {
-						this.sql.registerOutParameter(i + _numberOfKeyValuePairs, _typesToReturn[i]);
-					}
+					int temp = i + _numberOfKeyValuePairs;
+					this.sql.registerOutParameter(i + _numberOfKeyValuePairs, _typesToReturn[(i - 1)]);
+					int bleh = 1;
 				}
 			}
 		} catch (SQLException e) {
@@ -395,10 +385,19 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * Override method for easier calling. See other method of same name in this
 	 * class with an additional argument.
 	 */
-	private void custRegisterOutParameters(int _numberOfParameters, int _numberOfKeyValuePairs) {
+	private void custRegisterOutParameters(int _numberOfParameters, int _numberOfKeyValuePairs, String _prefix) {
 		// Initialize and empty integer array and pass it to the override method.
-		int[] emptyArray = null;
-		this.custRegisterOutParameters(_numberOfParameters, _numberOfKeyValuePairs, emptyArray);
+		int[] returnTypeArray = new int[_numberOfParameters - _numberOfKeyValuePairs];
+		if(_prefix.equals(this.readStoredProcedurePrefix)) {
+			returnTypeArray[0] = java.sql.Types.REF_CURSOR;
+		} else if(_prefix.equals(this.createStoredProcedurePrefix) || 
+				_prefix.equals(this.updateStoredProcedurePrefix) ||
+				_prefix.equals(this.deleteStoredProcedurePrefix)) {
+			returnTypeArray[0] = java.sql.Types.INTEGER;
+		} else {
+			returnTypeArray[0] = java.sql.Types.INTEGER;
+		}
+		this.custRegisterOutParameters(_numberOfParameters, _numberOfKeyValuePairs, returnTypeArray);
 	}
 
 	/**

@@ -109,6 +109,24 @@ public class Ticket extends ModelObject {
 				+ this.ticketStatus + "\n\n";
 	}
 
+	public boolean saveTicketAndTicketItems() {
+		boolean retVal = true;
+		this.getTicketItems().forEach((item) -> {
+			try {
+				item.saveObjectInDatabase();
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		try {
+			retVal = this.saveObjectInDatabase();
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return retVal;
+	}
 	// ================= GETTERS ==========================
 	public Date getDateStarted() {
 		return this.dateStarted;
@@ -130,6 +148,9 @@ public class Ticket extends ModelObject {
 		return this.ticketType;
 	}
 
+	public ArrayList<TicketItem> getTicketItems() {
+		return this.ticketItems;
+	}
 	// ================= SETTERS ==========================
 	public void setDateStarted(Date _dateStarted) {
 		this.dateStarted = _dateStarted;
@@ -149,5 +170,9 @@ public class Ticket extends ModelObject {
 
 	public void setTicketType(int _ticketType) {
 		this.ticketType = _ticketType;
+	}
+
+	public void setTicketItems(ArrayList<TicketItem> _items) {
+		this.ticketItems.addAll(ticketItems);
 	}
 }

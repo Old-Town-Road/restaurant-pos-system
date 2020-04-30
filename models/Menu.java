@@ -23,7 +23,7 @@ public class Menu extends ModelObject{
 
 	public Menu(String _menuName, int _menuType) {
 		super();
-		this.setStoreId(DatabaseConstants.DEFAULT_SORT_VALUE);
+		this.setStoreId(DatabaseConstants.STORE_ID_CONSTANT);
 		this.setMenuName(_menuName);
 		this.setMenuType(_menuType);
 	}
@@ -32,9 +32,32 @@ public class Menu extends ModelObject{
 		this.setUuid(_uuid);
 		this.setSortValue(_sortValue);
 		this.setIsActive(_isActive);
-		this.setStoreId(DatabaseConstants.DEFAULT_SORT_VALUE);
+		this.setStoreId(DatabaseConstants.STORE_ID_CONSTANT);
 		this.setMenuName(_menuName);
 		this.setMenuType(_menuType);
+	}
+
+	/**
+	 * This method saves this object and its menuitems in the db.
+	 * @return boolean
+	 */
+	public boolean saveMenuAndContents() {
+		boolean retVal = false;
+		this.getItems().forEach((n) -> {
+			try {
+				n.saveObjectInDatabase();
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		try {
+			retVal = this.saveObjectInDatabase();
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return retVal;
 	}
 
 	// ====================GETTERS====================

@@ -76,6 +76,26 @@ public class Check extends ModelObject{
 		return retVal;
 	}
 
+	public boolean saveCheckAndTickets() {
+		boolean retVal = true;
+		this.getTickets().forEach((ticket) -> {
+			try {
+				ticket.saveTicketAndTicketItems();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		try {
+			retVal = this.saveObjectInDatabase();
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			retVal = false;
+		}
+		return retVal;
+	}
+
 //=====================Getters=====================================//
 	public ArrayList<Ticket> getTickets() {
 		return this.tickets;
