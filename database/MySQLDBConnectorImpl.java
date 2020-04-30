@@ -104,7 +104,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 				// Drop the id from the keyValuePairs because our inserts stored procedures
 				// don't need it.
 				_keyValuePairs.remove(DatabaseConstants.DB_ID_VALUE);
-				this.prepCallableStatement(_keyValuePairs, _returnTypeArray, this.createStoredProcedurePrefix, this.getTableNameFromClass(_class));
+				this.prepCallableStatement(_keyValuePairs, _returnTypeArray, this.createStoredProcedurePrefix,
+						this.getTableNameFromClass(_class));
 				// Grab the number of parameters.
 				int numberOfParameters = _keyValuePairs.size() + _returnTypeArray.length;
 				// Execute the prepared call.
@@ -158,14 +159,16 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @return HashMap<String, Object> The series of return objects from the stored
 	 *         procedure call.
 	 */
-	public ArrayList<ModelObject> readObject(LinkedHashMap<String, String> _keyValuePairs, int[] _returnTypeArray, Class<?> _class) {
+	public ArrayList<ModelObject> readObject(LinkedHashMap<String, String> _keyValuePairs, int[] _returnTypeArray,
+			Class<?> _class) {
 		// Initialize a return value for the caller.
 		ArrayList<ModelObject> retVal = new ArrayList<ModelObject>();
 		// If we are not in debug mode then proceed.
 		if (!debugMode) {
 			try {
 				// Construct the base call.
-				this.prepCallableStatement(_keyValuePairs, _returnTypeArray, this.readStoredProcedurePrefix, this.getTableNameFromClass(_class));
+				this.prepCallableStatement(_keyValuePairs, _returnTypeArray, this.readStoredProcedurePrefix,
+						this.getTableNameFromClass(_class));
 				// Initialize the result set as the result of the sql execution.
 				ResultSet results = this.sql.executeQuery();
 				// Spin through the result set while there are still values.
@@ -212,7 +215,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * 
 	 * @return boolean: Returns true if call was successful.
 	 */
-	public boolean updateObject(LinkedHashMap<String, String> _keyValuePairs, int[] _returnTypeArray, String _uuid, Class<?> _class) {
+	public boolean updateObject(LinkedHashMap<String, String> _keyValuePairs, int[] _returnTypeArray, String _uuid,
+			Class<?> _class) {
 		// Initialize a return value and default FALSE.
 		boolean retVal = false;
 
@@ -220,7 +224,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		if (!debugMode) {
 			// Prepare the call in a try catch block.
 			try {
-				this.prepCallableStatement(_keyValuePairs, _returnTypeArray, this.updateStoredProcedurePrefix, this.getTableNameFromClass(_class));
+				this.prepCallableStatement(_keyValuePairs, _returnTypeArray, this.updateStoredProcedurePrefix,
+						this.getTableNameFromClass(_class));
 				// Grab the number of parameters.
 				int numberOfParameters = _keyValuePairs.size() + _returnTypeArray.length;
 				// Execute the statement.
@@ -277,7 +282,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		if (!debugMode) {
 			// Prepare the call in a try catch block.
 			try {
-				this.prepCallableStatement(_keyValuePairs, _returnTypeArray, this.deleteStoredProcedurePrefix, this.getTableNameFromClass(_class));
+				this.prepCallableStatement(_keyValuePairs, _returnTypeArray, this.deleteStoredProcedurePrefix,
+						this.getTableNameFromClass(_class));
 				// Grab the number of parameters.
 				int numberOfParameters = _keyValuePairs.size() + _returnTypeArray.length;
 				// Execute the query.
@@ -505,7 +511,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		int[] returnTypeArray = new int[_numberOfParameters - _numberOfKeyValuePairs];
 		if (_prefix.equals(this.readStoredProcedurePrefix)) {
 			// Add all the types to the returnTypeArray.
-			//returnTypeArray = this.getSQLTypeArrayForClass(_class, _numberOfParameters - _numberOfKeyValuePairs);
+			// returnTypeArray = this.getSQLTypeArrayForClass(_class, _numberOfParameters -
+			// _numberOfKeyValuePairs);
 		} else if (_prefix.equals(this.createStoredProcedurePrefix) || _prefix.equals(this.updateStoredProcedurePrefix)
 				|| _prefix.equals(this.deleteStoredProcedurePrefix)) {
 			returnTypeArray[0] = java.sql.Types.INTEGER;
@@ -579,22 +586,22 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		// Create a return value for the method
 		ModelObject retVal = this.makeModelObject(_targetClass);
 		// Loop through each field in the target class and
-		for (Field field : _targetClass.getDeclaredFields()) {
-			// Use this to change the access of the field to public for this instance.
-			field.setAccessible(true);
-			// Grab the field annotation from the field.
-			Annotation fieldAnnotaion = field.getAnnotation(ModelAnnotations.class);
-			// There should be only one annotation pair; key:columnName and value:the column
-			// name in the db. Get that value from the result set.
-			Object value = _results.getObject(((ModelAnnotations) fieldAnnotaion).value());
-			// Type cast all of the pieces.
-			Class<?> type = field.getType();
-			if (this.checkPrimitiveType(type)) {
-				Class<?> typeToCast = this.getCastTypeForField(type);
-				value = typeToCast.cast(value);
+		for (Field currField : _targetClass.getDeclaredFields()) {
+			if (!Collection.class.isAssignableFrom(currField.getType())) {
+				// Use this to change the access of the field to public for this instance.
+				currField.setAccessible(true);
+				// Grab the field annotation from the field.
+				String colName = retVal.findValueFromFieldColumnDBAnnotation(currField);
+				Object value = _results.getObject(colName);
+				// Type cast all of the pieces.
+				Class<?> type = currField.getType();
+				if (this.checkPrimitiveType(type)) {
+					Class<?> typeToCast = this.getCastTypeForField(type);
+					value = typeToCast.cast(value);
+				}
+				// Fill the object up with all the values.
+				currField.set(retVal, value);
 			}
-			// Fill the object up with all the values.
-			field.set(retVal, value);
 		}
 		return retVal;
 	}

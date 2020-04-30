@@ -79,7 +79,9 @@ public abstract class ModelObject {
 	}
 
 	/**
-	 * This method returns an int array that contains the return types of this method.
+	 * This method returns an int array that contains the return types of this
+	 * method.
+	 * 
 	 * @return
 	 */
 	public int[] getReturnTypeSet() {
@@ -98,12 +100,15 @@ public abstract class ModelObject {
 					retVal.add(this.convertTypeToSQLType(targetField.getType()));
 				}
 			}
+			// Traverse up to the parent class.
+			targetClass = targetClass.getSuperclass();
 		}
-		return retVal.stream().mapToInt(i->i).toArray();
+		return retVal.stream().mapToInt(i -> i).toArray();
 	}
 
 	/**
 	 * Converts a type to an int that corresponds to the sql type.
+	 * 
 	 * @param _type
 	 * @return
 	 */
@@ -128,10 +133,12 @@ public abstract class ModelObject {
 			return java.sql.Types.VARCHAR;
 		}
 	}
+
 	public int[] getSingleIntegerReutrnTypeSet() {
-		int[] retVal = {java.sql.Types.INTEGER};
+		int[] retVal = { java.sql.Types.INTEGER };
 		return retVal;
 	}
+
 	/**
 	 * This method returns the string casted value of a targeted field found by
 	 * reflection.

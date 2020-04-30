@@ -31,7 +31,7 @@ public class DataStoreAdapter {
 	 * @return Array list filled with the results
 	 */
 	public static ArrayList<ModelObject> readObject (LinkedHashMap<String, String> _keyValuePairs, ModelObject _targetObject) {
-		return connector.readObject(_keyValuePairs, _targetObject.getSingleIntegerReutrnTypeSet(), _targetObject.getClass());
+		return connector.readObject(_keyValuePairs, _targetObject.getReturnTypeSet(), _targetObject.getClass());
 	}
 
 	/**

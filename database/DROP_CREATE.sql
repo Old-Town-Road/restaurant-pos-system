@@ -129,6 +129,9 @@ Create table if not exists pizzaposdb.UserLU  (
 	FirstName varchar(64) NOT NULL,
 	LastName varchar(64) NOT NULL,
 	RoleID int NOT NULL,
+    UUID varchar(36),
+    IsActive int default 1,
+    SortValue int default 0,
     primary key(`ID`)
 );
 
