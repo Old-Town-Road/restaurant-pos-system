@@ -23,6 +23,9 @@ class TestDataStoreAdapter {
 	private Menu pastaMenu = new Menu("Pasta", ModelConstants.MENU_TYPE_PIZZAS);
 	private Menu boozeMenu = new Menu("booze", ModelConstants.MENU_TYPE_DRINKS);
 	private Menu fingerFoodsMenu = new Menu("FingerFood", ModelConstants.MENU_TYPE_SIDES);
+	private Menu pizzaMenu;
+	private Menu drinksMenu;
+	private Menu sidesMenu;
 
 	private boolean alignmentFlag = false;
 
@@ -61,6 +64,9 @@ class TestDataStoreAdapter {
 
 	@Test
 	final void testDeleteObject() {
+		assertTrue("failed creation pasta menu", this.pastaMenu.saveMenuAndContents());
+		assertTrue("failed creation booze menu", this.boozeMenu.saveMenuAndContents());
+		assertTrue("failed creation finger food menu", this.fingerFoodsMenu.saveMenuAndContents());
 		assertTrue("fail delete pasta menu", this.pastaMenu.deleteObjectFromDatabase());
 		assertTrue("fail delete booze menu", this.boozeMenu.deleteObjectFromDatabase());
 		assertTrue("fail delete finger menu", this.fingerFoodsMenu.deleteObjectFromDatabase());
