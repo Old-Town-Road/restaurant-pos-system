@@ -54,11 +54,10 @@ class TestDataStoreAdapter {
 	final void testCreateObject() {
 		//Test basic creations
 		try {
-			assertTrue("failed basic create.", this.pastaMenu.saveObjectInDatabase());
-			//assertTrue("failed creation pasta menu", this.pastaMenu.saveMenuAndContents());
-			//assertTrue("failed creation booze menu", this.boozeMenu.saveMenuAndContents());
-			//assertTrue("failed creation finger food menu", this.fingerFoodsMenu.saveMenuAndContents());
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+			assertTrue("failed creation pasta menu", this.pastaMenu.saveMenuAndContents());
+			assertTrue("failed creation booze menu", this.boozeMenu.saveMenuAndContents());
+			assertTrue("failed creation finger food menu", this.fingerFoodsMenu.saveMenuAndContents());
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 	}
@@ -66,10 +65,10 @@ class TestDataStoreAdapter {
 	@Test
 	final void testDeleteObject() {
 		assertTrue("failed creation pasta menu", this.pastaMenu.saveMenuAndContents());
-		//assertTrue("failed creation booze menu", this.boozeMenu.saveMenuAndContents());
-		//assertTrue("failed creation finger food menu", this.fingerFoodsMenu.saveMenuAndContents());
+		assertTrue("failed creation booze menu", this.boozeMenu.saveMenuAndContents());
+		assertTrue("failed creation finger food menu", this.fingerFoodsMenu.saveMenuAndContents());
 		assertTrue("fail delete pasta menu", this.pastaMenu.deleteObjectFromDatabase());
-		//assertTrue("fail delete booze menu", this.boozeMenu.deleteObjectFromDatabase());
-		//assertTrue("fail delete finger menu", this.fingerFoodsMenu.deleteObjectFromDatabase());
+		assertTrue("fail delete booze menu", this.boozeMenu.deleteObjectFromDatabase());
+		assertTrue("fail delete finger menu", this.fingerFoodsMenu.deleteObjectFromDatabase());
 	}
 }
