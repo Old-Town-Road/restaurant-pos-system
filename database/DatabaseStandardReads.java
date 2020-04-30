@@ -22,8 +22,8 @@ public class DatabaseStandardReads {
 	 */
 	public static ArrayList<Menu> getFilledListOfMenus() throws ClassNotFoundException {
 		ArrayList<Menu> retVal = new ArrayList<Menu>();
-		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveMenuKVPairs(),
-				Class.forName(DatabaseConstants.MENU_CLASS_NAME));
+		ArrayList<ModelObject> tempRetVal = DataStoreAdapter.readObject(DatabaseConstants.getReadActiveMenuKVPairs(), 
+				Class.forName(DatabaseConstants.MODELS_PACKAGE_NAME + DatabaseConstants.MENU_CLASS_NAME));
 		// For each member cast each to the Menu class and assign each it's menu items
 		for (ModelObject currObj : tempRetVal) {
 			Menu currMenu = (Menu) currObj;

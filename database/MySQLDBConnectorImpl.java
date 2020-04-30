@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.CallableStatement;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import models.*;
 
 public class MySQLDBConnectorImpl implements DBConnectorInterface {
 
@@ -334,12 +335,13 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	private int findNumberOfParametersWithReturn(Map<String, String> _keyValuePairs, String _storedProcedurePrefix) {
 		// Initialize a return value for the caller.
 		int retVal = 0;
-		if (_storedProcedurePrefix == this.readStoredProcedurePrefix
-				|| _storedProcedurePrefix == this.createStoredProcedurePrefix 
+		if (_storedProcedurePrefix == this.createStoredProcedurePrefix 
 				|| _storedProcedurePrefix == this.updateStoredProcedurePrefix
 				|| _storedProcedurePrefix == this.deleteStoredProcedurePrefix) {
 			// Current procedures only needs one extra variable.
 			retVal = _keyValuePairs.size() + this.singleStoredProcedureReturn;
+		} else if(_storedProcedurePrefix == this.readStoredProcedurePrefix) {
+			retVal = _keyValuePairs.size();
 		}
 		// Otherwise, count an additional parameter for the return.
 		else {
@@ -387,7 +389,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		// Initialize and empty integer array and pass it to the override method.
 		int[] returnTypeArray = new int[_numberOfParameters - _numberOfKeyValuePairs];
 		if(_prefix.equals(this.readStoredProcedurePrefix)) {
-			returnTypeArray[0] = java.sql.Types.REF_CURSOR;
+			//returnTypeArray[0] = java.sql.Types.REF_CURSOR;
 		} else if(_prefix.equals(this.createStoredProcedurePrefix) || 
 				_prefix.equals(this.updateStoredProcedurePrefix) ||
 				_prefix.equals(this.deleteStoredProcedurePrefix)) {
@@ -460,7 +462,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 			throws IllegalArgumentException, IllegalAccessException, SQLException, ClassNotFoundException,
 			InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		// Create a return value for the method
-		Object retVal = this.makeModelObject(_targetClass);
+		ModelObject retVal = this.makeModelObject(_targetClass);
 		// Loop through each field in the target class and
 		for (Field field : _targetClass.getDeclaredFields()) {
 			// Use this to change the access of the field to public for this instance.

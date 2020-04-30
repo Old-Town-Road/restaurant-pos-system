@@ -21,6 +21,9 @@ public class Menu extends ModelObject{
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_MENU_TYPE_VALUE)
 	private int menuType;
 
+	public Menu() {
+		
+	}
 	public Menu(String _menuName, int _menuType) {
 		super();
 		this.setStoreId(DatabaseConstants.STORE_ID_CONSTANT);
