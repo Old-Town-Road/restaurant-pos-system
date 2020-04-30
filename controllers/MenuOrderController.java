@@ -25,7 +25,6 @@ import javafx.geometry.Insets;
 import models.Menu;
 import models.MenuItem;
 import models.ModelConstants;
-
 //Unused imports
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -33,10 +32,11 @@ import java.util.ResourceBundle;
 import javafx.scene.control.Label;
 import javafx.fxml.Initializable;
 import javafx.event.EventHandler;
+
 public class MenuOrderController {
 
 	@FXML
-	private TabPane tabPane;
+	private TabPane tabPanes = new TabPane();
 	@FXML
 	private ListView<VBox> listOfItems = new ListView<VBox>();
 	@FXML
@@ -53,11 +53,12 @@ public class MenuOrderController {
 		this.initialize();
 	}
 
-	void initialize() throws ClassNotFoundException {
+	public void initialize() throws ClassNotFoundException {
 		// Get all menus for the tab pane and put them in an array.
 		if (debug) {
 			// this is where Ashim adds fake data.
 			this.menusToTab = this.assembleFakeData();
+			
 		} else {
 			// Get all menus from the DB and cast each to a the correct 
 			this.menusToTab = DatabaseStandardReads.getFilledListOfMenus(); 
@@ -69,6 +70,7 @@ public class MenuOrderController {
 		}
 		removeItem();
 		
+		
 	}
 
 	/**
@@ -76,7 +78,7 @@ public class MenuOrderController {
 	 * @param _event
 	 */
 	@FXML
-	void cashOutAction(ActionEvent _event) {
+	public void cashOutAction(ActionEvent _event) {
 		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
 		stage.close();
 		new Frame(new Stage(), SetView.CLOSE_CHECK_VIEW);
@@ -87,7 +89,7 @@ public class MenuOrderController {
 	 * @param _event
 	 */
 	@FXML
-	void sendAction(ActionEvent _event) {
+	public void sendAction(ActionEvent _event) {
 		System.out.print("Order sent");
 		Stage stage = (Stage) ((Node) _event.getSource()).getScene().getWindow();
 		stage.close();
@@ -99,14 +101,13 @@ public class MenuOrderController {
 	 * @param _targetMenu
 	 */
 	@FXML
-	void addTab(Menu _targetMenu) {
+	public void addTab(Menu _targetMenu) {
 		Tab tab = new Tab(_targetMenu.getMenuName());
-		
-		this.tabPane.setTabMinWidth(100);
-		this.tabPane.setTabMinHeight(25);
+		this.tabPanes.setTabMinWidth(100);
+		this.tabPanes.setTabMinHeight(25);
 		tab.setStyle("-fx-border-color:YELLOWGREEN ; -fx-background-color: DEEPSKYBLUE ;");
 		tab.setContent(createVboxAndPutButtons(_targetMenu));
-		//this.tabPane.getTabs().add(tab);
+		this.tabPanes.getTabs().add(tab);
 	}
 	
 	/**
@@ -115,7 +116,7 @@ public class MenuOrderController {
 	 * @param _targetMenu
 	 * @return vbox
 	 */
-	VBox createVboxAndPutButtons(Menu _targetMenu) {
+	public VBox createVboxAndPutButtons(Menu _targetMenu) {
 		
 		VBox vbox = new VBox();
 		
@@ -144,7 +145,7 @@ public class MenuOrderController {
 	 * @param _price
 	 * @return vbox
 	 */
-	VBox vBoxInList(Button _btn, double _price) {
+	public VBox vBoxInList(Button _btn, double _price) {
 		Text name = new Text(_btn.getText());
 		Text priceText = new Text(String.valueOf(_price));
 
@@ -159,7 +160,7 @@ public class MenuOrderController {
 	/**
 	 * This is the method for void button. It removes an item from the order.
 	 */
-		public void removeItem() {
+	public void removeItem() {
 			VoidItem.setOnAction(actionEvent -> {
 				int selectedIdx = listOfItems.getSelectionModel().getSelectedIndex();
 				if (selectedIdx != -1) {
@@ -179,7 +180,7 @@ public class MenuOrderController {
 	 * This is the method that returns an ArrayList of fake data for the program.
 	 * @return retVal
 	 */
-	ArrayList<Menu> assembleFakeData() {
+	public ArrayList<Menu> assembleFakeData() {
 		ArrayList<Menu> retVal = new ArrayList<Menu>();
 
 		MenuItem pepPizza = new MenuItem(1, "Pepperoni Pizza", 13.99, 0, 0);
