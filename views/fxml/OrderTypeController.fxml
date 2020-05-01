@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.OrderTypeController">
+   <children>
+      <Pane layoutX="20.0" layoutY="100.0" prefHeight="214.0" prefWidth="277.0">
+         <children>
+            <TextField fx:id="selectedTable" layoutX="169.0" layoutY="23.0" prefHeight="25.0" prefWidth="85.0" />
+            <Button layoutX="21.0" layoutY="88.0" mnemonicParsing="false" onAction="#tableAction" prefHeight="25.0" prefWidth="85.0" text="Start check" />
+            <Button layoutX="21.0" layoutY="137.0" mnemonicParsing="false" onAction="#tableAction" prefHeight="25.0" prefWidth="85.0" text="Start ticket" />
+            <Label layoutX="17.0" layoutY="23.0" prefHeight="25.0" prefWidth="124.0" text="Enter Table Number:" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

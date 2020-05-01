@@ -1,5 +1,6 @@
 # User-specific files
 .idea/
+lib/
 .classpath
 .project
 *.iml
