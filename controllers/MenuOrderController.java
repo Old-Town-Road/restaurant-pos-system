@@ -3,7 +3,7 @@ package controllers;
 /**
  * This manages the menu ordering controller.
  * @author Ashim Chalise, Ian Wilhelmsen
- * Last Update : 04/25/2020
+ * Last Update : 05/01/2020
  */
 
 import javafx.event.ActionEvent;
@@ -25,13 +25,6 @@ import javafx.geometry.Insets;
 import models.Menu;
 import models.MenuItem;
 import models.ModelConstants;
-//Unused imports
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.util.ResourceBundle;
-import javafx.scene.control.Label;
-import javafx.fxml.Initializable;
-import javafx.event.EventHandler;
 
 public class MenuOrderController {
 
@@ -49,6 +42,20 @@ public class MenuOrderController {
 
 	private ArrayList<Menu> menusToTab = new ArrayList<Menu>();
 
+	private enum num {
+		tabHeight(25), tabWidth(100), btnHeight(5), btnWidth(200), insetsAndPadding(1), constantForPriceCount(100);
+
+		private final double value;
+
+		num(double value) {
+			this.value = value;
+		}
+
+		public double getVal() {
+			return value;
+		}
+	}
+
 	public MenuOrderController() throws ClassNotFoundException {
 		this.initialize();
 	}
@@ -58,23 +65,21 @@ public class MenuOrderController {
 		if (debug) {
 			// this is where Ashim adds fake data.
 			this.menusToTab = this.assembleFakeData();
-			
+
 		} else {
-			// Get all menus from the DB and cast each to a the correct 
-			this.menusToTab = DatabaseStandardReads.getFilledListOfMenus(); 
+			// Get all menus from the DB and cast each to a the correct
+			this.menusToTab = DatabaseStandardReads.getFilledListOfMenus();
 		}
 
 		// Feed the list to the tab pan
 		for (Menu targetMenu : this.menusToTab) {
 			this.addTab(targetMenu);
 		}
-		removeItem();
-		
-		
 	}
 
 	/**
 	 * This method helps the user cash out by navigating to close check window
+	 * 
 	 * @param _event
 	 */
 	@FXML
@@ -86,6 +91,7 @@ public class MenuOrderController {
 
 	/**
 	 * This method helps the user send the order and get started again
+	 * 
 	 * @param _event
 	 */
 	@FXML
@@ -98,38 +104,43 @@ public class MenuOrderController {
 
 	/**
 	 * This method adds tabs dynamically to the tabPane.
+	 * 
 	 * @param _targetMenu
 	 */
 	@FXML
 	public void addTab(Menu _targetMenu) {
 		Tab tab = new Tab(_targetMenu.getMenuName());
-		this.tabPanes.setTabMinWidth(100);
-		this.tabPanes.setTabMinHeight(25);
+		this.tabPanes.setTabMinWidth(num.tabWidth.getVal());
+		this.tabPanes.setTabMinHeight(num.tabHeight.getVal());
 		tab.setStyle("-fx-border-color:YELLOWGREEN ; -fx-background-color: DEEPSKYBLUE ;");
 		tab.setContent(createVboxAndPutButtons(_targetMenu));
 		this.tabPanes.getTabs().add(tab);
 	}
-	
+
 	/**
 	 * This is the method to create Vboxes dynamically and put them inside tabs.
-	 	This method is called by addTab() method.
+	 * This method is called by addTab() method.
+	 * 
 	 * @param _targetMenu
 	 * @return vbox
 	 */
 	public VBox createVboxAndPutButtons(Menu _targetMenu) {
-		
+
 		VBox vbox = new VBox();
-		
-		vbox.setPadding(new Insets(25, 25, 25, 25));
-		vbox.setSpacing(25);
+
+		// This code basically grooms the vbox
+		vbox.setPadding(new Insets(num.insetsAndPadding.getVal(), num.insetsAndPadding.getVal(),
+				num.insetsAndPadding.getVal(), num.insetsAndPadding.getVal()));
+		vbox.setSpacing(num.insetsAndPadding.getVal());
 		vbox.setStyle("-fx-background-color: wheat ;");
+		// This code creates new buttons and adds them.
 		for (int i = 0; i < _targetMenu.getItems().size(); i++) {
 			Button btn = new Button(_targetMenu.getItems().get(i).getItemName());
-			
-			btn.setPrefWidth(140);
-			btn.setPrefHeight(25);
+			btn.setMaxWidth(num.btnWidth.getVal());
+			btn.setMaxHeight(num.btnHeight.getVal());
 			btn.setStyle("-fx-border-color:YELLOWGREEN ; -fx-background-color: DEEPSKYBLUE ;");
 			double price = _targetMenu.getItems().get(i).getPrice();
+			// This code is putting the items in the order list.
 			btn.setOnAction(actionEvent -> {
 				listOfItems.getItems().add(vBoxInList(btn, price));
 			});
@@ -139,8 +150,9 @@ public class MenuOrderController {
 	}
 
 	/**
-	 * This method creates VBoxes to show name and price of items inside the List or Order.
-	 * This method is called by createVboxAndPutButtons() method.
+	 * This method creates VBoxes to show name and price of items inside the List or
+	 * Order. This method is called by createVboxAndPutButtons() method.
+	 * 
 	 * @param _btn
 	 * @param _price
 	 * @return vbox
@@ -149,35 +161,43 @@ public class MenuOrderController {
 		Text name = new Text(_btn.getText());
 		Text priceText = new Text(String.valueOf(_price));
 
-		priceCount = Math.round((_price + priceCount)*100.0)/100.0;
+		// Updating the total priceCount.
+		priceCount = Math.round((_price + priceCount) * num.constantForPriceCount.getVal())
+				/ num.constantForPriceCount.getVal();
 		tfTotal.setText(String.valueOf(priceCount));
-		
+
+		// Putting the lists in VBox.
 		VBox vbox = new VBox(name, priceText);
-		
+		// Calls the method to remove item.
+		removeItem(_price);
 		return vbox;
 	}
-	
+
 	/**
 	 * This is the method for void button. It removes an item from the order.
+	 * 
+	 * @param _price
 	 */
-	public void removeItem() {
-			VoidItem.setOnAction(actionEvent -> {
-				int selectedIdx = listOfItems.getSelectionModel().getSelectedIndex();
-				if (selectedIdx != -1) {
+	public void removeItem(double _price) {
+		VoidItem.setOnAction(actionEvent -> {
+			int selectedIdx = listOfItems.getSelectionModel().getSelectedIndex();
+			if (selectedIdx != -1) {
+				// selects new item and deletes the selected item.
+				int newSelectedIdx = (selectedIdx == listOfItems.getItems().size() - 1) ? selectedIdx - 1 : selectedIdx;
+				listOfItems.getItems().remove(selectedIdx);
+				listOfItems.getSelectionModel().select(newSelectedIdx);
 
-					int newSelectedIdx = (selectedIdx == listOfItems.getItems().size() - 1) ? selectedIdx - 1
-							: selectedIdx;
-					listOfItems.getItems().remove(selectedIdx);
-					listOfItems.getSelectionModel().select(newSelectedIdx);
-
-					//priceCount = Math.round((priceCount - 
-					//tfTotal.setText(String.valueOf(priceCount));
-				}
-			});
-		}
+				// Updates the total price;
+				priceCount = Math.round((priceCount - _price) * num.constantForPriceCount.getVal())
+						/ num.constantForPriceCount.getVal();
+				tfTotal.setText(String.valueOf(priceCount));
+			}
+		});
+	}
 
 	/**
 	 * This is the method that returns an ArrayList of fake data for the program.
+	 * 
 	 * @return retVal
 	 */
 	public ArrayList<Menu> assembleFakeData() {
