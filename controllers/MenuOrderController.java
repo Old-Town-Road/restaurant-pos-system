@@ -115,7 +115,6 @@ public class MenuOrderController {
 		tab.setStyle("-fx-border-color:YELLOWGREEN ; -fx-background-color: DEEPSKYBLUE ;");
 		tab.setContent(createVboxAndPutButtons(_targetMenu));
 		this.tabPanes.getTabs().add(tab);
-
 	}
 
 	/**
