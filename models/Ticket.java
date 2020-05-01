@@ -8,6 +8,8 @@ package models;
  */
 
 import java.util.Date;
+import java.util.List;
+
 import database.DatabaseConstants;
 import java.util.ArrayList;
 
@@ -61,6 +63,22 @@ public class Ticket extends ModelObject {
 	public boolean addMenuItem(MenuItem _item) {
 		TicketItem ticketItem = new TicketItem(_item, this.getId());
 		return this.ticketItems.add(ticketItem);
+	}
+
+	/**
+	 * Adds a list of items to be added to the ticket.
+	 * @param _items
+	 * @return
+	 */
+	public boolean addMenuItems(List<MenuItem> _items) {
+		boolean retVal = true;
+		int counter = _items.size();
+		while(retVal && counter > 0)
+		{
+			retVal = this.addMenuItem(_items.get(counter - 1));
+			counter--;
+		}
+		return retVal;
 	}
 
 	/**
