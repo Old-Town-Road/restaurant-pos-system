@@ -2,6 +2,8 @@ package database;
 
 /**
  * This class is filled with the database constants including static functions for the read procedures.
+ * @author Ian Wilhelmsen
+ * last updated: 4/30/2020
  */
 import java.util.LinkedHashMap;
 
@@ -39,6 +41,8 @@ public class DatabaseConstants {
 	public static final int STORE_ID_CONSTANT = 1;
 	public static final int DEFAULT_SORT_VALUE = 999;
 	public static final int DEFAULT_ID_VALUE = 0;
+	public static final String BOOLEAN_TO_STRING_TRUE_VALUE = "1";
+	public static final String BOOLEAN_TO_STRING_FALSE_VALUE = "0";
 
 	//Column names from the database for the main object
 	public static final String DB_ID_VALUE = "ID";
@@ -91,8 +95,6 @@ public class DatabaseConstants {
 	public static final String DB_TICKET_ITEM_MENU_ITEM_ID_VALUE = "MenuItemID";
 	public static final String DB_TICKET_ITEM_ITEM_PRICE_VALUE = "ItemPrice";
 
-	//Base key value arguments.
-	//public static Map<String, String>
 	/**
 	 * Next three methods are all about providing the key value pairs that are
 	 * associated with getting menus from the db.
@@ -296,6 +298,6 @@ public class DatabaseConstants {
 	 * @return
 	 */
 	public static String booleanToBit(boolean _value) {
-		return (_value ? "1" : "0");
+		return (_value ? BOOLEAN_TO_STRING_TRUE_VALUE : BOOLEAN_TO_STRING_FALSE_VALUE);
 	}
 }

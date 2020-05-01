@@ -30,6 +30,7 @@ public class Menu extends ModelObject{
 		this.setMenuName(_menuName);
 		this.setMenuType(_menuType);
 	}
+
 	public Menu(int _id, String _uuid, int _sortValue, boolean _isActive, String _menuName, int _menuType) {
 		this.setId(_id);
 		this.setUuid(_uuid);

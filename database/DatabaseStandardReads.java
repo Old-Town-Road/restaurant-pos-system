@@ -2,16 +2,11 @@ package database;
 
 /**
  * This class offers quick methods that pull back basic reads from the database.
- * @author Ian Wilhelmsen, last updated: 4/30/2020
+ * @author Ian Wilhelmsen
+ * last updated: 4/30/2020
  */
 import java.util.ArrayList;
-import models.Menu;
-import models.MenuItem;
-import models.Table;
-import models.Ticket;
-import models.User;
-import models.Check;
-import models.ModelObject;
+import models.*;
 
 public class DatabaseStandardReads {
 	/**

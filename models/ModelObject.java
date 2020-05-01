@@ -63,7 +63,7 @@ public abstract class ModelObject {
 					// Capture the value from the field.
 					String fieldValue = null;
 					if (targetField.getType() == boolean.class) {
-						fieldValue = (targetField.get(this).equals(true) ? "1" : "0");
+						fieldValue = (targetField.get(this).equals(true) ? ModelConstants.BOOLEAN_STRING_DB_TRUE_VALUE : ModelConstants.BOOLEAN_STRING_DB_FALSE_VALUE);
 					} else {
 						fieldValue = targetField.get(this).toString();
 					}
@@ -134,6 +134,12 @@ public abstract class ModelObject {
 		}
 	}
 
+	/**
+	 * Returns an int array of sql.integer type as the return type for store
+	 * procedures with a single integer coming back from the database.
+	 * 
+	 * @return
+	 */
 	public int[] getSingleIntegerReutrnTypeSet() {
 		int[] retVal = { java.sql.Types.INTEGER };
 		return retVal;
@@ -165,19 +171,6 @@ public abstract class ModelObject {
 		// Return the value to the caller.
 		return retVal;
 	}
-
-	/*
-	 * public ModelObject loadById(int _id) { HashMap<String, String> keyValuePair =
-	 * new HashMap<>(); keyValuePair.put(DatabaseConstants.DB_ID_VALUE,
-	 * Integer.toString(this.getId())); return (ModelObject)
-	 * this.returnOnlyValueFromSingleResult(this.loadByCondition(keyValuePair)); }
-	 * 
-	 * public ModelObject loadByUuid(String _uuid) { HashMap<String, String>
-	 * keyValuePair = new HashMap<>();
-	 * keyValuePair.put(DatabaseConstants.DB_UUID_VALUE, this.getUuid()); return
-	 * (ModelObject)
-	 * this.returnOnlyValueFromSingleResult(this.loadByCondition(keyValuePair)); }
-	 */
 
 	/**
 	 * This is a load by condition of a singular key value pair.
@@ -281,25 +274,6 @@ public abstract class ModelObject {
 	 */
 	public void makeInactive() {
 		this.active = false;
-	}
-
-	/**
-	 * This returns a single object from a hash of strings and objects
-	 * 
-	 * @param _inputHash
-	 * @return
-	 * @deprecated
-	 */
-	public Object returnOnlyValueFromSingleResult(LinkedHashMap<String, Object> _inputHash) {
-		// Initialize a return value for the caller.
-		Object retVal = null;
-		// Grab the only key from the hash.
-		for (String key : _inputHash.keySet()) {
-			// Set the return to the only value in the hash.
-			retVal = _inputHash.get(key);
-		}
-		// Return the final value to the caller.
-		return retVal;
 	}
 
 	protected static String generateUuid() {

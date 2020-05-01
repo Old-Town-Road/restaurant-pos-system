@@ -5,7 +5,8 @@ package database;
  * Implements the DB ConnectorInterface.
  * Please do not use this class to access the DB.
  * 
- * @author Ian Wilhelmsen, last updated: 3/19/2020
+ * @author Ian Wilhelmsen
+ * last updated: 3/19/2020
  */
 
 import java.util.Map;
@@ -22,7 +23,6 @@ import java.sql.SQLException;
 import java.sql.CallableStatement;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import models.*;
 
 public class MySQLDBConnectorImpl implements DBConnectorInterface {
 
@@ -32,8 +32,6 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 
 	// connection information
 	private final String dbmsDriverInfo = "jdbc:mysql:";
-	// private final String dbmsDriverClass = "com.mysql.cj.jdbc.Driver"; <-8.0
-	// versions
 	private final String dbmsDriverClass = "com.mysql.jdbc.Driver";
 	private final String hostString = "//localhost:3306/";
 	private final String dbName = "pizzaposdb";
@@ -53,7 +51,6 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 
 	// SQL CallableStatements Strings for SQL statement creation
 	private final String startOfSQLStatement = "{CALL ";
-	// private final String dbNameDefiner = dbName + ".";
 	private final String dbParameterStart = "(";
 	private final String sqlParameterPlaceholder = "?,";
 	private final String endSQLStatement = "?)}";
@@ -68,10 +65,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 
 	// SQL CallableStatements integer Constants
 	private final int successValue = 1;
-	private final int singleStoredProcedureReturn = 1;
 	private final int minIDReturnVal = 0;
 	private final int callableStartValue = 1;
-	private final int minNumberOfFields = 4;
 
 	MySQLDBConnectorImpl() {
 		// Start the connection.
@@ -89,8 +84,9 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * This method is the insert call for an object that has a direct match to the
 	 * db
 	 * 
-	 * @param _keyValuePairs the list of parameters from the object
-	 * @param _table         the name of the class needed to store.
+	 * @param _keyValuePairs   the list of parameters from the object
+	 * @param _returnTypeArray the java.sql types to return
+	 * @param _class           the desired class.
 	 * @return int the ID of the created object
 	 */
 	public int createObject(LinkedHashMap<String, String> _keyValuePairs, int[] _returnTypeArray, Class<?> _class) {
@@ -125,39 +121,15 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		// Return the value to the caller.
 		return retVal;
 	}
-	/*
-	 * public int createObject(LinkedHashMap<String, String> _keyValuePairs,
-	 * Class<?> _class) { // Initialize a response with a default of 0. int retVal =
-	 * 0; // This is a stubbed response if the debug mode is on. if (this.debugMode)
-	 * { retVal = 42; } else { // Prepare the call in the a try catch. try { // Drop
-	 * the id from the keyValuePairs because our inserts stored procedures // don't
-	 * need it. _keyValuePairs.remove(DatabaseConstants.DB_ID_VALUE);
-	 * this.prepCallableStatement(_keyValuePairs, this.createStoredProcedurePrefix,
-	 * this.getTableNameFromClass(_class), _class); // Grab the number of
-	 * parameters. int numberOfParameters =
-	 * this.findNumberOfParametersWithReturn(_keyValuePairs,
-	 * this.createStoredProcedurePrefix, _class); // Execute the prepared call.
-	 * this.sql.executeQuery(); // If this an integer, then prepare to return it to
-	 * the caller. if ((!this.sql.getString(numberOfParameters).isEmpty()) &&
-	 * Integer.parseInt(this.sql.getString(numberOfParameters)) >
-	 * this.minIDReturnVal) { // Set the return value to the ID that was returned
-	 * from the DB. retVal =
-	 * Integer.parseInt(this.sql.getString(numberOfParameters)); } // If there was
-	 * an issue, the exception here catches the error. } catch (SQLException e) { //
-	 * TODO Auto-generated catch block. e.printStackTrace(); } } // Return the value
-	 * to the caller. return retVal; }
-	 */
 
 	@Override
 	/**
 	 * This function is a basic get for an object from the database.
 	 * 
-	 * @param Map<String, String> _keyValuePairs: The key value pairs of context
-	 *                    parameters that narrow down the which specific object from
-	 *                    the database we need.
-	 * @param Class<?>    _class: The class desired in the return value.
-	 * @return HashMap<String, Object> The series of return objects from the stored
-	 *         procedure call.
+	 * @param _keyValuePairs   the list of parameters from the object
+	 * @param _returnTypeArray the java.sql types to return
+	 * @param _class           the desired class.
+	 * @return ArrayList<ModelObject> objects pulled from the db.
 	 */
 	public ArrayList<ModelObject> readObject(LinkedHashMap<String, String> _keyValuePairs, int[] _returnTypeArray,
 			Class<?> _class) {
@@ -174,7 +146,7 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 				// Spin through the result set while there are still values.
 				while (results.next()) {
 					// Create a new instance of the class.
-					ModelObject resultObject = (ModelObject) this.fillOutObject(results, _class);
+					ModelObject resultObject = this.fillOutObject(results, _class);
 					retVal.add(resultObject);
 				}
 			} catch (SQLException | InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -187,32 +159,14 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		// return the value to the caller
 		return retVal;
 	}
-	/*
-	 * public ArrayList<ModelObject> readObject(LinkedHashMap<String, String>
-	 * _keyValuePairs, Class<?> _class) { // Initialize a return value for the
-	 * caller. ArrayList<ModelObject> retVal = new ArrayList<ModelObject>(); // If
-	 * we are not in debug mode then proceed. if (!debugMode) { try { // Construct
-	 * the base call. this.prepCallableStatement(_keyValuePairs,
-	 * this.readStoredProcedurePrefix, this.getTableNameFromClass(_class), _class);
-	 * // Initialize the result set as the result of the sql execution. ResultSet
-	 * results = this.sql.executeQuery(); // Spin through the result set while there
-	 * are still values. while (results.next()) { // Create a new instance of the
-	 * class. ModelObject resultObject = (ModelObject) this.fillOutObject(results,
-	 * _class); retVal.add(resultObject); } } catch (SQLException |
-	 * InstantiationException | IllegalAccessException | IllegalArgumentException |
-	 * InvocationTargetException | NoSuchMethodException | SecurityException |
-	 * ClassNotFoundException e) { // TODO find a common solution for this
-	 * e.printStackTrace(); } } // return the value to the caller return retVal; }
-	 */
 
 	@Override
 	/**
 	 * This function is an update function for an object in the database.
 	 * 
-	 * @param _keyValuePairs: This is parameters to use for the stored procedure.
-	 * @param _uuid:          The Unique Universal Identification string.
-	 * @param _table:         The string representing the table name to check.
-	 * 
+	 * @param _keyValuePairs   the list of parameters from the object
+	 * @param _returnTypeArray the java.sql types to return
+	 * @param _class           the desired class.
 	 * @return boolean: Returns true if call was successful.
 	 */
 	public boolean updateObject(LinkedHashMap<String, String> _keyValuePairs, int[] _returnTypeArray, String _uuid,
@@ -244,27 +198,6 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		// Return the value to caller.
 		return retVal;
 	}
-	/*
-	 * public boolean updateObject(LinkedHashMap<String, String> _keyValuePairs,
-	 * String _uuid, Class<?> _class) { // Initialize a return value and default
-	 * FALSE. boolean retVal = false;
-	 * 
-	 * // If debug is on then bypass all of this. if (!debugMode) { // Prepare the
-	 * call in a try catch block. try { this.prepCallableStatement(_keyValuePairs,
-	 * this.updateStoredProcedurePrefix, this.getTableNameFromClass(_class),
-	 * _class); // Determine the number of parameters to double check the result.
-	 * int numberOfParameters =
-	 * this.findNumberOfParametersWithReturn(_keyValuePairs,
-	 * this.updateStoredProcedurePrefix, _class); // Execute the statement.
-	 * this.sql.executeQuery(); // if this is the correct return value then return
-	 * it as a boolean. if ((!this.sql.getString(numberOfParameters).isEmpty()) &&
-	 * Integer.parseInt(this.sql.getString(numberOfParameters)) >
-	 * this.minIDReturnVal) { retVal =
-	 * (Integer.parseInt(this.sql.getString(numberOfParameters)) ==
-	 * this.successValue ? true : false); } } catch (SQLException e) { // TODO
-	 * Auto-generated catch block. e.printStackTrace(); } } // Return the value to
-	 * caller. return retVal; }
-	 */
 
 	@Override
 	/**
@@ -302,55 +235,15 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 		// Return the value to the caller.
 		return retVal;
 	}
-	/*
-	 * public boolean deleteObject(LinkedHashMap<String, String> _keyValuePairs,
-	 * Class<?> _class) { // Initialize a return value and default to FALSE boolean
-	 * retVal = false; // If debug is on then bypass all of this. if (!debugMode) {
-	 * // Prepare the call in a try catch block. try {
-	 * this.prepCallableStatement(_keyValuePairs, this.deleteStoredProcedurePrefix,
-	 * this.getTableNameFromClass(_class), _class); // Find the number of returnable
-	 * parameters. int numberOfParameters =
-	 * this.findNumberOfParametersWithReturn(_keyValuePairs,
-	 * this.deleteStoredProcedurePrefix, _class); // Execute the query.
-	 * this.sql.executeQuery(); // If this is the correct return value then return
-	 * it as a boolean. if ((!this.sql.getString(numberOfParameters).isEmpty()) &&
-	 * Integer.parseInt(this.sql.getString(numberOfParameters)) >
-	 * this.minIDReturnVal) { retVal =
-	 * (Integer.parseInt(this.sql.getString(numberOfParameters)) ==
-	 * this.successValue ? true : false); } } catch (SQLException e) { // TODO
-	 * Auto-generated catch block. e.printStackTrace(); } } // Return the value to
-	 * the caller. return retVal; }
-	 */
 
 	/**
 	 * This is a broiler plate helper method to create the callable statement.
 	 * 
 	 * @param _keyValuePairs
+	 * @param _returnTypeArray
 	 * @param _storedProcedurePrefix
 	 * @param _tableName
-	 * @param _targetClass
 	 */
-	private void prepCallableStatement(Map<String, String> _keyValuePairs, String _storedProcedurePrefix,
-			String _tableName, Class<?> _targetClass) {
-		// This must be in a try catch block.
-		try {
-			// Initialize a count of the number of parameters needed call.
-			int numberOfParameters = this.findNumberOfParametersWithReturn(_keyValuePairs, _storedProcedurePrefix,
-					_targetClass);
-			// Construct the base call.
-			this.sql = this.conn.prepareCall(
-					this.makeSQLPreparedCallString(_storedProcedurePrefix + _tableName, numberOfParameters));
-			// update the call with the parameters
-			this.assembleCallableStatement(_keyValuePairs);
-			// If there are parameters to be registered then do so.
-			this.custRegisterOutParameters(numberOfParameters, _keyValuePairs.size(), _storedProcedurePrefix,
-					_targetClass);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block.
-			e.printStackTrace();
-		}
-	}
-
 	private void prepCallableStatement(Map<String, String> _keyValuePairs, int[] _returnTypeArray,
 			String _storedProcedurePrefix, String _tableName) {
 		int numberOfParameters = _keyValuePairs.size() + _returnTypeArray.length;
@@ -416,62 +309,6 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	}
 
 	/**
-	 * Helper function to add on an additional parameter in the case that we need a
-	 * single return from a stored procedure.
-	 * 
-	 * @param _keyValuePairs:         The arguments specified for the store
-	 *                                procedure call.
-	 * @param _storedProcedurePrefix: This string distinguishes between create,
-	 *                                read, update, delete stored procedures.
-	 * @return int: This is the number of parameters needed for the stored procedure
-	 *         prepared call.
-	 */
-	private int findNumberOfParametersWithReturn(Map<String, String> _keyValuePairs, String _storedProcedurePrefix,
-			Class<?> _targetClass) {
-		// Initialize a return value for the caller.
-		int retVal = 0;
-		if (_storedProcedurePrefix == this.createStoredProcedurePrefix
-				|| _storedProcedurePrefix == this.updateStoredProcedurePrefix
-				|| _storedProcedurePrefix == this.deleteStoredProcedurePrefix) {
-			// Current procedures only needs one extra variable.
-			retVal = _keyValuePairs.size() + this.singleStoredProcedureReturn;
-		} else if (_storedProcedurePrefix == this.readStoredProcedurePrefix) {
-			// Reads need all of the fields of the class.
-			retVal = _keyValuePairs.size() + this.getNumberOfFieldsFromTableName(_targetClass);
-		}
-		// Otherwise, count an additional parameter for the return.
-		else {
-			retVal = _keyValuePairs.size();
-		}
-		// return the final value to the caller
-		return retVal;
-	}
-
-	/**
-	 * This function returns the number of fields for a given table name. Its four
-	 * from the abstract class and the number of fields in the class corresponding
-	 * to that class.
-	 * 
-	 * @param _tableName
-	 * @return
-	 */
-	private int getNumberOfFieldsFromTableName(Class<?> _targetClass) {
-		int retVal = this.minNumberOfFields;
-		Field[] fields = _targetClass.getDeclaredFields();
-		// Spin through the fields and discard the undesirables.
-		for (Field targetField : fields) {
-			// If this field is a private or protected field, continue.
-			targetField.setAccessible(true);
-			int fieldModifier = targetField.getModifiers();
-			if ((Modifier.isPrivate(fieldModifier) || Modifier.isProtected(fieldModifier))
-					&& (!Collection.class.isAssignableFrom(targetField.getType()))) {
-				retVal++;
-			}
-		}
-		return retVal;
-	}
-
-	/**
 	 * This function automatically registers the outputs with data type.
 	 * 
 	 * @param _numberOfParameters: The number of parameters expected in the stored
@@ -502,31 +339,10 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	}
 
 	/**
-	 * Override method for easier calling. See other method of same name in this
-	 * class with an additional argument.
-	 */
-	private void custRegisterOutParameters(int _numberOfParameters, int _numberOfKeyValuePairs, String _prefix,
-			Class<?> _class) {
-		// Initialize and empty integer array and pass it to the override method.
-		int[] returnTypeArray = new int[_numberOfParameters - _numberOfKeyValuePairs];
-		if (_prefix.equals(this.readStoredProcedurePrefix)) {
-			// Add all the types to the returnTypeArray.
-			// returnTypeArray = this.getSQLTypeArrayForClass(_class, _numberOfParameters -
-			// _numberOfKeyValuePairs);
-		} else if (_prefix.equals(this.createStoredProcedurePrefix) || _prefix.equals(this.updateStoredProcedurePrefix)
-				|| _prefix.equals(this.deleteStoredProcedurePrefix)) {
-			returnTypeArray[0] = java.sql.Types.INTEGER;
-		} else {
-			returnTypeArray[0] = java.sql.Types.INTEGER;
-		}
-		this.custRegisterOutParameters(_numberOfParameters, _numberOfKeyValuePairs, returnTypeArray);
-	}
-
-	/**
 	 * This function gets the table name from the class by reflection.
 	 * 
 	 * @param _class
-	 * @return
+	 * @return the table name
 	 */
 	private String getTableNameFromClass(Class<?> _class) {
 		// Initialize a return value for the caller.
@@ -580,28 +396,38 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 	 * @throws InstantiationException
 	 * @throws ClassNotFoundException
 	 */
-	private Object fillOutObject(ResultSet _results, Class<?> _targetClass)
+	private ModelObject fillOutObject(ResultSet _results, Class<?> _targetClass)
 			throws IllegalArgumentException, IllegalAccessException, SQLException, ClassNotFoundException,
 			InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		// Create a return value for the method
 		ModelObject retVal = this.makeModelObject(_targetClass);
-		// Loop through each field in the target class and
-		for (Field currField : _targetClass.getDeclaredFields()) {
-			if (!Collection.class.isAssignableFrom(currField.getType())) {
-				// Use this to change the access of the field to public for this instance.
-				currField.setAccessible(true);
-				// Grab the field annotation from the field.
-				String colName = retVal.findValueFromFieldColumnDBAnnotation(currField);
-				Object value = _results.getObject(colName);
-				// Type cast all of the pieces.
-				Class<?> type = currField.getType();
-				if (this.checkPrimitiveType(type)) {
-					Class<?> typeToCast = this.getCastTypeForField(type);
-					value = typeToCast.cast(value);
+		Class<?> currObject = _targetClass;
+		while (!currObject.getName().equals(DatabaseConstants.TARGET_SUPER_CLASS)) {
+			// Loop through each field in the target class and fill in the fields
+			for (Field currField : currObject.getDeclaredFields()) {
+				if (!Collection.class.isAssignableFrom(currField.getType())) {
+					// Use this to change the access of the field to public for this instance.
+					currField.setAccessible(true);
+					// Grab the field annotation from the field.
+					String colName = retVal.findValueFromFieldColumnDBAnnotation(currField);
+					Object value = _results.getObject(colName);
+					// Type cast all of the pieces.
+					Class<?> type = currField.getType();
+					if (this.checkPrimitiveType(type)) {
+						Class<?> typeToCast = this.getCastTypeForField(type);
+						if (type.equals(boolean.class)) {
+							currField.setBoolean(retVal, (this.successValue == Integer.class.cast(value)));
+							continue;
+						} else {
+							value = typeToCast.cast(value);
+						}
+					}
+					// Fill the object up with all the values.
+					currField.set(retVal, value);
 				}
-				// Fill the object up with all the values.
-				currField.set(retVal, value);
 			}
+			// Traverse up to the parent class.
+			currObject = currObject.getSuperclass();
 		}
 		return retVal;
 	}
@@ -659,8 +485,8 @@ public class MySQLDBConnectorImpl implements DBConnectorInterface {
 								+ this.usePublicKeys + this.urlConjChar + this.useFieldParamsOpt,
 						this.userName, this.password);
 			} else {
-				// TODO this needs to be evaluated on a case by case basis for new argument
-				// values.
+				// TODO this needs to be evaluated on a case by case basis for new arguments
+				// in production.
 			}
 		} catch (SQLException e) {
 			// TODO goto to logging or create an error report system

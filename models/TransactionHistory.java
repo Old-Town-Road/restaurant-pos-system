@@ -23,7 +23,8 @@ public class TransactionHistory extends ModelObject {
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_TRANSACTION_HISTORY_PAYMENT_DATE_VALUE)
 	private Date paymentDate;
 
-	public TransactionHistory(double _finalTotal, int _checkId, int _userId, int _paymentType, int _paymentStatus, Date _paymentDate) {
+	public TransactionHistory(double _finalTotal, int _checkId, int _userId, int _paymentType, int _paymentStatus,
+			Date _paymentDate) {
 		super();
 		this.setFinalTotal(_finalTotal);
 		this.setCheckId(_checkId);
@@ -33,7 +34,8 @@ public class TransactionHistory extends ModelObject {
 		this.setPaymentDate(_paymentDate);
 	}
 
-	public TransactionHistory(int _id, String _uuid, int _sortValue, boolean _isActive, double _finalTotal, int _checkId, int _userId, int _paymentType, int _paymentStatus, Date _paymentDate) {
+	public TransactionHistory(int _id, String _uuid, int _sortValue, boolean _isActive, double _finalTotal,
+			int _checkId, int _userId, int _paymentType, int _paymentStatus, Date _paymentDate) {
 		this.setId(_id);
 		this.setUuid(_uuid);
 		this.setSortValue(_sortValue);
@@ -73,11 +75,12 @@ public class TransactionHistory extends ModelObject {
 	public Date getPaymentDate() {
 		return this.paymentDate;
 	}
+
 //=====================Setters=====================================//
 	public void setUserId(int _userId) {
 		this.userId = _userId;
 	}
-	
+
 	public void setPaymentType(int _paymentType) {
 		this.paymentType = _paymentType;
 	}

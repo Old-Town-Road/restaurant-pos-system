@@ -27,7 +27,7 @@ public class DataStoreAdapter {
 	/**
 	 * This method pulls down an array list of objects specified by the map provided. See StandardDatabaseReads for common use.
 	 * @param _keyValuePairs
-	 * @param _targetClass
+	 * @param _targetObject
 	 * @return Array list filled with the results
 	 */
 	public static ArrayList<ModelObject> readObject (LinkedHashMap<String, String> _keyValuePairs, ModelObject _targetObject) {

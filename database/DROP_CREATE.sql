@@ -2,7 +2,7 @@ Drop database if exists `pizzaposdb`;
 CREATE DATABASE `pizzaposdb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 Create table if not exists pizzaposdb.PosCheck (
 	  ID INT NOT NULL AUTO_INCREMENT,
-	  UUID varchar(36) NOT NULL,
+	  UUID varchar(64) NOT NULL,
       IsActive INT NOT NULL default 1,
       SortValue int not null default 0,
 	  TableID INT NOT NULL,
@@ -19,7 +19,7 @@ Create table if not exists pizzaposdb.CheckStatusLU (
  );
 Create table if not exists pizzaposdb.Menu(
 	ID int NOT NULL auto_increment,
-    UUID varchar(36) NOT NULL,
+    UUID varchar(64) NOT NULL,
     IsActive INT NOT NULL default 1,
     SortValue int NOT NULL default 0,
 	StoreID int NOT NULL,
@@ -29,7 +29,7 @@ Create table if not exists pizzaposdb.Menu(
 );
 Create table if not exists pizzaposdb.MenuItem  (
 	ID INT NOT NULL AUTO_INCREMENT,
-    UUID varchar(36) NOT NULL,
+    UUID varchar(64) NOT NULL,
     SortValue int NOT NULL default 0,
     IsActive INT NOT NULL default 1,
 	MenuID int NOT NULL,
@@ -70,7 +70,7 @@ Create table if not exists pizzaposdb.Store  (
 
 Create table if not exists pizzaposdb.POSTables  (
 	ID INT NOT NULL AUTO_INCREMENT,
-	UUID varchar(36) NOT NULL,
+	UUID varchar(64) NOT NULL,
     sortValue int NOT NULL default 0,
     isActive INT NOT NULL default 1,
 	TableName varchar(64) NOT NULL,
@@ -86,7 +86,7 @@ Create table if not exists pizzaposdb.TableStatusLU  (
 
 CREATE TABLE IF NOT EXISTS pizzaposdb.Ticket (
     ID INT NOT NULL AUTO_INCREMENT,
-	UUID varchar(36) NOT NULL,
+	UUID varchar(64) NOT NULL,
     sortValue int NOT NULL default 0,
     isActive INT NOT NULL default 1,
     DateStarted DATE NOT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS pizzaposdb.TicketTypeLU (
 
 CREATE TABLE IF NOT EXISTS pizzaposdb.TransactionHistory (
     ID INT NOT NULL AUTO_INCREMENT,
-    UUID varchar(36) not null,
+    UUID varchar(64) not null,
     IsActive INT default 1,
     SortValue int default 0,
     CheckID INT NOT NULL,
@@ -129,7 +129,7 @@ Create table if not exists pizzaposdb.UserLU  (
 	FirstName varchar(64) NOT NULL,
 	LastName varchar(64) NOT NULL,
 	RoleID int NOT NULL,
-    UUID varchar(36),
+    UUID varchar(64) not null,
     IsActive int default 1,
     SortValue int default 0,
     primary key(`ID`)
@@ -137,7 +137,7 @@ Create table if not exists pizzaposdb.UserLU  (
 
 create table if not exists pizzaposdb.TicketItem (
 	ID int not null auto_increment,
-    UUID varchar(36) not null,
+    UUID varchar(64) not null,
     SortValue int default 0,
     IsActive INT default 1,
     TicketID int not null,

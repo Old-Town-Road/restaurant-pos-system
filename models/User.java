@@ -2,7 +2,8 @@ package models;
 
 /*
  * This class represents the User Object
- * @author Ashim Chalise, Ian Wilhelmsen last updated - 4/23/2020
+ * @author Ashim Chalise, Ian Wilhelmsen
+ * last updated - 4/23/2020
  */
 import database.DatabaseConstants;
 @ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_USER_VALUE)

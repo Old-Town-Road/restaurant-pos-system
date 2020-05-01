@@ -2,6 +2,9 @@ package testing;
 
 /**
  * This is a base tester for the DataStoreAdapterTest.
+ * THIS EXISTS TO CHECK FUNCTIONALITY.
+ * @author Ian Willhelmsen
+ * last updated: 4/30/2020
  */
 //import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.Assert.assertTrue;
@@ -23,9 +26,6 @@ class TestDataStoreAdapter {
 	private Menu pastaMenu = new Menu("Pasta", ModelConstants.MENU_TYPE_PIZZAS);
 	private Menu boozeMenu = new Menu("booze", ModelConstants.MENU_TYPE_DRINKS);
 	private Menu fingerFoodsMenu = new Menu("FingerFood", ModelConstants.MENU_TYPE_SIDES);
-	private Menu pizzaMenu;
-	private Menu drinksMenu;
-	private Menu sidesMenu;
 
 	private boolean alignmentFlag = false;
 
@@ -50,6 +50,7 @@ class TestDataStoreAdapter {
 		this.boozeMenu.setItems(dMenu);
 		this.fingerFoodsMenu.setItems(sMenu);
 	}
+
 	@Test
 	final void testCreateObject() {
 		//Test basic creations

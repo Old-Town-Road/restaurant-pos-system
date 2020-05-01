@@ -5,7 +5,9 @@ package models;
  * @author Ian Wilhelmsen
  * Last Updated 4/23/2020
  */
+
 import database.DatabaseConstants;
+
 @ModelAnnotations(key = DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_MENU_ITEM_VALUE)
 public class MenuItem extends ModelObject {
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_ITEM_NAME_VALUE)
@@ -19,22 +21,23 @@ public class MenuItem extends ModelObject {
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_EXECUTION_TIME_VALUE)
 	private int executionTime;
 
-	public MenuItem (int _ID, String _UUID, int _sortValue, boolean _isActive, int _menuID, String _itemName, double _price, int _priorityScore, int _executionTime) {
+	public MenuItem(int _ID, String _UUID, int _sortValue, boolean _isActive, int _menuID, String _itemName,
+			double _price, int _priorityScore, int _executionTime) {
 		this.setId(_ID);
 		this.setUuid(_UUID);
 		this.setSortValue(_sortValue);
 		this.setIsActive(_isActive);
 		this.itemName = _itemName;
-		this.menuID=_menuID;
+		this.menuID = _menuID;
 		this.price = _price;
 		this.priorityScore = _priorityScore;
 		this.executionTime = _executionTime;
 	}
 
-	public MenuItem (int _menuID, String _itemName, double _price, int _priorityScore, int _executionTime) {
+	public MenuItem(int _menuID, String _itemName, double _price, int _priorityScore, int _executionTime) {
 		super();
 		this.itemName = _itemName;
-		this.menuID=_menuID;
+		this.menuID = _menuID;
 		this.price = _price;
 		this.priorityScore = _priorityScore;
 		this.executionTime = _executionTime;
@@ -86,5 +89,4 @@ public class MenuItem extends ModelObject {
 	public void setMenuID(int menuID) {
 		this.menuID = menuID;
 	}
-
 }

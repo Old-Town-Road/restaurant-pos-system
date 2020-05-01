@@ -1,7 +1,7 @@
 package database;
 
 /**
- * This class is intended to maintain the integrity of the code base for interactions
+ * This interface is intended to maintain the integrity of the code base for interactions
  * with any db.
  * @author Ian Wilhelmsen
  * Last Updated: 4/27/2020

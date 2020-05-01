@@ -4,8 +4,8 @@ package models;
  * This class is just to keep track of enumerations and 
  * constants across the class for model relations.
  * @author Ian Wilhelmsen last updated 4/22/2020
- *
  */
+
 public class ModelConstants {
 
 	//These enumerations are Menu types.
@@ -47,4 +47,8 @@ public class ModelConstants {
 
 	//These enumerations are store types.
 	public static int STORE_TYPE_POS = 1;
+
+	//These enumerations are for keeping string boolean values.
+	public static String BOOLEAN_STRING_DB_TRUE_VALUE = "1";
+	public static String BOOLEAN_STRING_DB_FALSE_VALUE = "0";
 }

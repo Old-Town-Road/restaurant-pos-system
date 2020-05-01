@@ -1,11 +1,11 @@
 package models;
 
-import database.DatabaseConstants;
-
 /**
  * Creates a clone of MenuItem to keep track of a change in price per ticket.
- * @author Ian Wilhelmsen, Last Updated: 4/23/2020
+ * @author Ian Wilhelmsen
+ * Last Updated: 4/23/2020
  */
+import database.DatabaseConstants;
 
 @ModelAnnotations(key =  DatabaseConstants.TABLE_NAME_ANNOTATION, value = DatabaseConstants.DB_TABLE_TICKET_ITEM_VALUE)
 public class TicketItem extends ModelObject {
