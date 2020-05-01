@@ -28,7 +28,6 @@ public class OrderTypeController implements Initializable {
 	private TextField username;
 
 	public OrderTypeController() {
-
 	}
 
 	/**
@@ -38,8 +37,6 @@ public class OrderTypeController implements Initializable {
 	 *         logInController
 	 */
 	public void initialize(URL _url, ResourceBundle _rb) {
-		// username.setText("helllo");
-
 	}
 
 	/**
@@ -70,7 +67,6 @@ public class OrderTypeController implements Initializable {
 	 * Function to get userinfo
 	 */
 	public void myFunction(String text) {
-
 		username.setText(text);
 	}
 }
