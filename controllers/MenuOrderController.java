@@ -38,7 +38,7 @@ public class MenuOrderController {
 	private TextField tfTotal = new TextField();
 
 	private double priceCount = 0;
-	private boolean debug = true;
+	private boolean debug = false;
 
 	private ArrayList<Menu> menusToTab = new ArrayList<Menu>();
 
