@@ -15,7 +15,7 @@ public class MenuItem extends ModelObject {
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_MENU_ID_VALUE)
 	private int menuID;
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_PRICE_VALUE)
-	private double price;
+	private double price = 0;
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_PRIORITY_SCORE_VALUE)
 	private int priorityScore;
 	@ModelAnnotations(key = DatabaseConstants.DB_COLUMN_NAME_KEY, value = DatabaseConstants.DB_EXECUTION_TIME_VALUE)
