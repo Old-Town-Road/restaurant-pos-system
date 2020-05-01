@@ -13,7 +13,7 @@ INSERT INTO pizzaposdb.MenuTypeLU
 		(3, 'Drinks');
 
 Insert into pizzaposdb.PaymentStatusLU
-		(ID, PaymentStatus)
+		(ID, PaymentStatusType)
 	values
 		(1, 'OPEN'),
 		(2, 'PAID'),
@@ -49,3 +49,11 @@ Insert into pizzaposdb.TicketTypeLU
 	values
 		(1,'KITCHEN'),
 		(2,'BAR');
+
+INSERT INTO `pizzaposdb`.`store`
+(`ID`,
+`StoreName`)
+VALUES
+(1,
+'POS');
+

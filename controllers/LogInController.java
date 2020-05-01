@@ -28,7 +28,6 @@ import views.SetView;
 
 public class LogInController implements Initializable {
 
-
     GoogleAuthWrapper google;
 
     public LogInController() throws IOException {
@@ -38,14 +37,14 @@ public class LogInController implements Initializable {
                 "XESnLdvdh2e6Eiege72NgEtO");
     }
 
-    /**
-     * Called once implementing the controller.
-     *
-     * @param _url
-     * @param _rb
-     */
-    public void initialize(URL _url, ResourceBundle _rb) {
-    }
+	/**
+	 * Called once implementing the controller.
+	 *
+	 * @param _url
+	 * @param _rb
+	 */
+	public void initialize(URL _url, ResourceBundle _rb) {
+	}
 
     /**
      * Called when log in button is clicked.

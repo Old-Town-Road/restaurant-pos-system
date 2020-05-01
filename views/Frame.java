@@ -13,27 +13,27 @@ import java.io.IOException;
 
 public class Frame {
 
-    /**
-     * UDC Frame
-     *
-     * @param _primaryStage
-     * @param _fileName
-     */
-    public Frame(Stage _primaryStage, String _fileName) {
+	/**
+	 * UDC Frame
+	 *
+	 * @param _primaryStage
+	 * @param _fileName
+	 */
+	public Frame(Stage _primaryStage, String _fileName) {
 
-        // Set Parent to NULL
-        Parent root = null;
-        try {
-            root = (Parent) GetSource.FXMLObjectLoader(_fileName);
-            // Create a scene
-            Scene scene = new Scene(root);
-            // Set the window title
-            _primaryStage.setTitle(SetView.WINDOW_TITLE);
-            _primaryStage.setScene(scene);
-            _primaryStage.setResizable(false);
-            _primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		// Set Parent to NULL
+		Parent root = null;
+		try {
+			root = (Parent) GetSource.FXMLObjectLoader(_fileName);
+			// Create a scene
+			Scene scene = new Scene(root);
+			// Set the window title
+			_primaryStage.setTitle(SetView.WINDOW_TITLE);
+			_primaryStage.setScene(scene);
+			_primaryStage.setResizable(false);
+			_primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
