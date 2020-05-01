@@ -4,19 +4,33 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< HEAD
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: wheat;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CloseCheckController">
    <children>
       <Button layoutX="180.0" layoutY="188.0" mnemonicParsing="false" onAction="#creditAction" onKeyPressed="#creditAction" prefHeight="25.0" prefWidth="241.0" style="-fx-background-color: DEEPSKYBLUE;" text="Credit Card">
+=======
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CloseCheckController">
+   <children>
+      <Button layoutX="180.0" layoutY="188.0" mnemonicParsing="false" onAction="#cashOutAction" prefHeight="25.0" prefWidth="241.0" text="Credit Card">
+>>>>>>> 4dd6281d1e377f8f9ff1c4d5db4b29f151f981f4
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
+<<<<<<< HEAD
       <Button layoutX="180.0" layoutY="146.0" mnemonicParsing="false" onAction="#cashAction" onKeyPressed="#cashAction" prefHeight="25.0" prefWidth="241.0" style="-fx-background-color: DEEPSKYBLUE;" text="Cash">
+=======
+      <Button layoutX="180.0" layoutY="146.0" mnemonicParsing="false" onAction="#cashOutAction" prefHeight="25.0" prefWidth="241.0" text="Cash">
+>>>>>>> 4dd6281d1e377f8f9ff1c4d5db4b29f151f981f4
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
+<<<<<<< HEAD
       <Button layoutX="180.0" layoutY="228.0" mnemonicParsing="false" onAction="#otherAction" onKeyPressed="#otherAction" prefHeight="25.0" prefWidth="241.0" style="-fx-background-color: DEEPSKYBLUE;" text="Other">
+=======
+      <Button layoutX="180.0" layoutY="228.0" mnemonicParsing="false" onAction="#cashOutAction" prefHeight="25.0" prefWidth="241.0" text="Other">
+>>>>>>> 4dd6281d1e377f8f9ff1c4d5db4b29f151f981f4
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

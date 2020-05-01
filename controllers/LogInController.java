@@ -7,24 +7,21 @@ package controllers;
  * @author Raiana zaman Last Updated: 3/18/2020
  */
 
+import API.GoogleAuthWrapper;
+import API.OAuthException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Map;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
-
-import API.GoogleAuthWrapper;
-import API.OAuthException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import views.Frame;
-import views.SetView;
 
 public class LogInController implements Initializable {
 
@@ -82,11 +79,11 @@ public class LogInController implements Initializable {
      */
     void openNewStage(String Val) throws IOException {
         /**Loading the fxml of second controller where you want to send the data*/
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/fxml/OrderType.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/fxml/OrderTypeController.fxml"));
         Parent root = (Parent) loader.load();
         /*** Creating the object of second controller */
         OrderTypeController secController = loader.getController();
-        secController.myFunction(Val);
+        // secController.initData(Val);
         /** Loading the stage */
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
