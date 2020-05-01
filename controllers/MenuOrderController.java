@@ -45,7 +45,7 @@ public class MenuOrderController {
 	private TextField tfTotal = new TextField();
 
 	private double priceCount = 0;
-	private boolean debug = false;
+	private boolean debug = true;
 
 	private ArrayList<Menu> menusToTab = new ArrayList<Menu>();
 
@@ -202,6 +202,8 @@ public class MenuOrderController {
 
 		Menu pizzaMenu = new Menu("Pizza", ModelConstants.MENU_TYPE_PIZZAS);
 		pizzaMenu.setItems(pMenu);
+		pizzaMenu.setItems(dMenu);
+		pizzaMenu.setItems(sMenu);
 		Menu drinkMenu = new Menu("Drink", ModelConstants.MENU_TYPE_DRINKS);
 		drinkMenu.setItems(dMenu);
 		Menu sideMenu = new Menu("Sides", ModelConstants.MENU_TYPE_SIDES);
